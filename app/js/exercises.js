@@ -397,6 +397,375 @@ const Exercises = {
   },
 
   /**
+   * Rendert eine Binaeradditions-Uebung (schriftliche Addition im Binaersystem).
+   * Zeigt zwei Operanden und Eingabefelder fuer Uebertraege und Ergebnis.
+   * Tab-Reihenfolge laeuft von rechts nach links (wie beim schriftlichen Rechnen).
+   *
+   * @param {Object} exercise - { type, question, operand1, operand2, correctResult, correctCarries }
+   * @param {HTMLElement} container - DOM-Element in das gerendert wird
+   * @param {Function} onComplete - Callback wenn alles korrekt
+   */
+  renderBinaryCalculation(exercise, container, onComplete) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'exercise-binary-calc';
+
+    // Frage anzeigen
+    var questionEl = document.createElement('p');
+    questionEl.className = 'exercise-question';
+    questionEl.textContent = exercise.question;
+    wrapper.appendChild(questionEl);
+
+    var calc = document.createElement('div');
+    calc.className = 'binary-calc';
+
+    var op1 = exercise.operand1;
+    var op2 = exercise.operand2;
+    var resultLen = exercise.correctResult.length;
+    var carryLen = exercise.correctCarries.length;
+
+    // Maximale Breite = Ergebnis-Laenge (laengste Zeile)
+    var maxLen = resultLen;
+
+    // Arrays zum Speichern der Input-Referenzen
+    var carryInputs = [];
+    var resultInputs = [];
+
+    // tabIndex-Zaehler: von rechts nach links, Ergebnis zuerst, dann Uebertraege
+    var tabCounter = 1;
+
+    // --- Zeile 1: Uebertraege ---
+    var carryRow = document.createElement('div');
+    carryRow.className = 'binary-row';
+
+    // Label "Uebertraege:"
+    var carryLabel = document.createElement('span');
+    carryLabel.className = 'binary-label';
+    carryLabel.textContent = 'Überträge:';
+    carryRow.appendChild(carryLabel);
+
+    // Leere Zellen links auffuellen (Ergebnis ist laenger als Uebertraege)
+    var carryOffset = maxLen - carryLen;
+    for (var i = 0; i < carryOffset; i++) {
+      var emptyCell = document.createElement('span');
+      emptyCell.className = 'binary-cell';
+      carryRow.appendChild(emptyCell);
+    }
+
+    // Eingabefelder fuer Uebertraege
+    for (var ci = 0; ci < carryLen; ci++) {
+      var carryInput = document.createElement('input');
+      carryInput.type = 'text';
+      carryInput.className = 'binary-input';
+      carryInput.maxLength = 1;
+      carryInput.setAttribute('pattern', '[01]');
+      carryInput.setAttribute('inputmode', 'numeric');
+      carryInputs.push(carryInput);
+      carryRow.appendChild(carryInput);
+    }
+
+    calc.appendChild(carryRow);
+
+    // --- Zeile 2: Operand 1 ---
+    var op1Row = document.createElement('div');
+    op1Row.className = 'binary-row';
+
+    // Leere Zelle fuer Operator-Platz
+    var opSpacer = document.createElement('span');
+    opSpacer.className = 'binary-cell';
+    op1Row.appendChild(opSpacer);
+
+    // Leere Zellen links auffuellen
+    var op1Offset = maxLen - op1.length;
+    for (var j = 0; j < op1Offset; j++) {
+      var empty1 = document.createElement('span');
+      empty1.className = 'binary-cell';
+      op1Row.appendChild(empty1);
+    }
+
+    for (var k = 0; k < op1.length; k++) {
+      var cell1 = document.createElement('span');
+      cell1.className = 'binary-cell';
+      cell1.textContent = op1[k];
+      op1Row.appendChild(cell1);
+    }
+
+    calc.appendChild(op1Row);
+
+    // --- Zeile 3: Operator + Operand 2 ---
+    var op2Row = document.createElement('div');
+    op2Row.className = 'binary-row';
+
+    // Plus-Zeichen
+    var plusCell = document.createElement('span');
+    plusCell.className = 'binary-cell binary-operator';
+    plusCell.textContent = '+';
+    op2Row.appendChild(plusCell);
+
+    // Leere Zellen links auffuellen
+    var op2Offset = maxLen - op2.length;
+    for (var m = 0; m < op2Offset; m++) {
+      var empty2 = document.createElement('span');
+      empty2.className = 'binary-cell';
+      op2Row.appendChild(empty2);
+    }
+
+    for (var n = 0; n < op2.length; n++) {
+      var cell2 = document.createElement('span');
+      cell2.className = 'binary-cell';
+      cell2.textContent = op2[n];
+      op2Row.appendChild(cell2);
+    }
+
+    calc.appendChild(op2Row);
+
+    // --- Trennlinie ---
+    var divider = document.createElement('div');
+    divider.className = 'binary-divider';
+    calc.appendChild(divider);
+
+    // --- Zeile 4: Ergebnis ---
+    var resultRow = document.createElement('div');
+    resultRow.className = 'binary-row';
+
+    // Leere Zelle fuer Operator-Platz
+    var resSpacer = document.createElement('span');
+    resSpacer.className = 'binary-cell';
+    resultRow.appendChild(resSpacer);
+
+    for (var ri = 0; ri < resultLen; ri++) {
+      var resInput = document.createElement('input');
+      resInput.type = 'text';
+      resInput.className = 'binary-input';
+      resInput.maxLength = 1;
+      resInput.setAttribute('pattern', '[01]');
+      resInput.setAttribute('inputmode', 'numeric');
+      resultInputs.push(resInput);
+      resultRow.appendChild(resInput);
+    }
+
+    calc.appendChild(resultRow);
+
+    // Tab-Reihenfolge: Ergebnis von rechts nach links, dann Uebertraege von rechts nach links
+    for (var ti = resultInputs.length - 1; ti >= 0; ti--) {
+      resultInputs[ti].tabIndex = tabCounter++;
+    }
+    for (var tci = carryInputs.length - 1; tci >= 0; tci--) {
+      carryInputs[tci].tabIndex = tabCounter++;
+    }
+
+    wrapper.appendChild(calc);
+
+    // Feedback-Bereich
+    var feedbackEl = document.createElement('div');
+    feedbackEl.className = 'exercise-feedback';
+    feedbackEl.style.display = 'none';
+
+    // "Pruefen"-Button
+    var checkBtn = document.createElement('button');
+    checkBtn.className = 'exercise-check-btn';
+    checkBtn.textContent = 'Prüfen';
+
+    checkBtn.addEventListener('click', function() {
+      var allCorrect = true;
+
+      // Ergebnis pruefen
+      for (var ei = 0; ei < resultLen; ei++) {
+        var val = resultInputs[ei].value.trim();
+        resultInputs[ei].classList.remove('correct', 'incorrect');
+
+        if (val === String(exercise.correctResult[ei])) {
+          resultInputs[ei].classList.add('correct');
+        } else {
+          resultInputs[ei].classList.add('incorrect');
+          allCorrect = false;
+        }
+      }
+
+      // Uebertraege pruefen
+      for (var eci = 0; eci < carryLen; eci++) {
+        var cVal = carryInputs[eci].value.trim();
+        carryInputs[eci].classList.remove('correct', 'incorrect');
+
+        if (cVal === String(exercise.correctCarries[eci])) {
+          carryInputs[eci].classList.add('correct');
+        } else {
+          carryInputs[eci].classList.add('incorrect');
+          allCorrect = false;
+        }
+      }
+
+      if (allCorrect) {
+        feedbackEl.textContent = 'Alles richtig – gut gemacht!';
+        feedbackEl.className = 'exercise-feedback correct';
+        feedbackEl.style.display = 'block';
+        checkBtn.disabled = true;
+        onComplete();
+      } else {
+        feedbackEl.textContent = 'Einige Felder sind noch falsch. Überprüfe deine Eingaben.';
+        feedbackEl.className = 'exercise-feedback incorrect';
+        feedbackEl.style.display = 'block';
+      }
+    });
+
+    wrapper.appendChild(checkBtn);
+    wrapper.appendChild(feedbackEl);
+    container.appendChild(wrapper);
+  },
+
+  /**
+   * Rendert eine Zustandstabellen-Uebung (aehnlich Wahrheitstabelle).
+   * Eingangsspalten kommen aus exercise.inputs (nicht automatisch generiert).
+   * Ausgangsspalten sind klickbar und toggeln ? → 0 → 1 → ?.
+   *
+   * @param {Object} exercise - { type, question, inputColumns, outputColumns, inputs, correctOutputs }
+   * @param {HTMLElement} container - DOM-Element in das gerendert wird
+   * @param {Function} onComplete - Callback wenn alle Zellen korrekt
+   */
+  renderStateTable(exercise, container, onComplete) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'exercise-state-table';
+
+    // Frage anzeigen
+    var questionEl = document.createElement('p');
+    questionEl.className = 'exercise-question';
+    questionEl.textContent = exercise.question;
+    wrapper.appendChild(questionEl);
+
+    var numRows = exercise.inputs.length;
+    var numInputCols = exercise.inputColumns.length;
+    var numOutputCols = exercise.outputColumns.length;
+
+    // HTML-Tabelle erstellen (gleiche CSS-Klasse wie Wahrheitstabelle)
+    var table = document.createElement('table');
+    table.className = 'truth-table';
+
+    // Tabellenkopf
+    var thead = document.createElement('thead');
+    var headerRow = document.createElement('tr');
+
+    // Header fuer Eingangsspalten
+    exercise.inputColumns.forEach(function(colName) {
+      var th = document.createElement('th');
+      th.textContent = colName;
+      headerRow.appendChild(th);
+    });
+
+    // Header fuer Ausgangsspalten
+    exercise.outputColumns.forEach(function(colName) {
+      var th = document.createElement('th');
+      th.textContent = colName;
+      headerRow.appendChild(th);
+    });
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // Tabellenkoerper
+    var tbody = document.createElement('tbody');
+
+    // Array zum Speichern der aktuellen Benutzerwerte (null = "?", 0, 1)
+    var userValues = [];
+
+    for (var r = 0; r < numRows; r++) {
+      var tr = document.createElement('tr');
+      userValues[r] = [];
+
+      // Eingangsspalten: fest, grau, nicht klickbar
+      for (var c = 0; c < numInputCols; c++) {
+        var td = document.createElement('td');
+        td.className = 'input-col';
+        td.textContent = exercise.inputs[r][c];
+        tr.appendChild(td);
+      }
+
+      // Ausgangsspalten: klickbar, initial "?"
+      for (var oc = 0; oc < numOutputCols; oc++) {
+        var resultTd = document.createElement('td');
+        resultTd.className = 'result-col';
+        resultTd.textContent = '?';
+        resultTd.setAttribute('data-row', r);
+        resultTd.setAttribute('data-col', oc);
+
+        userValues[r][oc] = null;
+
+        // Klick-Handler: toggled ? → 0 → 1 → ? (zyklisch)
+        (function(row, col, cell) {
+          cell.addEventListener('click', function() {
+            if (userValues[row][col] === null) {
+              userValues[row][col] = 0;
+              cell.textContent = '0';
+            } else if (userValues[row][col] === 0) {
+              userValues[row][col] = 1;
+              cell.textContent = '1';
+            } else {
+              userValues[row][col] = null;
+              cell.textContent = '?';
+            }
+            // Vorherige Markierungen entfernen beim erneuten Klicken
+            cell.classList.remove('correct', 'incorrect');
+          });
+        })(r, oc, resultTd);
+
+        tr.appendChild(resultTd);
+      }
+
+      tbody.appendChild(tr);
+    }
+
+    table.appendChild(tbody);
+    wrapper.appendChild(table);
+
+    // Feedback-Bereich
+    var feedbackEl = document.createElement('div');
+    feedbackEl.className = 'exercise-feedback';
+    feedbackEl.style.display = 'none';
+
+    // "Pruefen"-Button
+    var checkBtn = document.createElement('button');
+    checkBtn.className = 'exercise-check-btn';
+    checkBtn.textContent = 'Prüfen';
+
+    checkBtn.addEventListener('click', function() {
+      var wrongCount = 0;
+      var totalCells = numRows * numOutputCols;
+
+      var resultCells = table.querySelectorAll('.result-col');
+
+      resultCells.forEach(function(cell) {
+        var row = parseInt(cell.getAttribute('data-row'));
+        var col = parseInt(cell.getAttribute('data-col'));
+        var expected = exercise.correctOutputs[row][col];
+        var actual = userValues[row][col];
+
+        cell.classList.remove('correct', 'incorrect');
+
+        if (actual === expected) {
+          cell.classList.add('correct');
+        } else {
+          cell.classList.add('incorrect');
+          wrongCount++;
+        }
+      });
+
+      if (wrongCount === 0) {
+        feedbackEl.textContent = 'Alle Zellen korrekt – super!';
+        feedbackEl.className = 'exercise-feedback correct';
+        feedbackEl.style.display = 'block';
+        checkBtn.disabled = true;
+        onComplete();
+      } else {
+        feedbackEl.textContent = wrongCount + ' von ' + totalCells + ' Zellen sind noch falsch.';
+        feedbackEl.className = 'exercise-feedback incorrect';
+        feedbackEl.style.display = 'block';
+      }
+    });
+
+    wrapper.appendChild(checkBtn);
+    wrapper.appendChild(feedbackEl);
+    container.appendChild(wrapper);
+  },
+
+  /**
    * Rendert eine Zuordnungs-Uebung.
    * Links stehen feste Items, rechts gemischte Items.
    * Per Klick werden Paare verbunden (gleiche Farbe).

@@ -451,3 +451,70 @@ p {
   color: white;
   font-weight: 600;
 }
+
+/* === Binaerrechnung === */
+.binary-calc {
+  display: inline-block;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  margin: 1rem 0;
+}
+
+.binary-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.binary-cell {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.binary-input {
+  width: 2.5rem;
+  height: 2.5rem;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.binary-input:focus {
+  border-color: var(--accent);
+}
+
+.binary-input.correct {
+  border-color: var(--success);
+  background: #DCFCE7;
+}
+
+.binary-input.incorrect {
+  border-color: var(--error);
+  background: #FEF2F2;
+}
+
+.binary-operator {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.binary-divider {
+  border-top: 2px solid var(--text);
+  margin: 0.25rem 0;
+}
+
+.binary-label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-right: 0.5rem;
+}
