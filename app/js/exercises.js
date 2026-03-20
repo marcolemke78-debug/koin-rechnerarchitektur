@@ -13,6 +13,12 @@ const Exercises = {
         return Exercises.renderMultipleChoice(exercise, container, onComplete);
       case 'truth-table':
         return Exercises.renderTruthTable(exercise, container, onComplete);
+      case 'expression-input':
+        return Exercises.renderExpressionInput(exercise, container, onComplete);
+      case 'binary-calculation':
+        return Exercises.renderBinaryCalculation(exercise, container, onComplete);
+      case 'state-table':
+        return Exercises.renderStateTable(exercise, container, onComplete);
       default:
         const div = document.createElement('div');
         div.textContent = 'Übungstyp "' + exercise.type + '" wird noch implementiert.';
@@ -259,6 +265,125 @@ const Exercises = {
       } else {
         // Hinweis mit Anzahl falscher Zellen
         feedbackEl.textContent = wrongCount + ' von ' + totalCells + ' Zellen sind noch falsch.';
+        feedbackEl.className = 'exercise-feedback incorrect';
+        feedbackEl.style.display = 'block';
+      }
+    });
+
+    wrapper.appendChild(checkBtn);
+    wrapper.appendChild(feedbackEl);
+    container.appendChild(wrapper);
+  },
+
+  /**
+   * Rendert eine Ausdrucks-Eingabe-Uebung.
+   * Der Benutzer gibt einen logischen Ausdruck ein (z.B. DNF/KNF).
+   * Symbol-Buttons fuegen Sonderzeichen an der Cursorposition ein.
+   * Geprueft wird semantische Aequivalenz via Parser.areEquivalent().
+   *
+   * @param {Object} exercise - { type, question, variables, correctExpression, hint }
+   * @param {HTMLElement} container - DOM-Element in das gerendert wird
+   * @param {Function} onComplete - Callback wenn Ausdruck korrekt
+   */
+  renderExpressionInput(exercise, container, onComplete) {
+    // Wrapper-Div fuer die gesamte Ausdrucks-Eingabe-Uebung
+    var wrapper = document.createElement('div');
+    wrapper.className = 'exercise-expression';
+
+    // Frage anzeigen
+    var questionEl = document.createElement('p');
+    questionEl.className = 'exercise-question';
+    questionEl.textContent = exercise.question;
+    wrapper.appendChild(questionEl);
+
+    // Eingabebereich: Textfeld + Symbol-Buttons
+    var inputArea = document.createElement('div');
+    inputArea.className = 'expression-input-area';
+
+    // Textfeld fuer den logischen Ausdruck
+    var inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.className = 'expression-field';
+    inputField.placeholder = 'z.B. a∧¬b∨c';
+    inputArea.appendChild(inputField);
+
+    // Symbol-Buttons (zum Einfuegen von Sonderzeichen)
+    var symbolContainer = document.createElement('div');
+    symbolContainer.className = 'symbol-buttons';
+
+    var symbols = ['∧', '∨', '¬', '⊕', '(', ')'];
+    symbols.forEach(function(sym) {
+      var btn = document.createElement('button');
+      btn.className = 'symbol-btn';
+      btn.setAttribute('data-symbol', sym);
+      btn.textContent = sym;
+
+      // Klick fuegt Symbol an der aktuellen Cursorposition im Textfeld ein
+      btn.addEventListener('click', function() {
+        var start = inputField.selectionStart;
+        var end = inputField.selectionEnd;
+        var text = inputField.value;
+
+        // Text vor Cursor + Symbol + Text nach Cursor
+        inputField.value = text.substring(0, start) + sym + text.substring(end);
+
+        // Cursor hinter das eingefuegte Symbol setzen
+        inputField.selectionStart = start + sym.length;
+        inputField.selectionEnd = start + sym.length;
+        inputField.focus();
+      });
+
+      symbolContainer.appendChild(btn);
+    });
+
+    inputArea.appendChild(symbolContainer);
+    wrapper.appendChild(inputArea);
+
+    // Feedback-Bereich (anfangs versteckt)
+    var feedbackEl = document.createElement('div');
+    feedbackEl.className = 'exercise-feedback';
+    feedbackEl.style.display = 'none';
+
+    // "Pruefen"-Button
+    var checkBtn = document.createElement('button');
+    checkBtn.className = 'exercise-check-btn';
+    checkBtn.textContent = 'Prüfen';
+
+    checkBtn.addEventListener('click', function() {
+      var userInput = inputField.value.trim();
+
+      if (!userInput) {
+        feedbackEl.textContent = 'Bitte gib einen Ausdruck ein.';
+        feedbackEl.className = 'exercise-feedback incorrect';
+        feedbackEl.style.display = 'block';
+        return;
+      }
+
+      // Schritt 1: Versuche den Ausdruck zu parsen
+      try {
+        Parser.parse(userInput);
+      } catch (e) {
+        // Syntaxfehler – Benutzer informieren
+        feedbackEl.textContent = 'Der Ausdruck konnte nicht gelesen werden. Überprüfe Klammern und Operatoren.';
+        feedbackEl.className = 'exercise-feedback incorrect';
+        feedbackEl.style.display = 'block';
+        return;
+      }
+
+      // Schritt 2: Semantische Aequivalenz pruefen
+      var isEquiv = Parser.areEquivalent(userInput, exercise.correctExpression, exercise.variables);
+
+      if (isEquiv) {
+        // Richtig – Erfolgsmeldung
+        feedbackEl.textContent = 'Richtig – der Ausdruck ist äquivalent!';
+        feedbackEl.className = 'exercise-feedback correct';
+        feedbackEl.style.display = 'block';
+        checkBtn.disabled = true;
+        inputField.disabled = true;
+        onComplete();
+      } else {
+        // Falsch – Hint anzeigen
+        feedbackEl.textContent = exercise.hint;
         feedbackEl.className = 'exercise-feedback incorrect';
         feedbackEl.style.display = 'block';
       }
