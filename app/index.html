@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KOIN Lernprogramm – Rechnerarchitektur</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <aside id="sidebar">
+    <h2>Lektionen</h2>
+    <div id="module-c1">
+      <h3>C1 – Schaltalgebra</h3>
+      <ul id="lesson-list-c1"></ul>
+    </div>
+    <div id="module-c2">
+      <h3>C2 – Binärarithmetik</h3>
+      <ul id="lesson-list-c2"></ul>
+    </div>
+    <button id="reset-progress">Fortschritt zurücksetzen</button>
+  </aside>
+  <main id="content">
+    <div id="progress-bar-container">
+      <div id="progress-bar"></div>
+    </div>
+    <div id="lesson-container"></div>
+  </main>
+  <script src="js/progress.js"></script>
+  <script src="js/parser.js"></script>
+  <script src="js/exercises.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/lessons-c1.js"></script>
+  <script src="js/lessons-c2.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
