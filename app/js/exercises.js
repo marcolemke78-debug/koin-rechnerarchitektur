@@ -19,6 +19,8 @@ const Exercises = {
         return Exercises.renderBinaryCalculation(exercise, container, onComplete);
       case 'state-table':
         return Exercises.renderStateTable(exercise, container, onComplete);
+      case 'matching':
+        return Exercises.renderMatching(exercise, container, onComplete);
       default:
         const div = document.createElement('div');
         div.textContent = 'Übungstyp "' + exercise.type + '" wird noch implementiert.';
@@ -384,6 +386,248 @@ const Exercises = {
       } else {
         // Falsch – Hint anzeigen
         feedbackEl.textContent = exercise.hint;
+        feedbackEl.className = 'exercise-feedback incorrect';
+        feedbackEl.style.display = 'block';
+      }
+    });
+
+    wrapper.appendChild(checkBtn);
+    wrapper.appendChild(feedbackEl);
+    container.appendChild(wrapper);
+  },
+
+  /**
+   * Rendert eine Zuordnungs-Uebung.
+   * Links stehen feste Items, rechts gemischte Items.
+   * Per Klick werden Paare verbunden (gleiche Farbe).
+   * Erneuter Klick auf verbundenes Item loest die Verbindung.
+   *
+   * @param {Object} exercise - { type, question, pairs: [{ left, leftLabel, right }] }
+   * @param {HTMLElement} container - DOM-Element in das gerendert wird
+   * @param {Function} onComplete - Callback wenn alle Paare korrekt zugeordnet
+   */
+  renderMatching(exercise, container, onComplete) {
+    // Farben fuer die Paar-Verbindungen
+    var pairColors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
+
+    // Wrapper-Div fuer die gesamte Zuordnungs-Uebung
+    var wrapper = document.createElement('div');
+    wrapper.className = 'exercise-matching';
+
+    // Frage anzeigen
+    var questionEl = document.createElement('p');
+    questionEl.className = 'exercise-question';
+    questionEl.textContent = exercise.question;
+    wrapper.appendChild(questionEl);
+
+    // Zuordnungsbereich (Grid: links | rechts)
+    var matchingArea = document.createElement('div');
+    matchingArea.className = 'matching-area';
+
+    // Linke Spalte: Items in Originalreihenfolge
+    var leftCol = document.createElement('div');
+    leftCol.className = 'matching-left';
+
+    // Rechte Spalte: Items in zufaelliger Reihenfolge
+    var rightCol = document.createElement('div');
+    rightCol.className = 'matching-right';
+
+    // Rechte Items mischen (Fisher-Yates Shuffle)
+    // Wir brauchen die Original-Indizes, um spaeter pruefen zu koennen
+    var rightIndices = [];
+    for (var i = 0; i < exercise.pairs.length; i++) {
+      rightIndices.push(i);
+    }
+    for (var j = rightIndices.length - 1; j > 0; j--) {
+      var rand = Math.floor(Math.random() * (j + 1));
+      var temp = rightIndices[j];
+      rightIndices[j] = rightIndices[rand];
+      rightIndices[rand] = temp;
+    }
+
+    // State: welches linke Item ist gerade ausgewaehlt?
+    var selectedLeft = null;
+
+    // State: Verbindungen speichern – connections[leftIndex] = rightOriginalIndex
+    var connections = {};
+    // Umgekehrt: reverseConnections[rightOriginalIndex] = leftIndex
+    var reverseConnections = {};
+    // Naechste Farbnummer fuer neue Verbindung
+    var nextColorIndex = 0;
+    // Farbe pro Verbindung: connectionColors[leftIndex] = Farbe
+    var connectionColors = {};
+
+    // DOM-Referenzen speichern
+    var leftItems = [];
+    var rightItems = {}; // rightItems[originalIndex] = DOM-Element
+
+    // Linke Items erstellen
+    exercise.pairs.forEach(function(pair, idx) {
+      var item = document.createElement('div');
+      item.className = 'match-item match-left';
+      item.setAttribute('data-index', idx);
+      item.textContent = pair.left;
+
+      item.addEventListener('click', function() {
+        // Fall 1: Item ist bereits verbunden → Verbindung loesen
+        if (connections[idx] !== undefined) {
+          var connectedRight = connections[idx];
+          // Farben/Styling zuruecksetzen
+          item.classList.remove('matched');
+          item.style.backgroundColor = '';
+          item.style.borderColor = '';
+          item.style.color = '';
+
+          var rightEl = rightItems[connectedRight];
+          rightEl.classList.remove('matched');
+          rightEl.style.backgroundColor = '';
+          rightEl.style.borderColor = '';
+          rightEl.style.color = '';
+
+          // Verbindung aus State entfernen
+          delete reverseConnections[connectedRight];
+          delete connectionColors[idx];
+          delete connections[idx];
+
+          // Selection zuruecksetzen
+          if (selectedLeft !== null) {
+            leftItems[selectedLeft].classList.remove('selected');
+          }
+          selectedLeft = null;
+          return;
+        }
+
+        // Fall 2: Bereits ein anderes linkes Item ausgewaehlt → Auswahl wechseln
+        if (selectedLeft !== null) {
+          leftItems[selectedLeft].classList.remove('selected');
+        }
+
+        // Fall 3: Dieses linke Item auswaehlen
+        selectedLeft = idx;
+        item.classList.add('selected');
+      });
+
+      leftItems.push(item);
+      leftCol.appendChild(item);
+    });
+
+    // Rechte Items erstellen (in gemischter Reihenfolge)
+    rightIndices.forEach(function(originalIdx) {
+      var pair = exercise.pairs[originalIdx];
+      var item = document.createElement('div');
+      item.className = 'match-item match-right';
+      item.setAttribute('data-index', originalIdx);
+      item.textContent = pair.right;
+
+      item.addEventListener('click', function() {
+        // Fall 1: Item ist bereits verbunden → Verbindung loesen
+        if (reverseConnections[originalIdx] !== undefined) {
+          var connectedLeft = reverseConnections[originalIdx];
+          // Farben/Styling zuruecksetzen
+          item.classList.remove('matched');
+          item.style.backgroundColor = '';
+          item.style.borderColor = '';
+          item.style.color = '';
+
+          var leftEl = leftItems[connectedLeft];
+          leftEl.classList.remove('matched');
+          leftEl.style.backgroundColor = '';
+          leftEl.style.borderColor = '';
+          leftEl.style.color = '';
+
+          // Verbindung aus State entfernen
+          delete connections[connectedLeft];
+          delete connectionColors[connectedLeft];
+          delete reverseConnections[originalIdx];
+
+          // Selection zuruecksetzen
+          if (selectedLeft !== null) {
+            leftItems[selectedLeft].classList.remove('selected');
+            selectedLeft = null;
+          }
+          return;
+        }
+
+        // Fall 2: Kein linkes Item ausgewaehlt → ignorieren
+        if (selectedLeft === null) {
+          return;
+        }
+
+        // Fall 3: Verbindung herstellen
+        var leftIdx = selectedLeft;
+        var color = pairColors[nextColorIndex % pairColors.length];
+        nextColorIndex++;
+
+        // Verbindung speichern
+        connections[leftIdx] = originalIdx;
+        reverseConnections[originalIdx] = leftIdx;
+        connectionColors[leftIdx] = color;
+
+        // Linkes Item stylen
+        leftItems[leftIdx].classList.remove('selected');
+        leftItems[leftIdx].classList.add('matched');
+        leftItems[leftIdx].style.backgroundColor = color;
+        leftItems[leftIdx].style.borderColor = color;
+        leftItems[leftIdx].style.color = 'white';
+
+        // Rechtes Item stylen
+        item.classList.add('matched');
+        item.style.backgroundColor = color;
+        item.style.borderColor = color;
+        item.style.color = 'white';
+
+        // Selection zuruecksetzen
+        selectedLeft = null;
+      });
+
+      rightItems[originalIdx] = item;
+      rightCol.appendChild(item);
+    });
+
+    matchingArea.appendChild(leftCol);
+    matchingArea.appendChild(rightCol);
+    wrapper.appendChild(matchingArea);
+
+    // Feedback-Bereich (anfangs versteckt)
+    var feedbackEl = document.createElement('div');
+    feedbackEl.className = 'exercise-feedback';
+    feedbackEl.style.display = 'none';
+
+    // "Pruefen"-Button
+    var checkBtn = document.createElement('button');
+    checkBtn.className = 'exercise-check-btn';
+    checkBtn.textContent = 'Prüfen';
+
+    checkBtn.addEventListener('click', function() {
+      // Pruefen ob alle Paare zugeordnet sind
+      var totalPairs = exercise.pairs.length;
+      var connectedCount = Object.keys(connections).length;
+
+      if (connectedCount < totalPairs) {
+        feedbackEl.textContent = 'Bitte ordne zuerst alle Begriffe zu.';
+        feedbackEl.className = 'exercise-feedback incorrect';
+        feedbackEl.style.display = 'block';
+        return;
+      }
+
+      // Pruefen ob alle Zuordnungen korrekt sind
+      // Korrekt bedeutet: connections[i] === i (links[i] gehoert zu rechts[i])
+      var allCorrect = true;
+      for (var k = 0; k < totalPairs; k++) {
+        if (connections[k] !== k) {
+          allCorrect = false;
+          break;
+        }
+      }
+
+      if (allCorrect) {
+        feedbackEl.textContent = 'Alle Zuordnungen sind korrekt – super!';
+        feedbackEl.className = 'exercise-feedback correct';
+        feedbackEl.style.display = 'block';
+        checkBtn.disabled = true;
+        onComplete();
+      } else {
+        feedbackEl.textContent = 'Nicht alle Zuordnungen stimmen. Versuch es nochmal!';
         feedbackEl.className = 'exercise-feedback incorrect';
         feedbackEl.style.display = 'block';
       }
