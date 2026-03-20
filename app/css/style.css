@@ -88,6 +88,14 @@ body {
   color: var(--success);
 }
 
+#sidebar li.in-progress {
+  color: var(--text);
+}
+
+#sidebar li.not-started {
+  color: var(--text-light);
+}
+
 /* Reset-Button: wird durch flex + margin-top:auto nach unten gedrückt */
 #reset-progress {
   margin-top: auto;
