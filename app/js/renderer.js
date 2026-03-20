@@ -179,6 +179,93 @@ const Renderer = {
   }
 };
 
+/**
+ * SVG-Strings fuer alle 7 Logikgatter nach IEC 60617-12 (Rechteckform).
+ * Als JS-Strings gespeichert, damit sie auch bei file:// funktionieren
+ * (externe SVG-Referenzen via <use href> gehen dort nicht).
+ */
+Renderer.GATE_SVGS = {
+  'and': '<svg viewBox="0 0 80 60" class="gate-symbol">'
+    + '<line x1="0" y1="18" x2="15" y2="18" stroke="black" stroke-width="2"/>'
+    + '<line x1="0" y1="42" x2="15" y2="42" stroke="black" stroke-width="2"/>'
+    + '<rect x="15" y="5" width="40" height="50" fill="white" stroke="black" stroke-width="2"/>'
+    + '<text x="35" y="35" text-anchor="middle" font-size="14" font-weight="bold">&amp;</text>'
+    + '<line x1="55" y1="30" x2="80" y2="30" stroke="black" stroke-width="2"/>'
+    + '</svg>',
+
+  'or': '<svg viewBox="0 0 80 60" class="gate-symbol">'
+    + '<line x1="0" y1="18" x2="15" y2="18" stroke="black" stroke-width="2"/>'
+    + '<line x1="0" y1="42" x2="15" y2="42" stroke="black" stroke-width="2"/>'
+    + '<rect x="15" y="5" width="40" height="50" fill="white" stroke="black" stroke-width="2"/>'
+    + '<text x="35" y="35" text-anchor="middle" font-size="14" font-weight="bold">\u22651</text>'
+    + '<line x1="55" y1="30" x2="80" y2="30" stroke="black" stroke-width="2"/>'
+    + '</svg>',
+
+  'not': '<svg viewBox="0 0 80 60" class="gate-symbol">'
+    + '<line x1="0" y1="30" x2="15" y2="30" stroke="black" stroke-width="2"/>'
+    + '<rect x="15" y="5" width="40" height="50" fill="white" stroke="black" stroke-width="2"/>'
+    + '<text x="35" y="35" text-anchor="middle" font-size="14" font-weight="bold">1</text>'
+    + '<circle cx="59" cy="30" r="4" fill="white" stroke="black" stroke-width="2"/>'
+    + '<line x1="63" y1="30" x2="80" y2="30" stroke="black" stroke-width="2"/>'
+    + '</svg>',
+
+  'xor': '<svg viewBox="0 0 80 60" class="gate-symbol">'
+    + '<line x1="0" y1="18" x2="15" y2="18" stroke="black" stroke-width="2"/>'
+    + '<line x1="0" y1="42" x2="15" y2="42" stroke="black" stroke-width="2"/>'
+    + '<rect x="15" y="5" width="40" height="50" fill="white" stroke="black" stroke-width="2"/>'
+    + '<text x="35" y="35" text-anchor="middle" font-size="14" font-weight="bold">=1</text>'
+    + '<line x1="55" y1="30" x2="80" y2="30" stroke="black" stroke-width="2"/>'
+    + '</svg>',
+
+  'nand': '<svg viewBox="0 0 80 60" class="gate-symbol">'
+    + '<line x1="0" y1="18" x2="15" y2="18" stroke="black" stroke-width="2"/>'
+    + '<line x1="0" y1="42" x2="15" y2="42" stroke="black" stroke-width="2"/>'
+    + '<rect x="15" y="5" width="40" height="50" fill="white" stroke="black" stroke-width="2"/>'
+    + '<text x="35" y="35" text-anchor="middle" font-size="14" font-weight="bold">&amp;</text>'
+    + '<circle cx="59" cy="30" r="4" fill="white" stroke="black" stroke-width="2"/>'
+    + '<line x1="63" y1="30" x2="80" y2="30" stroke="black" stroke-width="2"/>'
+    + '</svg>',
+
+  'nor': '<svg viewBox="0 0 80 60" class="gate-symbol">'
+    + '<line x1="0" y1="18" x2="15" y2="18" stroke="black" stroke-width="2"/>'
+    + '<line x1="0" y1="42" x2="15" y2="42" stroke="black" stroke-width="2"/>'
+    + '<rect x="15" y="5" width="40" height="50" fill="white" stroke="black" stroke-width="2"/>'
+    + '<text x="35" y="35" text-anchor="middle" font-size="14" font-weight="bold">\u22651</text>'
+    + '<circle cx="59" cy="30" r="4" fill="white" stroke="black" stroke-width="2"/>'
+    + '<line x1="63" y1="30" x2="80" y2="30" stroke="black" stroke-width="2"/>'
+    + '</svg>',
+
+  'xnor': '<svg viewBox="0 0 80 60" class="gate-symbol">'
+    + '<line x1="0" y1="18" x2="15" y2="18" stroke="black" stroke-width="2"/>'
+    + '<line x1="0" y1="42" x2="15" y2="42" stroke="black" stroke-width="2"/>'
+    + '<rect x="15" y="5" width="40" height="50" fill="white" stroke="black" stroke-width="2"/>'
+    + '<text x="35" y="35" text-anchor="middle" font-size="14" font-weight="bold">=1</text>'
+    + '<circle cx="59" cy="30" r="4" fill="white" stroke="black" stroke-width="2"/>'
+    + '<line x1="63" y1="30" x2="80" y2="30" stroke="black" stroke-width="2"/>'
+    + '</svg>'
+};
+
+/**
+ * Erzeugt ein SVG-DOM-Element fuer ein Logikgatter.
+ * @param {string} type - Gattertyp: 'and', 'or', 'not', 'xor', 'nand', 'nor', 'xnor'
+ * @param {number} [width] - Breite in px (default 80)
+ * @param {number} [height] - Hoehe in px (default 60)
+ * @returns {SVGElement} Das fertige SVG-Element
+ */
+Renderer.renderGate = function(type, width, height) {
+  const svgString = Renderer.GATE_SVGS[type];
+  if (!svgString) {
+    console.warn('Unbekannter Gattertyp:', type);
+    return document.createElement('span');
+  }
+  const container = document.createElement('div');
+  container.innerHTML = svgString;
+  const svg = container.firstElementChild;
+  if (width) svg.setAttribute('width', width);
+  if (height) svg.setAttribute('height', height);
+  return svg;
+};
+
 // Event-Delegation: Klicks auf Sidebar-<li>-Elemente abfangen
 // Wird einmal registriert und bleibt auch nach Sidebar-Neurendern aktiv
 document.addEventListener('DOMContentLoaded', () => {

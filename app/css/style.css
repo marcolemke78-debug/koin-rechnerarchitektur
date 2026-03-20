@@ -518,3 +518,9 @@ p {
   color: var(--text-light);
   margin-right: 0.5rem;
 }
+
+/* === Gatter-Symbole (IEC 60617-12) === */
+.gate-symbol {
+  display: inline-block;
+  vertical-align: middle;
+}
