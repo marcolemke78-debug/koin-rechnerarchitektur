@@ -161,3 +161,82 @@ p {
   margin-bottom: 1rem;
   color: var(--text);
 }
+
+/* === Phase Tabs === */
+.phase-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.phase-tab {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+}
+
+.phase-tab:hover {
+  color: var(--text);
+}
+
+.phase-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+/* === Phasen === */
+.phase {
+  display: none;
+}
+
+.phase.active {
+  display: block;
+}
+
+/* === Beispiel-Schritte === */
+.example-step {
+  background: var(--sidebar-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.example-step summary {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+  list-style: none;
+}
+
+.example-step summary::before {
+  content: '▶ ';
+  font-size: 0.7rem;
+  margin-right: 0.5rem;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.example-step[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.step-content {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--border);
+}
+
+/* === Lektion Titel === */
+#lesson-container h1 {
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+}
