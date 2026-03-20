@@ -195,10 +195,16 @@ p {
 /* === Phasen === */
 .phase {
   display: none;
+  animation: fadeIn 0.3s ease;
 }
 
 .phase.active {
   display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* === Beispiel-Schritte === */
@@ -523,4 +529,56 @@ p {
 .gate-symbol {
   display: inline-block;
   vertical-align: middle;
+}
+
+/* === Responsive: Tablet (< 1024px) === */
+@media (max-width: 1024px) {
+  body {
+    grid-template-columns: 1fr;
+  }
+
+  #sidebar {
+    position: fixed;
+    left: -280px;
+    top: 0;
+    z-index: 100;
+    transition: left 0.3s;
+    box-shadow: none;
+  }
+
+  #sidebar.open {
+    left: 0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  }
+
+  #content {
+    padding: 1rem 1.5rem;
+  }
+
+  /* Hamburger Button */
+  .menu-toggle {
+    display: block;
+  }
+}
+
+@media (min-width: 1025px) {
+  .menu-toggle {
+    display: none;
+  }
+}
+
+.menu-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 101;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: none;
 }

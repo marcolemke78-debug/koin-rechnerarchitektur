@@ -25,6 +25,9 @@ const LESSONS = [
  * und rendert den Lektionsinhalt.
  */
 function navigateToLesson(id) {
+  // Sidebar schliessen (auf Tablet/Mobil)
+  document.getElementById('sidebar').classList.remove('open');
+
   // Letzte Lektion merken
   Progress.setLastLesson(id);
 
@@ -69,6 +72,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Zur zuletzt besuchten Lektion navigieren (oder Lektion 1 als Default)
   const lastLesson = Progress.getLastLesson();
   navigateToLesson(lastLesson);
+
+  // Hamburger Menu Toggle
+  const menuToggle = document.getElementById('menu-toggle');
+  const sidebar = document.getElementById('sidebar');
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+  }
 
   // Reset-Button: Fortschritt zuruecksetzen nach Bestaetigung
   document.getElementById('reset-progress').addEventListener('click', () => {
