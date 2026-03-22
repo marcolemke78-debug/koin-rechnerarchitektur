@@ -1299,4 +1299,3 @@ Exercises.renderExpressionTreeExercise = function(exercise, container, onComplet
     }
   });
 };
-};
