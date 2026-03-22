@@ -237,6 +237,9 @@ Am Ende von `style.css` folgende Klassen anfügen:
 .expression-tree-view .op-text-and { fill: var(--signal-high); }
 .expression-tree-view .op-text-or  { fill: var(--accent); }
 
+.expression-tree-view .op-hidden { fill: #FEF3C7; stroke: #F59E0B; stroke-dasharray: 4,3; }
+.expression-tree-view .op-text-hidden { fill: #F59E0B; }
+
 .expression-tree-view .var-node {
   fill: var(--sidebar-bg);
   stroke: var(--signal-low);
@@ -1330,10 +1333,12 @@ Am Ende von `app/js/visuals.js` anfügen:
  * Nutzt Parser.parse() fuer den AST.
  * Farbcodierung: NOT=rot, AND=gruen, OR=blau.
  *
- * @param {Object} config - { expression: '¬a ∧ b ∨ c' }
+ * @param {Object} config - { expression: '¬a ∧ b ∨ c', hiddenNodes?: ['and','or'] }
  * @param {HTMLElement} container
  */
 Visuals.renderExpressionTree = function(config, container) {
+  const hiddenNodeTypes = config.hiddenNodes || [];
+  let hiddenIndex = 0;
   const wrapper = document.createElement('div');
   wrapper.className = 'visual-container expression-tree-view';
 
@@ -1404,20 +1409,26 @@ Visuals.renderExpressionTree = function(config, container) {
 
     const info = opInfo[node.op] || { cls: 'or', display: node.op, group: '?' };
 
+    // Pruefen ob dieser Knoten versteckt werden soll
+    const opGroup = info.group.toLowerCase(); // 'not', 'and', 'or'
+    const isHidden = hiddenNodeTypes.length > hiddenIndex
+      && hiddenNodeTypes[hiddenIndex] === opGroup;
+    if (isHidden) hiddenIndex++;
+
     // Operator-Knoten zeichnen
     const rect = document.createElementNS(svgNS, 'rect');
     rect.setAttribute('x', cx - 24); rect.setAttribute('y', cy - 16);
     rect.setAttribute('width', 48); rect.setAttribute('height', 32);
     rect.setAttribute('rx', 16);
-    rect.classList.add('op-node', `op-${info.cls}`);
+    rect.classList.add('op-node', isHidden ? 'op-hidden' : `op-${info.cls}`);
     svg.appendChild(rect);
 
     const text = document.createElementNS(svgNS, 'text');
     text.setAttribute('x', cx); text.setAttribute('y', cy + 6);
     text.setAttribute('text-anchor', 'middle');
     text.setAttribute('font-size', '18'); text.setAttribute('font-weight', 'bold');
-    text.classList.add(`op-text-${info.cls}`);
-    text.textContent = info.display;
+    text.classList.add(isHidden ? 'op-text-hidden' : `op-text-${info.cls}`);
+    text.textContent = isHidden ? '?' : info.display;
     svg.appendChild(text);
 
     // Kinder zeichnen
@@ -1992,13 +2003,25 @@ Am Ende von `renderer.js` (vor dem Event-Delegation-Block ab Zeile 269) einfüge
 Renderer.renderVisuals = function(visuals, container) {
   if (!visuals || !Array.isArray(visuals) || visuals.length === 0) return;
 
+  // Instances merken fuer Kopplung (z.B. CircuitView + TimingDiagram)
+  let lastCircuitInstance = null;
+  let lastTimingInstance = null;
+
   visuals.forEach(vis => {
     switch (vis.type) {
       case 'gate-sim':
         Visuals.renderGateSim(vis, container);
         break;
       case 'circuit':
-        Visuals.renderCircuit(vis, container);
+        lastCircuitInstance = Visuals.renderCircuit(vis, container, {
+          onUpdate: (outputs) => {
+            // Automatische Kopplung mit Timing-Diagramm
+            if (lastTimingInstance && lastCircuitInstance) {
+              const vals = Object.assign({}, lastCircuitInstance.state.inputs, outputs);
+              lastTimingInstance.addEvent(vals);
+            }
+          }
+        });
         break;
       case 'truth-table-linked':
         Visuals.renderTruthTableLinked(vis, container);
@@ -2013,7 +2036,12 @@ Renderer.renderVisuals = function(visuals, container) {
         Visuals.renderDNFHighlighter(vis, container);
         break;
       case 'timing-diagram':
-        Visuals.renderTimingDiagram(vis, container);
+        lastTimingInstance = Visuals.renderTimingDiagram(vis, container);
+        // Initiales Event vom gekoppelten Circuit
+        if (lastCircuitInstance) {
+          const outputs = lastCircuitInstance.getOutputs();
+          lastTimingInstance.addEvent(Object.assign({}, lastCircuitInstance.state.inputs, outputs));
+        }
         break;
       case 'adder-sim':
         Visuals.renderAdderSim(vis, container);
@@ -2297,8 +2325,11 @@ Exercises.renderExpressionTreeExercise = function(exercise, container, onComplet
   questionEl.textContent = exercise.question;
   wrapper.appendChild(questionEl);
 
-  // Baum anzeigen (mit allen Knoten sichtbar als Referenz)
-  Visuals.renderExpressionTree({ expression: exercise.expression }, wrapper);
+  // Baum anzeigen MIT versteckten Knoten (als "?" dargestellt)
+  Visuals.renderExpressionTree({
+    expression: exercise.expression,
+    hiddenNodes: exercise.hiddenNodes
+  }, wrapper);
 
   // Dropdown-Auswahl fuer versteckte Operatoren
   const formDiv = document.createElement('div');
@@ -2739,7 +2770,8 @@ In `lessons-c1.js`, jede relevante Lektion um `visuals`-Arrays in den `explanati
 visuals: [
   { type: 'gate-sim', gate: 'and', label: 'AND-Gatter: Probiere es aus!' },
   { type: 'gate-sim', gate: 'or', label: 'OR-Gatter' },
-  { type: 'gate-sim', gate: 'not', label: 'NOT-Gatter' }
+  { type: 'gate-sim', gate: 'not', label: 'NOT-Gatter' },
+  { type: 'truth-table-linked', gate: 'and' }
 ]
 ```
 
@@ -2749,7 +2781,8 @@ visuals: [
   { type: 'gate-sim', gate: 'xor', label: 'XOR-Gatter' },
   { type: 'gate-sim', gate: 'nand', label: 'NAND-Gatter' },
   { type: 'gate-sim', gate: 'nor', label: 'NOR-Gatter' },
-  { type: 'gate-sim', gate: 'xnor', label: 'XNOR-Gatter' }
+  { type: 'gate-sim', gate: 'xnor', label: 'XNOR-Gatter' },
+  { type: 'truth-table-linked', gate: 'xor' }
 ]
 ```
 
@@ -2793,9 +2826,7 @@ visuals: [
 **Lektion 10** (Gatterschaltungen): Zum `explanation`-Objekt:
 ```javascript
 visuals: [
-  { type: 'gate-sim', gate: 'and', label: 'AND' },
-  { type: 'gate-sim', gate: 'or', label: 'OR' },
-  { type: 'gate-sim', gate: 'not', label: 'NOT' }
+  { type: 'circuit', circuit: 'half-adder', interactive: true }
 ]
 ```
 
@@ -2854,6 +2885,14 @@ visuals: [
   { type: 'binary-animation', operandA: '1101', operandB: '1011' }
 ]
 ```
+
+**Lektion 16** (Sequenzielle Logik): Zum `explanation`-Objekt:
+```javascript
+visuals: [
+  { type: 'circuit', circuit: 'sr-latch', interactive: false }
+]
+```
+Hier bewusst `interactive: false` – die Rückkopplung wird nur als statisches Diagramm gezeigt, das Konzept wird erklärt. Die interaktive Version kommt in Lektion 17.
 
 **Lektion 17** (SR-Riegel): Zum `explanation`-Objekt:
 ```javascript
