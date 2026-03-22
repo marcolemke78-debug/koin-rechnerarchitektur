@@ -1,0 +1,14 @@
+# Quellmaterialien der Uni Konstanz (urheberrechtlich geschuetzt)
+LE_C1/
+LE_C2/
+LE_C5/
+Info_sonstiges/
+
+# macOS
+.DS_Store
+
+# Superpowers brainstorm sessions
+.superpowers/
+
+# Claude project files
+.claude/
