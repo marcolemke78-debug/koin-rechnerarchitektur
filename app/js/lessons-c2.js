@@ -117,7 +117,10 @@ const LessonsC2 = [
         + '<ul>'
         + '<li><strong>s</strong> (Summe) – das Ergebnis an dieser Stelle</li>'
         + '<li><strong>c</strong> (Carry/Übertrag) – der Übertrag zur nächsten Stelle</li>'
-        + '</ul>'
+        + '</ul>',
+      visuals: [
+        { type: 'binary-animation', operandA: '1011', operandB: '0110' }
+      ]
     },
     example: {
       title: 'Beispiel: 1 + 1 im Binärsystem',
@@ -187,6 +190,28 @@ const LessonsC2 = [
         + '→ Das ist die <strong>AND</strong>-Verknüpfung: <code>c = a ∧ b</code></li>'
         + '</ul>'
 
+        + '<p><strong>So sieht der Halbaddierer als Schaltung aus:</strong></p>'
+        + '<svg viewBox="0 0 400 185" class="circuit-diagram" role="img" aria-label="Schaltplan Halbaddierer">'
+        + '<text x="8" y="35" class="cd-label">a</text>'
+        + '<text x="8" y="155" class="cd-label">b</text>'
+        + '<rect x="170" y="15" width="60" height="50" class="cd-gate"/>'
+        + '<text x="200" y="47" class="cd-gate-text">&amp;</text>'
+        + '<rect x="170" y="115" width="60" height="50" class="cd-gate"/>'
+        + '<text x="200" y="147" class="cd-gate-text">=1</text>'
+        + '<line x1="25" y1="30" x2="170" y2="30" class="cd-wire"/>'
+        + '<line x1="90" y1="30" x2="90" y2="130" class="cd-wire"/>'
+        + '<line x1="90" y1="130" x2="170" y2="130" class="cd-wire"/>'
+        + '<circle cx="90" cy="30" r="3.5" class="cd-junction"/>'
+        + '<line x1="25" y1="150" x2="170" y2="150" class="cd-wire"/>'
+        + '<line x1="110" y1="150" x2="110" y2="50" class="cd-wire"/>'
+        + '<line x1="110" y1="50" x2="170" y2="50" class="cd-wire"/>'
+        + '<circle cx="110" cy="150" r="3.5" class="cd-junction"/>'
+        + '<line x1="230" y1="40" x2="310" y2="40" class="cd-wire"/>'
+        + '<text x="318" y="45" class="cd-label">c (Übertrag)</text>'
+        + '<line x1="230" y1="140" x2="310" y2="140" class="cd-wire"/>'
+        + '<text x="318" y="145" class="cd-label">s (Summe)</text>'
+        + '</svg>'
+
         + '<h3>Warum „halb"?</h3>'
         + '<p>Er heißt <strong>Halb</strong>addierer, weil er keinen <strong>eingehenden Übertrag</strong> '
         + 'von einer vorherigen Stelle berücksichtigt. Er kann also nur die erste (niederwertigste) Stelle '
@@ -194,10 +219,17 @@ const LessonsC2 = [
         + '<p><strong>Analogie:</strong> Stell dir vor, du rechnest schriftlich 27 + 15. '
         + 'Beim Einer-Platz (7+5) brauchst du keinen Übertrag von vorher – das ist der „Halbaddierer". '
         + 'Beim Zehner-Platz musst du den Übertrag von den Einern berücksichtigen – '
-        + 'dafür braucht man einen Volladdierer (kommt in der nächsten Lektion).</p>'
+        + 'dafür braucht man einen Volladdierer (kommt in der nächsten Lektion).</p>',
+      visuals: [
+        { type: 'gate-sim', gate: 'xor', label: 'XOR als Summenbit' },
+        { type: 'gate-sim', gate: 'and', label: 'AND als Carry-Bit' }
+      ]
     },
     example: {
       title: 'Beispiel: Halbaddierer mit a=1, b=1',
+      visuals: [
+        { type: 'circuit', circuit: 'half-adder', interactive: true }
+      ],
       steps: [
         {
           label: 'Eingangswerte',
@@ -275,11 +307,66 @@ const LessonsC2 = [
         + '<li>OR-Gatter: verknüpft beide Überträge → c<sub>out</sub></li>'
         + '</ol>'
 
+        + '<p><strong>Aufbau des Volladdierers aus Gattern (wie in den Folien):</strong></p>'
+        + '<svg viewBox="0 0 560 260" class="circuit-diagram" role="img" aria-label="Schaltplan Volladdierer">'
+        + '<rect x="130" y="0" width="105" height="155" rx="4" fill="none" stroke="#93C5FD" stroke-width="1.5" stroke-dasharray="4,2"/>'
+        + '<text x="135" y="168" font-size="11" fill="#2563EB" font-style="italic" font-family="inherit">Halbaddierer</text>'
+        + '<rect x="290" y="80" width="105" height="155" rx="4" fill="none" stroke="#93C5FD" stroke-width="1.5" stroke-dasharray="4,2"/>'
+        + '<text x="295" y="248" font-size="11" fill="#2563EB" font-style="italic" font-family="inherit">Halbaddierer</text>'
+        + '<rect x="155" y="10" width="60" height="50" class="cd-gate"/>'
+        + '<text x="185" y="42" class="cd-gate-text">&amp;</text>'
+        + '<rect x="155" y="90" width="60" height="50" class="cd-gate"/>'
+        + '<text x="185" y="122" class="cd-gate-text">=1</text>'
+        + '<rect x="315" y="90" width="60" height="50" class="cd-gate"/>'
+        + '<text x="345" y="122" class="cd-gate-text">&amp;</text>'
+        + '<rect x="315" y="175" width="60" height="50" class="cd-gate"/>'
+        + '<text x="345" y="207" class="cd-gate-text">=1</text>'
+        + '<rect x="445" y="20" width="60" height="50" class="cd-gate"/>'
+        + '<text x="475" y="52" class="cd-gate-text">≥1</text>'
+        + '<text x="8" y="30" class="cd-label">a</text>'
+        + '<line x1="25" y1="25" x2="155" y2="25" class="cd-wire"/>'
+        + '<circle cx="80" cy="25" r="3.5" class="cd-junction"/>'
+        + '<line x1="80" y1="25" x2="80" y2="105" class="cd-wire"/>'
+        + '<line x1="80" y1="105" x2="155" y2="105" class="cd-wire"/>'
+        + '<text x="8" y="145" class="cd-label">b</text>'
+        + '<line x1="25" y1="140" x2="100" y2="140" class="cd-wire"/>'
+        + '<line x1="100" y1="140" x2="100" y2="45" class="cd-wire"/>'
+        + '<line x1="100" y1="45" x2="155" y2="45" class="cd-wire"/>'
+        + '<circle cx="100" cy="125" r="3.5" class="cd-junction"/>'
+        + '<line x1="100" y1="125" x2="155" y2="125" class="cd-wire"/>'
+        + '<text x="3" y="245" class="cd-label">c<tspan dy="3" font-size="10">in</tspan></text>'
+        + '<line x1="38" y1="240" x2="275" y2="240" class="cd-wire"/>'
+        + '<line x1="275" y1="240" x2="275" y2="125" class="cd-wire"/>'
+        + '<line x1="275" y1="125" x2="315" y2="125" class="cd-wire"/>'
+        + '<circle cx="275" cy="210" r="3.5" class="cd-junction"/>'
+        + '<line x1="275" y1="210" x2="315" y2="210" class="cd-wire"/>'
+        + '<line x1="215" y1="115" x2="250" y2="115" class="cd-wire"/>'
+        + '<circle cx="250" cy="115" r="3.5" class="cd-junction"/>'
+        + '<line x1="250" y1="115" x2="250" y2="105" class="cd-wire"/>'
+        + '<line x1="250" y1="105" x2="315" y2="105" class="cd-wire"/>'
+        + '<line x1="250" y1="115" x2="250" y2="190" class="cd-wire"/>'
+        + '<line x1="250" y1="190" x2="315" y2="190" class="cd-wire"/>'
+        + '<text x="225" y="108" class="cd-label-small">s₁</text>'
+        + '<line x1="215" y1="35" x2="445" y2="35" class="cd-wire"/>'
+        + '<text x="320" y="28" class="cd-label-small">c₁</text>'
+        + '<line x1="375" y1="115" x2="415" y2="115" class="cd-wire"/>'
+        + '<line x1="415" y1="115" x2="415" y2="55" class="cd-wire"/>'
+        + '<line x1="415" y1="55" x2="445" y2="55" class="cd-wire"/>'
+        + '<text x="395" y="85" class="cd-label-small">c₂</text>'
+        + '<line x1="375" y1="200" x2="535" y2="200" class="cd-wire"/>'
+        + '<text x="540" y="205" class="cd-label">s</text>'
+        + '<line x1="505" y1="45" x2="535" y2="45" class="cd-wire"/>'
+        + '<text x="510" y="38" class="cd-label">c<tspan dy="3" font-size="10">out</tspan></text>'
+        + '</svg>'
+
         + '<h3>Formeln</h3>'
         + '<p><code>s = (a ⊕ b) ⊕ c<sub>in</sub></code></p>'
         + '<p><code>c<sub>out</sub> = (a ∧ b) ∨ ((a ⊕ b) ∧ c<sub>in</sub>)</code></p>'
         + '<p>In Worten: Es gibt einen ausgehenden Übertrag, wenn <em>beide</em> Originalbits 1 sind '
-        + '<strong>oder</strong> wenn die Zwischensumme und der eingehende Übertrag beide 1 sind.</p>'
+        + '<strong>oder</strong> wenn die Zwischensumme und der eingehende Übertrag beide 1 sind.</p>',
+      visuals: [
+        { type: 'circuit', circuit: 'full-adder', interactive: true }
+      ]
     },
     example: {
       title: 'Beispiel: 4-Bit-Addition 1011 + 0111',
@@ -363,12 +450,53 @@ const LessonsC2 = [
         + 'Der erste Schüler hat keinen Übertrag (c<sub>in</sub>=0), der letzte gibt '
         + 'seinen Übertrag als höchstes Bit aus.</p>'
 
+        + '<p><strong>So sieht ein 3-Bit-Addierwerk aus – drei verkettete Volladdierer:</strong></p>'
+        + '<svg viewBox="0 0 530 200" class="circuit-diagram" role="img" aria-label="Blockschaltbild 3-Bit-Addierwerk">'
+        + '<rect x="60" y="55" width="100" height="80" rx="4" class="cd-block"/>'
+        + '<text x="110" y="100" class="cd-block-text">VA₀</text>'
+        + '<rect x="220" y="55" width="100" height="80" rx="4" class="cd-block"/>'
+        + '<text x="270" y="100" class="cd-block-text">VA₁</text>'
+        + '<rect x="380" y="55" width="100" height="80" rx="4" class="cd-block"/>'
+        + '<text x="430" y="100" class="cd-block-text">VA₂</text>'
+        + '<line x1="90" y1="20" x2="90" y2="55" class="cd-wire"/>'
+        + '<text x="83" y="15" class="cd-label-small">a₀</text>'
+        + '<line x1="130" y1="20" x2="130" y2="55" class="cd-wire"/>'
+        + '<text x="124" y="15" class="cd-label-small">b₀</text>'
+        + '<line x1="250" y1="20" x2="250" y2="55" class="cd-wire"/>'
+        + '<text x="243" y="15" class="cd-label-small">a₁</text>'
+        + '<line x1="290" y1="20" x2="290" y2="55" class="cd-wire"/>'
+        + '<text x="284" y="15" class="cd-label-small">b₁</text>'
+        + '<line x1="410" y1="20" x2="410" y2="55" class="cd-wire"/>'
+        + '<text x="403" y="15" class="cd-label-small">a₂</text>'
+        + '<line x1="450" y1="20" x2="450" y2="55" class="cd-wire"/>'
+        + '<text x="444" y="15" class="cd-label-small">b₂</text>'
+        + '<line x1="30" y1="95" x2="60" y2="95" class="cd-wire"/>'
+        + '<text x="18" y="100" class="cd-label">0</text>'
+        + '<line x1="160" y1="95" x2="220" y2="95" class="cd-wire"/>'
+        + '<text x="183" y="88" class="cd-label-small">c₀</text>'
+        + '<line x1="320" y1="95" x2="380" y2="95" class="cd-wire"/>'
+        + '<text x="343" y="88" class="cd-label-small">c₁</text>'
+        + '<line x1="480" y1="95" x2="510" y2="95" class="cd-wire"/>'
+        + '<line x1="110" y1="135" x2="110" y2="175" class="cd-wire"/>'
+        + '<text x="103" y="190" class="cd-label">s₀</text>'
+        + '<line x1="270" y1="135" x2="270" y2="175" class="cd-wire"/>'
+        + '<text x="263" y="190" class="cd-label">s₁</text>'
+        + '<line x1="430" y1="135" x2="430" y2="175" class="cd-wire"/>'
+        + '<text x="423" y="190" class="cd-label">s₂</text>'
+        + '<line x1="510" y1="95" x2="510" y2="175" class="cd-wire"/>'
+        + '<text x="503" y="190" class="cd-label">s₃</text>'
+        + '</svg>'
+
         + '<h3>Aufbau eines n-Bit-Addierwerks</h3>'
         + '<ul>'
         + '<li>Ein <strong>n-Bit-Addierwerk</strong> besteht aus <strong>n Volladdierern</strong></li>'
         + '<li>Der c<sub>in</sub> des ersten Volladdierers ist <strong>0</strong></li>'
         + '<li>Das Ergebnis hat <strong>n+1 Bits</strong> (n Summenbits + 1 Übertragsbit)</li>'
-        + '</ul>'
+        + '</ul>',
+      visuals: [
+        { type: 'adder-sim', bits: 4 },
+        { type: 'binary-animation', operandA: '1101', operandB: '1011' }
+      ]
     },
     example: {
       title: 'Beispiel: 3-Bit-Addierwerk – 101 + 111 = 1100',
@@ -459,7 +587,10 @@ const LessonsC2 = [
         + '<p>Ein <strong>Flipflop</strong> (auch: bistabile Kippstufe) ist das einfachste Speicherelement. '
         + 'Es hat <strong>zwei stabile Zustände</strong> – wie eine Wippe auf dem Spielplatz: '
         + 'Sie kann links unten oder rechts unten sein und bleibt in dieser Position, '
-        + 'bis jemand sie umkippt.</p>'
+        + 'bis jemand sie umkippt.</p>',
+      visuals: [
+        { type: 'circuit', circuit: 'sr-latch', interactive: false }
+      ]
     },
     example: {
       title: 'Beispiel: Die Wippe als Analogie',
@@ -545,6 +676,34 @@ const LessonsC2 = [
         + 'Schaltung, die 1 Bit speichern kann. Er besteht aus <strong>zwei NOR-Gattern</strong>, '
         + 'die über Kreuz miteinander verbunden sind (Rückkopplung!).</p>'
 
+        + '<p><strong>Schaltplan des SR-Riegels:</strong></p>'
+        + '<svg viewBox="0 0 400 210" class="circuit-diagram" role="img" aria-label="Schaltplan SR-Riegel">'
+        + '<rect x="155" y="20" width="60" height="50" class="cd-gate"/>'
+        + '<text x="185" y="52" class="cd-gate-text">≥1</text>'
+        + '<circle cx="219" cy="45" r="4" class="cd-neg"/>'
+        + '<rect x="155" y="135" width="60" height="50" class="cd-gate"/>'
+        + '<text x="185" y="167" class="cd-gate-text">≥1</text>'
+        + '<circle cx="219" cy="160" r="4" class="cd-neg"/>'
+        + '<text x="8" y="40" class="cd-label">S</text>'
+        + '<line x1="25" y1="35" x2="155" y2="35" class="cd-wire"/>'
+        + '<text x="8" y="175" class="cd-label">R</text>'
+        + '<line x1="25" y1="170" x2="155" y2="170" class="cd-wire"/>'
+        + '<line x1="223" y1="45" x2="370" y2="45" class="cd-wire"/>'
+        + '<text x="375" y="50" class="cd-label">Q̅</text>'
+        + '<line x1="223" y1="160" x2="370" y2="160" class="cd-wire"/>'
+        + '<text x="375" y="165" class="cd-label">Q</text>'
+        + '<circle cx="270" cy="45" r="3.5" class="cd-junction"/>'
+        + '<line x1="270" y1="45" x2="270" y2="150" class="cd-feedback"/>'
+        + '<line x1="270" y1="150" x2="155" y2="150" class="cd-feedback"/>'
+        + '<circle cx="290" cy="160" r="3.5" class="cd-junction"/>'
+        + '<line x1="290" y1="160" x2="290" y2="55" class="cd-feedback"/>'
+        + '<line x1="290" y1="55" x2="276" y2="55" class="cd-feedback"/>'
+        + '<path d="M 276,55 A 6,6 0 0,0 264,55" class="cd-feedback"/>'
+        + '<line x1="264" y1="55" x2="155" y2="55" class="cd-feedback"/>'
+        + '<text x="295" y="105" class="cd-label-small" fill="#2563EB">Rück-</text>'
+        + '<text x="295" y="118" class="cd-label-small" fill="#2563EB">kopplung</text>'
+        + '</svg>'
+
         + '<h3>Eingänge und Ausgänge</h3>'
         + '<ul>'
         + '<li><strong>S</strong> (Set) – setzt den Ausgang auf 1</li>'
@@ -570,7 +729,11 @@ const LessonsC2 = [
         + '<p><strong>Analogie:</strong> Stell dir einen Lichtschalter mit zwei Knöpfen vor – '
         + 'einer zum <em>Einschalten</em> (Set) und einer zum <em>Ausschalten</em> (Reset). '
         + 'Drückt man keinen, bleibt das Licht wie es ist (Speichern). '
-        + 'Drückt man beide gleichzeitig, weiß die Lampe nicht, was sie tun soll (verboten!).</p>'
+        + 'Drückt man beide gleichzeitig, weiß die Lampe nicht, was sie tun soll (verboten!).</p>',
+      visuals: [
+        { type: 'circuit', circuit: 'sr-latch', interactive: true },
+        { type: 'timing-diagram', signals: ['S', 'R', 'Q', 'Q\u0304'] }
+      ]
     },
     example: {
       title: 'Beispiel: Zustandsfolge eines SR-Riegels',
