@@ -34,12 +34,29 @@ app/js/lessons-c5.js   – 8 Lektionen (Erklärung, Beispiel, Übungen, Visuals)
 ### Erweiterte Dateien
 
 - `app/js/visuals.js` – 4 neue Komponenten (IPConverter, SubnetCalculator, SubnettingVisualizer, NetworkDiagram)
-- `app/js/exercises.js` – 2 neue Übungstypen (binary-decimal, subnet-exercise)
-- `app/js/sandbox.js` – 3 neue Lab-Bereiche (IP-Rechner, Subnetz-Kalkulator, Subnetting-Tool)
-- `app/js/renderer.js` – renderVisuals() um neue Typen erweitern
+- `app/js/exercises.js` – 2 neue Übungstypen + Dispatcher-Cases:
+  - `case 'binary-decimal':` → `Exercises.renderBinaryDecimal()`
+  - `case 'subnet-exercise':` → `Exercises.renderSubnetExercise()`
+  - `case 'network-labeling':` → `Exercises.renderNetworkLabeling()`
+- `app/js/sandbox.js` – 3 neue Lab-Bereiche + `render()` erweitern:
+  - `Sandbox.renderIPConverterLab(container)`
+  - `Sandbox.renderSubnetLab(container)`
+  - `Sandbox.renderSubnettingLab(container)`
+- `app/js/renderer.js` – 3 Änderungen:
+  1. `renderVisuals()` Switch um 4 neue Cases erweitern:
+     - `case 'ip-converter':` → `Visuals.renderIPConverter()`
+     - `case 'subnet-calculator':` → `Visuals.renderSubnetCalculator()`
+     - `case 'subnetting-viz':` → `Visuals.renderSubnettingViz()`
+     - `case 'network-diagram':` → `Visuals.renderNetworkDiagram()`
+  2. `renderLesson()` Zeile 63-64: `|| LessonsC5.find(l => l.id === id)` anfügen
+  3. `renderSidebar()` Zeile 36-41: if/else auf if/else-if/else erweitern für module 'c5' → `listC5`
+  4. `renderProgressBar()` Zeile 49: Hartkodierten Wert 17 auf 25 ändern
+- `app/js/progress.js` – 2 Änderungen:
+  1. `TOTAL_LESSONS` von 17 auf 25 ändern (Zeile 4)
+  2. Version-Bump für localStorage-Migration (bestehende Nutzer)
 - `app/js/app.js` – LESSONS-Array um 8 Einträge erweitern (module: 'c5')
 - `app/index.html` – Sidebar C5-Modul + Script-Tag für lessons-c5.js
-- `app/css/style.css` – Styles für Netzwerk-Visualisierungen
+- `app/css/style.css` – Styles für Netzwerk-Visualisierungen (`.ip-converter`, `.subnet-calculator`, `.subnetting-viz`, `.network-diagram`)
 
 ## Die 8 Lektionen
 
@@ -57,8 +74,8 @@ app/js/lessons-c5.js   – 8 Lektionen (Erklärung, Beispiel, Übungen, Visuals)
 **Inhalt:** LAN vs. WAN, Netzwerkkomponenten (Router, Switch, Hub, Modem, Access Point, Host), Unterschiede.
 
 **Erklärung:** HTML mit Geräte-Beschreibungen.
-**Visuals:** `{ type: 'network-diagram', mode: 'interactive', preset: 'school-network' }` – Schulnetzwerk-Skizze, Geräte per Klick identifizieren
-**Übungen:** 1x Matching (Gerät ↔ Funktion), 1x MC
+**Visuals:** `{ type: 'network-diagram', mode: 'static', preset: 'school-network' }` – Schulnetzwerk-Skizze zur Orientierung
+**Übungen:** 1x network-labeling (Geräte im Diagramm zuordnen), 1x Matching (Gerät ↔ Funktion), 1x MC
 
 ### Lektion 20: Technische Grundlagen
 
@@ -162,8 +179,8 @@ Adressbereich als farbiger Balken, der in Subnetze aufgeteilt wird.
 SVG-basiertes Netzwerkdiagramm mit Geräte-Icons.
 
 **Modi:**
-- `static` – Nur Anzeige, beschriftet
-- `interactive` – Labels sind leer, per Klick aus einer Liste zuordnen
+- `static` – Nur Anzeige, beschriftet (als Visual in Erklärungsphase)
+- `interactive` – Wird NICHT als Visual, sondern als Exercise-Typ `'network-labeling'` verwendet. Labels sind leer, per Klick aus einer Auswahlliste zuordnen. "Prüfen"-Button, Feedback, onComplete-Callback.
 
 **Presets:**
 - `internet-overview` – Einfach: Sender → Router → Cloud → Router → Empfänger
@@ -175,11 +192,13 @@ SVG-basiertes Netzwerkdiagramm mit Geräte-Icons.
 **Konfiguration:** `{ type: 'network-diagram', mode: 'static'|'interactive', preset: 'internet-overview'|'school-network'|'home-network' }`
 **Einsatz:** Lektionen 18, 19, 25, Sandbox
 
-## 2 neue Übungstypen
+## 3 neue Übungstypen
 
 ### binary-decimal
 
 Oktett-Trainer: Ein Wert wird angezeigt (binär oder dezimal), der andere muss eingegeben werden. Mehrere Runden.
+
+**Validierung:** Bei `bin2dec` wird numerisch verglichen (parseInt). Bei `dec2bin` wird der String verglichen – führende Nullen sind ERFORDERLICH (immer 8 Bits). Eingabe '0' wird NICHT akzeptiert, '00000000' ist korrekt. Ein Hinweis "8 Bits eingeben" wird angezeigt.
 
 ```javascript
 {
@@ -191,6 +210,26 @@ Oktett-Trainer: Ein Wert wird angezeigt (binär oder dezimal), der andere muss e
     { given: '11111111', direction: 'bin2dec', answer: 255 },
     { given: '0', direction: 'dec2bin', answer: '00000000' }
   ]
+}
+```
+
+### network-labeling
+
+Netzwerk-Diagramm mit leeren Labels, die per Klick aus einer Liste zugeordnet werden.
+
+```javascript
+{
+  type: 'network-labeling',
+  question: 'Ordne die Geräte im Schulnetzwerk richtig zu.',
+  preset: 'school-network',
+  labels: {
+    'node1': 'Router',
+    'node2': 'Switch',
+    'node3': 'Access Point',
+    'node4': 'Modem',
+    'node5': 'Host'
+  },
+  explanation: 'Der Router verbindet Netze, der Switch verteilt im LAN, der AP ermöglicht WLAN.'
 }
 ```
 
