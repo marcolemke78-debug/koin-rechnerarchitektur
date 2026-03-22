@@ -27,6 +27,12 @@ const Exercises = {
         return Exercises.renderCircuitMatching(exercise, container, onComplete);
       case 'expression-tree-exercise':
         return Exercises.renderExpressionTreeExercise(exercise, container, onComplete);
+      case 'binary-decimal':
+        return Exercises.renderBinaryDecimal(exercise, container, onComplete);
+      case 'subnet-exercise':
+        return Exercises.renderSubnetExercise(exercise, container, onComplete);
+      case 'network-labeling':
+        return Exercises.renderNetworkLabeling(exercise, container, onComplete);
       default:
         const div = document.createElement('div');
         div.textContent = 'Übungstyp "' + exercise.type + '" wird noch implementiert.';
@@ -1296,6 +1302,454 @@ Exercises.renderExpressionTreeExercise = function(exercise, container, onComplet
       feedbackEl.className = 'exercise-feedback incorrect';
       feedbackEl.textContent = 'Nicht ganz richtig – überprüfe die Operatorrangfolge.';
       feedbackEl.style.display = 'block';
+    }
+  });
+};
+
+/**
+ * Oktett-Trainer: Binär ↔ Dezimal Umrechnung in mehreren Runden.
+ * Bei dec2bin: 8 Bits erforderlich (z.B. '00000000'), bei bin2dec: numerischer Vergleich.
+ *
+ * @param {Object} exercise - { type, question, rounds: [{ given, direction, answer }] }
+ * @param {HTMLElement} container
+ * @param {Function} onComplete
+ */
+Exercises.renderBinaryDecimal = function(exercise, container, onComplete) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'exercise-block binary-decimal-exercise';
+
+  const title = document.createElement('h3');
+  title.textContent = exercise.question;
+  wrapper.appendChild(title);
+
+  const rounds = exercise.rounds;
+  let currentRound = 0;
+  let completed = false;
+
+  const roundDisplay = document.createElement('div');
+  roundDisplay.className = 'round-display';
+  wrapper.appendChild(roundDisplay);
+
+  const feedbackDiv = document.createElement('div');
+  feedbackDiv.className = 'exercise-feedback';
+  wrapper.appendChild(feedbackDiv);
+
+  container.appendChild(wrapper);
+
+  function showRound() {
+    if (currentRound >= rounds.length) {
+      // Alle Runden geschafft
+      roundDisplay.innerHTML = '<p style="color:var(--success);font-weight:bold;">Alle Runden bestanden!</p>';
+      if (!completed) {
+        completed = true;
+        if (onComplete) onComplete();
+      }
+      return;
+    }
+
+    const round = rounds[currentRound];
+    feedbackDiv.innerHTML = '';
+
+    const counter = document.createElement('div');
+    counter.className = 'round-counter';
+    counter.textContent = `Runde ${currentRound + 1} von ${rounds.length}`;
+
+    const dirHint = document.createElement('div');
+    dirHint.className = 'direction-hint';
+    dirHint.textContent = round.direction === 'bin2dec'
+      ? 'Binär → Dezimal: Gib den Dezimalwert ein.'
+      : 'Dezimal → Binär: Gib 8 Bits ein (z.B. 11001010).';
+
+    const givenDiv = document.createElement('div');
+    givenDiv.className = 'given-value';
+    givenDiv.textContent = round.given;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = round.direction === 'bin2dec' ? 'Dezimalwert' : '8 Bits (z.B. 01010101)';
+    if (round.direction === 'dec2bin') {
+      input.maxLength = 8;
+      input.pattern = '[01]{8}';
+    }
+
+    const checkBtn = document.createElement('button');
+    checkBtn.className = 'exercise-check-btn';
+    checkBtn.textContent = 'Prüfen';
+
+    roundDisplay.innerHTML = '';
+    roundDisplay.appendChild(counter);
+    roundDisplay.appendChild(dirHint);
+    roundDisplay.appendChild(givenDiv);
+    roundDisplay.appendChild(input);
+    roundDisplay.appendChild(checkBtn);
+
+    checkBtn.addEventListener('click', () => {
+      const userValue = input.value.trim();
+      let correct = false;
+
+      if (round.direction === 'bin2dec') {
+        correct = parseInt(userValue, 10) === round.answer;
+      } else {
+        // dec2bin: exakter 8-Bit-String-Vergleich
+        correct = userValue === round.answer;
+      }
+
+      feedbackDiv.innerHTML = '';
+      if (correct) {
+        feedbackDiv.innerHTML = '<p class="feedback correct">Richtig!</p>';
+        currentRound++;
+        setTimeout(showRound, 800);
+      } else {
+        let hint = `<p class="feedback wrong">Falsch.`;
+        if (round.direction === 'dec2bin' && userValue.length !== 8) {
+          hint += ' Bitte genau 8 Bits eingeben.';
+        }
+        hint += `</p>`;
+        feedbackDiv.innerHTML = hint;
+      }
+    });
+
+    // Enter-Taste
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') checkBtn.click();
+    });
+
+    input.focus();
+  }
+
+  showRound();
+};
+
+/**
+ * Subnetz-Berechnung: IP + CIDR gegeben, Felder berechnen.
+ *
+ * @param {Object} exercise - { type, question, ip, cidr, fields, answers, explanation }
+ * @param {HTMLElement} container
+ * @param {Function} onComplete
+ */
+Exercises.renderSubnetExercise = function(exercise, container, onComplete) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'exercise-block subnet-exercise';
+
+  const title = document.createElement('h3');
+  title.textContent = exercise.question;
+  wrapper.appendChild(title);
+
+  const info = document.createElement('p');
+  info.innerHTML = `<strong>IP:</strong> <code>${exercise.ip}</code> &nbsp; <strong>CIDR:</strong> <code>/${exercise.cidr}</code>`;
+  wrapper.appendChild(info);
+
+  const FIELD_LABELS = {
+    netId: 'Net-ID',
+    broadcast: 'Broadcast',
+    firstHost: 'Erster Host',
+    lastHost: 'Letzter Host',
+    hostCount: 'Anzahl Hosts'
+  };
+
+  const inputs = {};
+  const feedbackEls = {};
+
+  exercise.fields.forEach(field => {
+    const row = document.createElement('div');
+    row.className = 'field-row';
+
+    const label = document.createElement('label');
+    label.textContent = FIELD_LABELS[field] || field;
+    row.appendChild(label);
+
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.placeholder = field === 'hostCount' ? 'Zahl' : 'z.B. 192.168.1.0';
+    inputs[field] = inp;
+    row.appendChild(inp);
+
+    const fb = document.createElement('span');
+    fb.className = 'field-feedback';
+    feedbackEls[field] = fb;
+    row.appendChild(fb);
+
+    wrapper.appendChild(row);
+  });
+
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'exercise-check-btn';
+  checkBtn.textContent = 'Prüfen';
+  wrapper.appendChild(checkBtn);
+
+  const feedbackDiv = document.createElement('div');
+  feedbackDiv.className = 'exercise-feedback';
+  wrapper.appendChild(feedbackDiv);
+
+  container.appendChild(wrapper);
+
+  let completed = false;
+
+  checkBtn.addEventListener('click', () => {
+    let allCorrect = true;
+
+    exercise.fields.forEach(field => {
+      const userVal = inputs[field].value.trim();
+      const expected = String(exercise.answers[field]);
+      const correct = userVal === expected;
+
+      feedbackEls[field].textContent = correct ? '✓' : '✗';
+      feedbackEls[field].className = 'field-feedback ' + (correct ? 'correct' : 'wrong');
+
+      if (!correct) allCorrect = false;
+    });
+
+    feedbackDiv.innerHTML = '';
+    if (allCorrect) {
+      feedbackDiv.innerHTML = '<p class="feedback correct">Alle Felder richtig!</p>';
+      if (exercise.explanation) {
+        feedbackDiv.innerHTML += `<p class="feedback-explanation">${exercise.explanation}</p>`;
+      }
+      if (!completed) {
+        completed = true;
+        if (onComplete) onComplete();
+      }
+    } else {
+      feedbackDiv.innerHTML = '<p class="feedback wrong">Nicht alle Felder sind korrekt. Versuche es nochmal.</p>';
+    }
+  });
+};
+
+/**
+ * Netzwerk-Beschriftungs-Übung: Geräte im Diagramm per Klick zuordnen.
+ * Verwendet NetworkDiagram-Preset, Labels sind leer und werden per Dropdown zugewiesen.
+ *
+ * @param {Object} exercise - { type, question, preset, labels: { nodeId: 'Label' }, explanation }
+ * @param {HTMLElement} container
+ * @param {Function} onComplete
+ */
+Exercises.renderNetworkLabeling = function(exercise, container, onComplete) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'exercise-block network-labeling';
+
+  const title = document.createElement('h3');
+  title.textContent = exercise.question;
+  wrapper.appendChild(title);
+
+  // Preset laden
+  const preset = Visuals.NETWORK_PRESETS[exercise.preset];
+  if (!preset) {
+    wrapper.innerHTML += '<p>Preset nicht gefunden.</p>';
+    container.appendChild(wrapper);
+    return;
+  }
+
+  // Diagramm-Container (relative Positionierung fuer Dropdown)
+  const diagramDiv = document.createElement('div');
+  diagramDiv.style.position = 'relative';
+  diagramDiv.style.display = 'inline-block';
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${preset.width} ${preset.height}`);
+  svg.setAttribute('width', '100%');
+
+  // Lookup
+  const nodeMap = {};
+  preset.nodes.forEach(n => { nodeMap[n.id] = n; });
+
+  // State: zugewiesene Labels
+  const assignments = {};
+  const labelPool = Object.values(exercise.labels);
+  const targetNodeIds = Object.keys(exercise.labels);
+
+  // Verbindungen
+  preset.edges.forEach(([fromId, toId]) => {
+    const from = nodeMap[fromId];
+    const to = nodeMap[toId];
+    if (!from || !to) return;
+    const line = document.createElementNS(svgNS, 'line');
+    line.setAttribute('x1', from.x); line.setAttribute('y1', from.y);
+    line.setAttribute('x2', to.x); line.setAttribute('y2', to.y);
+    line.setAttribute('class', 'connection-line');
+    svg.appendChild(line);
+  });
+
+  // Icons und klickbare Label-Slots
+  const slotElements = {};
+
+  preset.nodes.forEach(node => {
+    const iconFn = Visuals.NETWORK_ICONS[node.type];
+    if (iconFn) {
+      const g = document.createElementNS(svgNS, 'g');
+      g.innerHTML = iconFn(node.x, node.y);
+      svg.appendChild(g);
+    }
+
+    // Ist dieser Node ein Ziel-Node?
+    if (targetNodeIds.includes(node.id)) {
+      // Klickbarer Label-Slot unter dem Icon
+      const rect = document.createElementNS(svgNS, 'rect');
+      rect.setAttribute('x', node.x - 35);
+      rect.setAttribute('y', node.y + 18);
+      rect.setAttribute('width', 70);
+      rect.setAttribute('height', 20);
+      rect.setAttribute('class', 'label-slot');
+      rect.dataset.nodeId = node.id;
+
+      const text = document.createElementNS(svgNS, 'text');
+      text.setAttribute('x', node.x);
+      text.setAttribute('y', node.y + 32);
+      text.setAttribute('class', 'label-text');
+      text.textContent = '?';
+
+      slotElements[node.id] = { rect, text };
+
+      // Klick-Handler
+      rect.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showDropdown(node.id, node.x, node.y + 40);
+      });
+      text.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showDropdown(node.id, node.x, node.y + 40);
+      });
+
+      svg.appendChild(rect);
+      svg.appendChild(text);
+    } else {
+      // Nicht-Ziel-Nodes: normales Label
+      if (node.label) {
+        const text = document.createElementNS(svgNS, 'text');
+        text.setAttribute('x', node.x);
+        text.setAttribute('y', node.y + 28);
+        text.setAttribute('class', 'device-label');
+        text.textContent = node.label;
+        svg.appendChild(text);
+      }
+    }
+  });
+
+  diagramDiv.appendChild(svg);
+  wrapper.appendChild(diagramDiv);
+
+  // Dropdown
+  let activeDropdown = null;
+
+  function showDropdown(nodeId, svgX, svgY) {
+    closeDropdown();
+
+    const dd = document.createElement('div');
+    dd.className = 'label-dropdown';
+
+    // Verfügbare Labels (noch nicht zugewiesen oder diesem Node zugewiesen)
+    const available = labelPool.filter(l =>
+      !Object.values(assignments).includes(l) || assignments[nodeId] === l
+    );
+
+    // Leere Option (zurücksetzen)
+    const emptyOpt = document.createElement('div');
+    emptyOpt.textContent = '– auswählen –';
+    emptyOpt.addEventListener('click', () => {
+      delete assignments[nodeId];
+      updateSlot(nodeId);
+      closeDropdown();
+    });
+    dd.appendChild(emptyOpt);
+
+    available.forEach(label => {
+      const opt = document.createElement('div');
+      opt.textContent = label;
+      opt.addEventListener('click', () => {
+        assignments[nodeId] = label;
+        updateSlot(nodeId);
+        closeDropdown();
+      });
+      dd.appendChild(opt);
+    });
+
+    // Positionierung relativ zum SVG
+    const svgRect = svg.getBoundingClientRect();
+    const scaleX = svgRect.width / preset.width;
+    const scaleY = svgRect.height / preset.height;
+
+    dd.style.left = (svgX * scaleX - 40) + 'px';
+    dd.style.top = (svgY * scaleY) + 'px';
+
+    diagramDiv.appendChild(dd);
+    activeDropdown = dd;
+  }
+
+  function closeDropdown() {
+    if (activeDropdown) {
+      activeDropdown.remove();
+      activeDropdown = null;
+    }
+  }
+
+  function updateSlot(nodeId) {
+    const el = slotElements[nodeId];
+    if (!el) return;
+    if (assignments[nodeId]) {
+      el.text.textContent = assignments[nodeId];
+      el.rect.classList.add('assigned');
+      el.text.classList.add('assigned');
+    } else {
+      el.text.textContent = '?';
+      el.rect.classList.remove('assigned');
+      el.text.classList.remove('assigned');
+    }
+  }
+
+  // Klick außerhalb schließt Dropdown
+  document.addEventListener('click', closeDropdown);
+
+  // Prüfen-Button
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'exercise-check-btn';
+  checkBtn.textContent = 'Prüfen';
+  wrapper.appendChild(checkBtn);
+
+  const feedbackDiv = document.createElement('div');
+  feedbackDiv.className = 'exercise-feedback';
+  wrapper.appendChild(feedbackDiv);
+
+  container.appendChild(wrapper);
+
+  let completed = false;
+
+  checkBtn.addEventListener('click', () => {
+    let allCorrect = true;
+    targetNodeIds.forEach(nodeId => {
+      const correct = assignments[nodeId] === exercise.labels[nodeId];
+      const el = slotElements[nodeId];
+      if (correct) {
+        el.rect.style.fill = 'var(--success)';
+        el.rect.style.stroke = 'var(--success)';
+      } else {
+        el.rect.style.fill = 'var(--error)';
+        el.rect.style.stroke = 'var(--error)';
+        allCorrect = false;
+      }
+    });
+
+    feedbackDiv.innerHTML = '';
+    if (allCorrect) {
+      feedbackDiv.innerHTML = '<p class="feedback correct">Alle richtig zugeordnet!</p>';
+      if (exercise.explanation) {
+        feedbackDiv.innerHTML += `<p class="feedback-explanation">${exercise.explanation}</p>`;
+      }
+      if (!completed) {
+        completed = true;
+        if (onComplete) onComplete();
+      }
+    } else {
+      feedbackDiv.innerHTML = '<p class="feedback wrong">Noch nicht alle richtig. Klicke auf die roten Felder und weise neu zu.</p>';
+      // Falsche Zuweisungen nach kurzer Zeit zuruecksetzen (nur Farbe)
+      setTimeout(() => {
+        targetNodeIds.forEach(nodeId => {
+          const el = slotElements[nodeId];
+          if (assignments[nodeId] !== exercise.labels[nodeId]) {
+            el.rect.style.fill = '';
+            el.rect.style.stroke = '';
+          }
+        });
+      }, 1500);
     }
   });
 };
