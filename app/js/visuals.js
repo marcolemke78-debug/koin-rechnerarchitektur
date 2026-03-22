@@ -204,3 +204,1032 @@ Visuals.formatGateFormula = function(gateType, inputs, output) {
   const op = ops[gateType] || '?';
   return `${inputs[0]} ${op} ${inputs[1]} = ${output}`;
 };
+
+/**
+ * Rendert eine zusammengesetzte Schaltung als interaktives SVG.
+ *
+ * @param {Object} config - { circuit: 'half-adder', interactive: true|false }
+ * @param {HTMLElement} container - DOM-Element fuer die Ausgabe
+ * @param {Object} [options] - { width: 480, height: 240, onUpdate: fn }
+ * @returns {Object} - { update, state, getOutputs }
+ */
+Visuals.renderCircuit = function(config, container, options = {}) {
+  const circuitId = config.circuit;
+  const circuit = CIRCUITS[circuitId];
+  if (!circuit) {
+    container.textContent = 'Unbekannte Schaltung: ' + circuitId;
+    return;
+  }
+
+  const interactive = config.interactive !== false;
+  const W = options.width || 480;
+  const H = options.height || 240;
+  const PAD = 40; // Padding innerhalb des SVG
+
+  // State
+  const state = {
+    inputs: {},
+    prevGateOutputs: {}
+  };
+  circuit.inputs.forEach(inp => { state.inputs[inp] = 0; });
+
+  // Wrapper
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', H);
+  svg.classList.add('circuit-view');
+
+  // Layout: relative Koordinaten → absolute Pixel
+  function toPixel(relX, relY) {
+    return {
+      x: PAD + relX * (W - 2 * PAD),
+      y: PAD + relY * (H - 2 * PAD)
+    };
+  }
+
+  // DOM-Referenzen fuer Updates
+  const refs = { inputCircles: {}, inputTexts: {}, gateRects: {}, gateBodies: {},
+                 outputCircles: {}, outputTexts: {}, wires: [] };
+
+  function signalColor(val) {
+    return val === 1 ? 'var(--signal-high)' : 'var(--signal-low)';
+  }
+
+  // Verbindungslinien zeichnen (als Polylines)
+  function drawWire(x1, y1, x2, y2, id) {
+    const midX = (x1 + x2) / 2;
+    const line = document.createElementNS(svgNS, 'polyline');
+    line.setAttribute('points', `${x1},${y1} ${midX},${y1} ${midX},${y2} ${x2},${y2}`);
+    line.setAttribute('fill', 'none');
+    line.setAttribute('stroke-width', 2.5);
+    line.setAttribute('stroke', 'var(--signal-low)');
+    line.dataset.wireId = id || '';
+    refs.wires.push(line);
+    svg.appendChild(line);
+    return line;
+  }
+
+  // Eingaenge zeichnen
+  circuit.inputs.forEach(inp => {
+    const pos = toPixel(circuit.layout.inputs[inp].x, circuit.layout.inputs[inp].y);
+
+    // Label links
+    const label = document.createElementNS(svgNS, 'text');
+    label.setAttribute('x', pos.x - 20); label.setAttribute('y', pos.y + 5);
+    label.setAttribute('text-anchor', 'end');
+    label.setAttribute('fill', '#1F2937'); label.setAttribute('font-weight', 'bold');
+    label.setAttribute('font-size', '13');
+    label.textContent = inp;
+    svg.appendChild(label);
+
+    // Kreis
+    const circle = document.createElementNS(svgNS, 'circle');
+    circle.setAttribute('cx', pos.x); circle.setAttribute('cy', pos.y);
+    circle.setAttribute('r', 12);
+    circle.setAttribute('stroke', '#1F2937'); circle.setAttribute('stroke-width', 2);
+    if (interactive) circle.style.cursor = 'pointer';
+    refs.inputCircles[inp] = circle;
+    svg.appendChild(circle);
+
+    // Text
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', pos.x); text.setAttribute('y', pos.y + 5);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('fill', 'white'); text.setAttribute('font-weight', 'bold');
+    text.setAttribute('font-size', '14');
+    text.style.pointerEvents = 'none';
+    refs.inputTexts[inp] = text;
+    svg.appendChild(text);
+
+    // Klick-Handler
+    if (interactive) {
+      circle.addEventListener('click', () => {
+        state.inputs[inp] = state.inputs[inp] === 0 ? 1 : 0;
+        update();
+        if (options.onUpdate) options.onUpdate(getOutputs());
+      });
+    }
+  });
+
+  // Gatter zeichnen
+  const gateW = 60;
+  const gateH = 44;
+  circuit.gates.forEach(gate => {
+    const pos = toPixel(circuit.layout.gates[gate.id].x, circuit.layout.gates[gate.id].y);
+
+    // Gatter-Rechteck
+    const rect = document.createElementNS(svgNS, 'rect');
+    rect.setAttribute('x', pos.x - gateW / 2); rect.setAttribute('y', pos.y - gateH / 2);
+    rect.setAttribute('width', gateW); rect.setAttribute('height', gateH);
+    rect.setAttribute('rx', 3);
+    rect.classList.add('gate-body');
+    refs.gateRects[gate.id] = rect;
+    svg.appendChild(rect);
+
+    // Gatter-Symbol
+    const symbol = document.createElementNS(svgNS, 'text');
+    symbol.setAttribute('x', pos.x); symbol.setAttribute('y', pos.y + 5);
+    symbol.setAttribute('text-anchor', 'middle');
+    symbol.setAttribute('fill', 'var(--text)');
+    symbol.setAttribute('font-size', '14'); symbol.setAttribute('font-weight', 'bold');
+    symbol.textContent = Visuals.GATE_SYMBOLS[gate.type];
+    svg.appendChild(symbol);
+
+    // Negationskreis
+    if (Visuals.NEGATED_GATES.has(gate.type)) {
+      const neg = document.createElementNS(svgNS, 'circle');
+      neg.setAttribute('cx', pos.x + gateW / 2 + 4);
+      neg.setAttribute('cy', pos.y);
+      neg.setAttribute('r', 3.5);
+      neg.setAttribute('fill', 'white'); neg.setAttribute('stroke', 'var(--text)');
+      neg.setAttribute('stroke-width', 1.5);
+      svg.appendChild(neg);
+    }
+
+    // Label ueber dem Gatter
+    if (gate.label) {
+      const gLabel = document.createElementNS(svgNS, 'text');
+      gLabel.setAttribute('x', pos.x); gLabel.setAttribute('y', pos.y - gateH / 2 - 6);
+      gLabel.setAttribute('text-anchor', 'middle');
+      gLabel.setAttribute('fill', 'var(--text-light)'); gLabel.setAttribute('font-size', '10');
+      gLabel.textContent = gate.label;
+      svg.appendChild(gLabel);
+    }
+
+    // Eingangsleitungen zum Gatter
+    gate.inputs.forEach((inp, idx) => {
+      let fromPos;
+      if (circuit.layout.inputs[inp]) {
+        fromPos = toPixel(circuit.layout.inputs[inp].x, circuit.layout.inputs[inp].y);
+        fromPos.x += 12; // nach dem Kreis
+      } else if (circuit.layout.gates[inp]) {
+        fromPos = toPixel(circuit.layout.gates[inp].x, circuit.layout.gates[inp].y);
+        const isNeg = Visuals.NEGATED_GATES.has(circuit.gates.find(g => g.id === inp)?.type);
+        fromPos.x += gateW / 2 + (isNeg ? 8 : 0);
+      } else {
+        return; // Feedback-Verbindung, wird separat gehandelt
+      }
+
+      const toX = pos.x - gateW / 2;
+      const inputSpacing = gateH / (gate.inputs.length + 1);
+      const toY = pos.y - gateH / 2 + inputSpacing * (idx + 1);
+
+      drawWire(fromPos.x, fromPos.y, toX, toY, `${inp}->${gate.id}`);
+    });
+  });
+
+  // Ausgangs-Verbindungen
+  circuit.connections.forEach(conn => {
+    const gatePos = toPixel(circuit.layout.gates[conn.from].x, circuit.layout.gates[conn.from].y);
+    const outPos = toPixel(circuit.layout.outputs[conn.to].x, circuit.layout.outputs[conn.to].y);
+    const gate = circuit.gates.find(g => g.id === conn.from);
+    const isNeg = Visuals.NEGATED_GATES.has(gate?.type);
+    const startX = gatePos.x + gateW / 2 + (isNeg ? 8 : 0);
+
+    drawWire(startX, gatePos.y, outPos.x - 12, outPos.y, conn.from);
+  });
+
+  // Ausgaenge zeichnen
+  circuit.outputs.forEach(out => {
+    const pos = toPixel(circuit.layout.outputs[out].x, circuit.layout.outputs[out].y);
+
+    const circle = document.createElementNS(svgNS, 'circle');
+    circle.setAttribute('cx', pos.x); circle.setAttribute('cy', pos.y);
+    circle.setAttribute('r', 12);
+    circle.setAttribute('stroke', '#1F2937'); circle.setAttribute('stroke-width', 2);
+    refs.outputCircles[out] = circle;
+    svg.appendChild(circle);
+
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', pos.x); text.setAttribute('y', pos.y + 5);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('fill', 'white'); text.setAttribute('font-weight', 'bold');
+    text.setAttribute('font-size', '14');
+    text.style.pointerEvents = 'none';
+    refs.outputTexts[out] = text;
+    svg.appendChild(text);
+
+    // Label rechts
+    const label = document.createElementNS(svgNS, 'text');
+    label.setAttribute('x', pos.x + 20); label.setAttribute('y', pos.y + 5);
+    label.setAttribute('fill', '#1F2937'); label.setAttribute('font-weight', 'bold');
+    label.setAttribute('font-size', '13');
+    label.textContent = out;
+    svg.appendChild(label);
+  });
+
+  // Status-Anzeige
+  const statusEl = document.createElement('div');
+  statusEl.style.cssText = 'text-align:center;font-size:13px;color:var(--signal-high);font-weight:600;margin-top:6px;';
+
+  wrapper.appendChild(svg);
+  wrapper.appendChild(statusEl);
+  container.appendChild(wrapper);
+
+  // Update-Funktion
+  function update() {
+    const result = evaluateCircuit(circuitId, state.inputs, state.prevGateOutputs);
+    state.prevGateOutputs = result.gateOutputs;
+
+    // Eingaenge faerben
+    circuit.inputs.forEach(inp => {
+      const val = state.inputs[inp];
+      refs.inputCircles[inp].setAttribute('fill', signalColor(val));
+      refs.inputTexts[inp].textContent = val;
+    });
+
+    // Ausgaenge faerben
+    circuit.outputs.forEach(out => {
+      const val = result.outputs[out];
+      refs.outputCircles[out].setAttribute('fill', signalColor(val));
+      refs.outputTexts[out].textContent = val !== undefined ? val : '?';
+    });
+
+    // Wires faerben
+    refs.wires.forEach(wire => {
+      const wireId = wire.dataset.wireId;
+      if (!wireId) return;
+      const sourceId = wireId.includes('->') ? wireId.split('->')[0] : wireId;
+      const val = result.values[sourceId];
+      wire.setAttribute('stroke', signalColor(val !== undefined ? val : 0));
+    });
+
+    // Status-Text
+    const outParts = circuit.outputs.map(o => `${o}=${result.outputs[o]}`);
+    statusEl.textContent = outParts.join(', ');
+  }
+
+  function getOutputs() {
+    const result = evaluateCircuit(circuitId, state.inputs, state.prevGateOutputs);
+    return result.outputs;
+  }
+
+  // Initiales Rendering
+  update();
+
+  return { update, state, getOutputs };
+};
+
+/**
+ * Rendert eine Schritt-fuer-Schritt Animation der Binaeraddition.
+ *
+ * @param {Object} config - { operandA: '1011', operandB: '0110' }
+ * @param {HTMLElement} container
+ */
+Visuals.renderBinaryAnimation = function(config, container) {
+  const a = config.operandA;
+  const b = config.operandB;
+  const maxLen = Math.max(a.length, b.length);
+  const aPadded = a.padStart(maxLen, '0');
+  const bPadded = b.padStart(maxLen, '0');
+
+  // Addition berechnen
+  const carries = new Array(maxLen + 1).fill(0);
+  const result = new Array(maxLen).fill(0);
+
+  for (let i = maxLen - 1; i >= 0; i--) {
+    const sum = parseInt(aPadded[i]) + parseInt(bPadded[i]) + carries[i + 1];
+    result[i] = sum % 2;
+    carries[i] = Math.floor(sum / 2);
+  }
+  const finalCarry = carries[0];
+
+  // State
+  let currentStep = -1; // -1 = noch nicht gestartet
+  const totalSteps = maxLen;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  const calcDiv = document.createElement('div');
+  calcDiv.className = 'binary-anim';
+
+  const controlsDiv = document.createElement('div');
+  controlsDiv.className = 'binary-anim-controls';
+
+  const stepInfo = document.createElement('div');
+  stepInfo.className = 'binary-anim-step-info';
+
+  // Buttons
+  const btnReset = document.createElement('button');
+  btnReset.textContent = '\u23EE';
+  btnReset.title = 'Zurück zum Anfang';
+
+  const btnNext = document.createElement('button');
+  btnNext.textContent = '\u25B6 Nächster Schritt';
+  btnNext.className = 'btn-primary';
+
+  const btnAll = document.createElement('button');
+  btnAll.textContent = '\u23ED';
+  btnAll.title = 'Alle Schritte zeigen';
+
+  controlsDiv.appendChild(btnReset);
+  controlsDiv.appendChild(btnNext);
+  controlsDiv.appendChild(btnAll);
+
+  wrapper.appendChild(calcDiv);
+  wrapper.appendChild(controlsDiv);
+  wrapper.appendChild(stepInfo);
+  container.appendChild(wrapper);
+
+  btnNext.addEventListener('click', () => {
+    if (currentStep < totalSteps - 1) {
+      currentStep++;
+      render();
+    }
+  });
+
+  btnReset.addEventListener('click', () => {
+    currentStep = -1;
+    render();
+  });
+
+  btnAll.addEventListener('click', () => {
+    currentStep = totalSteps - 1;
+    render();
+  });
+
+  function render() {
+    // Uebertraege
+    let carryHtml = '<div class="binary-row" style="font-size:0.85em;">';
+    carryHtml += '<span class="binary-cell" style="width:1.5rem;"></span>'; // Platz fuer Operator
+    for (let i = 0; i < maxLen; i++) {
+      const colIndex = maxLen - 1 - i; // von rechts
+      const shown = colIndex <= currentStep + 1 && carries[i + 1] === 1 && currentStep >= 0;
+      const isActive = (maxLen - 1 - currentStep) === i + 1;
+      if (shown) {
+        carryHtml += `<span class="binary-cell carry-bit${isActive ? ' active-col' : ''}">${carries[i + 1]}</span>`;
+      } else {
+        carryHtml += '<span class="binary-cell">&nbsp;</span>';
+      }
+    }
+    carryHtml += '</div>';
+
+    // Operand A
+    let aHtml = '<div class="binary-row"><span class="binary-cell" style="width:1.5rem;"></span>';
+    for (let i = 0; i < maxLen; i++) {
+      const isActive = (maxLen - 1 - currentStep) === i;
+      aHtml += `<span class="binary-cell${isActive ? ' active-col' : ''}">${aPadded[i]}</span>`;
+    }
+    aHtml += '</div>';
+
+    // Operand B
+    let bHtml = '<div class="binary-row"><span class="binary-cell" style="width:1.5rem;color:var(--text);">+</span>';
+    for (let i = 0; i < maxLen; i++) {
+      const isActive = (maxLen - 1 - currentStep) === i;
+      bHtml += `<span class="binary-cell${isActive ? ' active-col' : ''}">${bPadded[i]}</span>`;
+    }
+    bHtml += '</div>';
+
+    // Trennlinie
+    let dividerHtml = '<div class="binary-row" style="border-top:2px solid var(--text);padding-top:4px;">';
+    dividerHtml += '<span class="binary-cell" style="width:1.5rem;"></span>';
+
+    // Final Carry
+    if (currentStep === totalSteps - 1 && finalCarry) {
+      dividerHtml += `<span class="binary-cell result-bit">${finalCarry}</span>`;
+    } else if (finalCarry) {
+      dividerHtml += '<span class="binary-cell">&nbsp;</span>';
+    }
+
+    // Ergebnis-Bits
+    for (let i = 0; i < maxLen; i++) {
+      const colIndex = maxLen - 1 - i;
+      if (colIndex <= currentStep) {
+        dividerHtml += `<span class="binary-cell result-bit">${result[i]}</span>`;
+      } else {
+        dividerHtml += '<span class="binary-cell">?</span>';
+      }
+    }
+    dividerHtml += '</div>';
+
+    calcDiv.innerHTML = carryHtml + aHtml + bHtml + dividerHtml;
+
+    // Step-Info
+    if (currentStep === -1) {
+      stepInfo.textContent = 'Klicke "Nächster Schritt" um zu beginnen.';
+    } else {
+      const col = maxLen - 1 - currentStep;
+      const aVal = parseInt(aPadded[col]);
+      const bVal = parseInt(bPadded[col]);
+      const cVal = carries[col + 1];
+      const sum = aVal + bVal + cVal;
+      stepInfo.textContent = `Schritt ${currentStep + 1}/${totalSteps}: Stelle ${currentStep} → ${aVal}+${bVal}${cVal ? `+${cVal}(Carry)` : ''} = ${sum % 2}${Math.floor(sum / 2) ? ', Übertrag 1' : ''}`;
+    }
+
+    // Buttons aktualisieren
+    btnNext.disabled = currentStep >= totalSteps - 1;
+    btnReset.disabled = currentStep === -1;
+  }
+
+  render();
+};
+
+/**
+ * Rendert einen logischen Ausdruck als Baumdiagramm.
+ * Nutzt Parser.parse() fuer den AST.
+ * Farbcodierung: NOT=rot, AND=gruen, OR=blau.
+ *
+ * @param {Object} config - { expression: '¬a ∧ b ∨ c', hiddenNodes?: ['and','or'] }
+ * @param {HTMLElement} container
+ */
+Visuals.renderExpressionTree = function(config, container) {
+  const hiddenNodeTypes = config.hiddenNodes || [];
+  let hiddenIndex = 0;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container expression-tree-view';
+
+  let ast;
+  try {
+    ast = Parser.parse(config.expression);
+  } catch (e) {
+    wrapper.innerHTML = `<p style="color:var(--error);">Parsing-Fehler: ${e.message}</p>`;
+    container.appendChild(wrapper);
+    return;
+  }
+
+  // Baum-Layout berechnen: Breite und Tiefe bestimmen
+  function treeSize(node) {
+    if (node.variable !== undefined) return { w: 1, h: 1 };
+    if (node.op === '¬') {
+      const child = treeSize(node.operand);
+      return { w: Math.max(child.w, 1), h: child.h + 1 };
+    }
+    const left = treeSize(node.left);
+    const right = treeSize(node.right);
+    return { w: left.w + right.w, h: Math.max(left.h, right.h) + 1 };
+  }
+
+  const size = treeSize(ast);
+  const nodeW = 60;
+  const nodeH = 50;
+  const W = Math.max(320, size.w * nodeW + 40);
+  const H = size.h * nodeH + 40;
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', H);
+
+  // Operator → CSS-Klasse und Anzeige-Symbol
+  const opInfo = {
+    '¬': { cls: 'not', display: '¬', group: 'NOT' },
+    '∧': { cls: 'and', display: '∧', group: 'AND' },
+    '⊼': { cls: 'and', display: '⊼', group: 'AND' },
+    '∨': { cls: 'or', display: '∨', group: 'OR' },
+    '⊕': { cls: 'or', display: '⊕', group: 'OR' },
+    '⊽': { cls: 'or', display: '⊽', group: 'OR' },
+    '⊙': { cls: 'or', display: '⊙', group: 'OR' }
+  };
+
+  // Rekursiv zeichnen
+  function drawNode(node, cx, cy, availW) {
+    if (node.variable !== undefined) {
+      // Blattknoten: Variable
+      const rect = document.createElementNS(svgNS, 'rect');
+      rect.setAttribute('x', cx - 18); rect.setAttribute('y', cy - 14);
+      rect.setAttribute('width', 36); rect.setAttribute('height', 28);
+      rect.setAttribute('rx', 5);
+      rect.classList.add('var-node');
+      svg.appendChild(rect);
+
+      const text = document.createElementNS(svgNS, 'text');
+      text.setAttribute('x', cx); text.setAttribute('y', cy + 5);
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('fill', 'var(--text)');
+      text.setAttribute('font-size', '16'); text.setAttribute('font-weight', 'bold');
+      text.textContent = node.variable;
+      svg.appendChild(text);
+      return;
+    }
+
+    const info = opInfo[node.op] || { cls: 'or', display: node.op, group: '?' };
+
+    // Pruefen ob dieser Knoten versteckt werden soll
+    const opGroup = info.group.toLowerCase(); // 'not', 'and', 'or'
+    const isHidden = hiddenNodeTypes.length > hiddenIndex
+      && hiddenNodeTypes[hiddenIndex] === opGroup;
+    if (isHidden) hiddenIndex++;
+
+    // Operator-Knoten zeichnen
+    const rect = document.createElementNS(svgNS, 'rect');
+    rect.setAttribute('x', cx - 24); rect.setAttribute('y', cy - 16);
+    rect.setAttribute('width', 48); rect.setAttribute('height', 32);
+    rect.setAttribute('rx', 16);
+    rect.classList.add('op-node', isHidden ? 'op-hidden' : `op-${info.cls}`);
+    svg.appendChild(rect);
+
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', cx); text.setAttribute('y', cy + 6);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('font-size', '18'); text.setAttribute('font-weight', 'bold');
+    text.classList.add(isHidden ? 'op-text-hidden' : `op-text-${info.cls}`);
+    text.textContent = isHidden ? '?' : info.display;
+    svg.appendChild(text);
+
+    // Kinder zeichnen
+    const childY = cy + nodeH;
+
+    if (node.op === '¬') {
+      // NOT: ein Kind, direkt darunter
+      const line = document.createElementNS(svgNS, 'line');
+      line.setAttribute('x1', cx); line.setAttribute('y1', cy + 16);
+      line.setAttribute('x2', cx); line.setAttribute('y2', childY - 14);
+      line.setAttribute('stroke', '#6B7280'); line.setAttribute('stroke-width', 1.5);
+      svg.appendChild(line);
+      drawNode(node.operand, cx, childY, availW);
+    } else {
+      // Binaer: links und rechts
+      const leftSize = treeSize(node.left);
+      const rightSize = treeSize(node.right);
+      const totalW = leftSize.w + rightSize.w;
+      const leftCx = cx - (rightSize.w / totalW) * availW / 2;
+      const rightCx = cx + (leftSize.w / totalW) * availW / 2;
+
+      // Linien zu Kindern
+      [leftCx, rightCx].forEach(childCx => {
+        const line = document.createElementNS(svgNS, 'line');
+        line.setAttribute('x1', cx); line.setAttribute('y1', cy + 16);
+        line.setAttribute('x2', childCx); line.setAttribute('y2', childY - 14);
+        line.setAttribute('stroke', '#6B7280'); line.setAttribute('stroke-width', 1.5);
+        svg.appendChild(line);
+      });
+
+      drawNode(node.left, leftCx, childY, availW * leftSize.w / totalW);
+      drawNode(node.right, rightCx, childY, availW * rightSize.w / totalW);
+    }
+  }
+
+  drawNode(ast, W / 2, 30, W - 40);
+  wrapper.appendChild(svg);
+
+  // Legende
+  const legend = document.createElement('div');
+  legend.className = 'expression-tree-legend';
+  legend.innerHTML = '<span><span style="color:var(--error);font-weight:bold;">¬ NOT</span> = stärkste Bindung</span>'
+    + '<span><span style="color:var(--signal-high);font-weight:bold;">∧ AND</span> = mittel</span>'
+    + '<span><span style="color:var(--accent);font-weight:bold;">∨ OR</span> = schwächste</span>';
+  wrapper.appendChild(legend);
+
+  container.appendChild(wrapper);
+};
+
+/**
+ * Rendert eine Wahrheitstabelle mit farbig markierten 1-Zeilen und generiert die DNF-Formel.
+ *
+ * @param {Object} config - { variables: ['a','b','c'], results: [0,1,0,0,1,0,1,0] }
+ * @param {HTMLElement} container
+ */
+Visuals.renderDNFHighlighter = function(config, container) {
+  const vars = config.variables;
+  const results = config.results;
+  const n = vars.length;
+  const totalRows = 1 << n;
+
+  // Farben fuer die 1-Zeilen (bis zu 8 verschiedene)
+  const colors = [
+    { bg: '#DBEAFE', border: '#93C5FD', text: '#2563EB' },
+    { bg: '#FCE7F3', border: '#F9A8D4', text: '#DB2777' },
+    { bg: '#DCFCE7', border: '#86EFAC', text: '#16A34A' },
+    { bg: '#FEF3C7', border: '#FDE68A', text: '#D97706' },
+    { bg: '#EDE9FE', border: '#C4B5FD', text: '#7C3AED' },
+    { bg: '#FFE4E6', border: '#FDA4AF', text: '#E11D48' },
+    { bg: '#CCFBF1', border: '#5EEAD4', text: '#0D9488' },
+    { bg: '#E0E7FF', border: '#A5B4FC', text: '#4338CA' }
+  ];
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container dnf-view';
+
+  // Wahrheitstabelle
+  const tableDiv = document.createElement('div');
+  const table = document.createElement('table');
+  table.className = 'truth-table';
+
+  // Header
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  vars.forEach(v => {
+    const th = document.createElement('th');
+    th.textContent = v;
+    headerRow.appendChild(th);
+  });
+  const thResult = document.createElement('th');
+  thResult.textContent = 'f';
+  headerRow.appendChild(thResult);
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  // Body
+  const tbody = document.createElement('tbody');
+  let colorIndex = 0;
+  const minterms = []; // { assignment, color }
+
+  for (let i = 0; i < totalRows; i++) {
+    const tr = document.createElement('tr');
+    const assignment = {};
+
+    vars.forEach((v, vi) => {
+      const val = (i >> (n - 1 - vi)) & 1;
+      assignment[v] = val;
+      const td = document.createElement('td');
+      td.textContent = val;
+      if (results[i] === 1) {
+        td.style.fontWeight = 'bold';
+      }
+      tr.appendChild(td);
+    });
+
+    const tdResult = document.createElement('td');
+    tdResult.textContent = results[i];
+
+    if (results[i] === 1) {
+      const color = colors[colorIndex % colors.length];
+      tr.style.background = color.bg;
+      tdResult.style.fontWeight = 'bold';
+      tdResult.style.color = color.text;
+      minterms.push({ assignment, color });
+      colorIndex++;
+    } else {
+      tdResult.style.color = 'var(--signal-low)';
+    }
+
+    tr.appendChild(tdResult);
+    tbody.appendChild(tr);
+  }
+
+  table.appendChild(tbody);
+  tableDiv.appendChild(table);
+  wrapper.appendChild(tableDiv);
+
+  // DNF Formel
+  const formulaDiv = document.createElement('div');
+  formulaDiv.style.flex = '1';
+
+  const hint = document.createElement('p');
+  hint.style.cssText = 'font-size:13px;color:var(--text-light);margin-bottom:12px;';
+  hint.innerHTML = 'Nur die <strong>1-Zeilen</strong> zählen:';
+  formulaDiv.appendChild(hint);
+
+  const formulaEl = document.createElement('div');
+  formulaEl.className = 'dnf-formula';
+
+  minterms.forEach((mt, idx) => {
+    const parts = [];
+    vars.forEach(v => {
+      parts.push(mt.assignment[v] === 1 ? v : `¬${v}`);
+    });
+    const term = parts.join(' ∧ ');
+
+    const div = document.createElement('div');
+    const prefix = idx === 0 ? 'f = ' : '\u00A0\u00A0\u00A0∨ ';
+    const span = document.createElement('span');
+    span.className = 'dnf-minterm';
+    span.style.background = mt.color.bg;
+    span.style.color = mt.color.text;
+    span.textContent = term;
+
+    div.textContent = prefix;
+    div.appendChild(span);
+    formulaEl.appendChild(div);
+  });
+
+  formulaDiv.appendChild(formulaEl);
+
+  // Regel-Box
+  const ruleBox = document.createElement('div');
+  ruleBox.className = 'dnf-rule';
+  ruleBox.innerHTML = '<strong>Regel:</strong> Variable=1 → Variable direkt, Variable=0 → ¬Variable';
+  formulaDiv.appendChild(ruleBox);
+
+  wrapper.appendChild(formulaDiv);
+  container.appendChild(wrapper);
+};
+
+/**
+ * Rendert ein Timing-Diagramm das sich live aufbaut.
+ * Wird an einen CircuitView gekoppelt (SR-Latch).
+ *
+ * @param {Object} config - { signals: ['S', 'R', 'Q', 'Q̄'] }
+ * @param {HTMLElement} container
+ * @returns {Object} - { addEvent(signalValues) }
+ */
+Visuals.renderTimingDiagram = function(config, container) {
+  const signals = config.signals;
+  const maxEvents = 20;
+  const events = []; // Array von { S: 0, R: 0, Q: 0, 'Q̄': 1 }
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'timing-diagram';
+
+  const label = document.createElement('div');
+  label.className = 'timing-label';
+  label.textContent = 'Timing-Diagramm (baut sich live auf):';
+  wrapper.appendChild(label);
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const W = 400;
+  const signalH = 30;
+  const H = signals.length * signalH + 20;
+  const labelW = 30;
+  const plotW = W - labelW - 10;
+
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', H);
+
+  // Signal-Labels
+  signals.forEach((sig, i) => {
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', 5);
+    text.setAttribute('y', 10 + i * signalH + signalH / 2 + 4);
+    text.setAttribute('fill', i >= 2 ? 'var(--accent)' : 'var(--text)');
+    text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold');
+    text.textContent = sig;
+    svg.appendChild(text);
+  });
+
+  // Polylines fuer jeden Signal
+  const polylines = {};
+  signals.forEach((sig, i) => {
+    const poly = document.createElementNS(svgNS, 'polyline');
+    poly.setAttribute('fill', 'none');
+    poly.setAttribute('stroke', i >= 2 ? 'var(--accent)' : 'var(--text)');
+    poly.setAttribute('stroke-width', 2);
+    if (i >= 2 && i % 2 === 1) poly.setAttribute('stroke-dasharray', '6,3');
+    polylines[sig] = poly;
+    svg.appendChild(poly);
+  });
+
+  wrapper.appendChild(svg);
+  container.appendChild(wrapper);
+
+  function render() {
+    if (events.length === 0) return;
+
+    const stepW = plotW / Math.max(events.length, 1);
+
+    signals.forEach((sig, si) => {
+      const baseY = 10 + si * signalH;
+      const highY = baseY + 4;
+      const lowY = baseY + signalH - 4;
+      let points = '';
+
+      events.forEach((ev, ei) => {
+        const x = labelW + ei * stepW;
+        const y = ev[sig] === 1 ? highY : lowY;
+        if (ei === 0) {
+          points += `${x},${y}`;
+        } else {
+          // Vorheriger Wert
+          const prevY = events[ei - 1][sig] === 1 ? highY : lowY;
+          if (prevY !== y) {
+            points += ` ${x},${prevY} ${x},${y}`;
+          } else {
+            points += ` ${x},${y}`;
+          }
+        }
+        // Linie bis zum naechsten Schritt
+        const endX = labelW + (ei + 1) * stepW;
+        points += ` ${endX},${y}`;
+      });
+
+      polylines[sig].setAttribute('points', points);
+    });
+  }
+
+  function addEvent(signalValues) {
+    if (events.length >= maxEvents) events.shift();
+    events.push(Object.assign({}, signalValues));
+    render();
+  }
+
+  return { addEvent };
+};
+
+/**
+ * Rendert eine Wahrheitstabelle verknuepft mit einem Gatter/Schaltung.
+ * Klick auf Tabellenzeile → Gatter/Schaltung zeigt die Belegung.
+ *
+ * @param {Object} config - { gate: 'and'|..., circuit?: 'half-adder' }
+ * @param {HTMLElement} container
+ */
+Visuals.renderTruthTableLinked = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container truth-table-linked';
+
+  const gateType = config.gate;
+  const isNot = (gateType === 'not');
+  const vars = isNot ? ['a'] : ['a', 'b'];
+  const n = vars.length;
+  const totalRows = 1 << n;
+
+  // Tabelle erstellen
+  const tableDiv = document.createElement('div');
+  const table = document.createElement('table');
+  table.className = 'truth-table';
+
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  vars.forEach(v => {
+    const th = document.createElement('th');
+    th.textContent = v.toUpperCase();
+    headerRow.appendChild(th);
+  });
+  const thY = document.createElement('th');
+  thY.textContent = 'Y';
+  headerRow.appendChild(thY);
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  const rows = [];
+
+  for (let i = 0; i < totalRows; i++) {
+    const tr = document.createElement('tr');
+    const inputVals = [];
+
+    vars.forEach((v, vi) => {
+      const val = (i >> (n - 1 - vi)) & 1;
+      inputVals.push(val);
+      const td = document.createElement('td');
+      td.textContent = val;
+      tr.appendChild(td);
+    });
+
+    const output = Visuals.GATE_FUNCTIONS[gateType](inputVals);
+    const tdY = document.createElement('td');
+    tdY.textContent = output;
+    tdY.style.fontWeight = '600';
+    tdY.style.color = output === 1 ? 'var(--signal-high)' : 'var(--signal-low)';
+    tr.appendChild(tdY);
+
+    tr.style.cursor = 'pointer';
+    tr.dataset.rowIndex = i;
+    rows.push({ tr, inputs: inputVals });
+    tbody.appendChild(tr);
+  }
+
+  table.appendChild(tbody);
+  tableDiv.appendChild(table);
+  wrapper.appendChild(tableDiv);
+
+  // Gatter-Simulator daneben
+  const gateDiv = document.createElement('div');
+  const gateSim = Visuals.renderGateSim({ gate: gateType }, gateDiv, { interactive: false });
+
+  wrapper.appendChild(gateDiv);
+  container.appendChild(wrapper);
+
+  // Klick auf Tabellenzeile → Gatter aktualisieren
+  tbody.addEventListener('click', (e) => {
+    const tr = e.target.closest('tr');
+    if (!tr) return;
+
+    // Highlight
+    rows.forEach(r => r.tr.classList.remove('highlighted'));
+    tr.classList.add('highlighted');
+
+    // Gatter-State aktualisieren
+    const idx = parseInt(tr.dataset.rowIndex);
+    const row = rows[idx];
+    row.inputs.forEach((val, i) => { gateSim.state.inputs[i] = val; });
+    gateSim.update();
+  });
+
+  // Erste Zeile standardmaessig auswaehlen
+  if (rows.length > 0) {
+    rows[0].tr.classList.add('highlighted');
+  }
+};
+
+/**
+ * Rendert eine interaktive Addierwerk-Simulation (4-Bit).
+ *
+ * @param {Object} config - { bits: 4 }
+ * @param {HTMLElement} container
+ */
+Visuals.renderAdderSim = function(config, container) {
+  const bits = config.bits || 4;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container adder-sim';
+
+  // State
+  const state = { a: new Array(bits).fill(0), b: new Array(bits).fill(0) };
+
+  // Input-Reihe A
+  const labelA = document.createElement('div');
+  labelA.style.cssText = 'font-size:12px;color:var(--text-light);margin-bottom:4px;';
+  labelA.textContent = 'A:';
+  wrapper.appendChild(labelA);
+
+  const rowA = document.createElement('div');
+  rowA.style.cssText = 'display:flex;gap:4px;justify-content:center;margin-bottom:4px;';
+  const btnsA = [];
+
+  for (let i = 0; i < bits; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'bit-toggle low';
+    btn.textContent = '0';
+    btn.addEventListener('click', () => {
+      state.a[i] = state.a[i] === 0 ? 1 : 0;
+      update();
+    });
+    btnsA.push(btn);
+    rowA.appendChild(btn);
+  }
+  wrapper.appendChild(rowA);
+
+  // Input-Reihe B
+  const labelB = document.createElement('div');
+  labelB.style.cssText = 'font-size:12px;color:var(--text-light);margin-bottom:4px;';
+  labelB.textContent = 'B:';
+  wrapper.appendChild(labelB);
+
+  const rowB = document.createElement('div');
+  rowB.style.cssText = 'display:flex;gap:4px;justify-content:center;margin-bottom:12px;';
+  const btnsB = [];
+
+  for (let i = 0; i < bits; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'bit-toggle low';
+    btn.textContent = '0';
+    btn.addEventListener('click', () => {
+      state.b[i] = state.b[i] === 0 ? 1 : 0;
+      update();
+    });
+    btnsB.push(btn);
+    rowB.appendChild(btn);
+  }
+  wrapper.appendChild(rowB);
+
+  // Ergebnis
+  const resultDiv = document.createElement('div');
+  resultDiv.style.cssText = 'display:flex;gap:4px;justify-content:center;margin-top:8px;';
+  wrapper.appendChild(resultDiv);
+
+  const resultText = document.createElement('div');
+  resultText.className = 'adder-result';
+  wrapper.appendChild(resultText);
+
+  container.appendChild(wrapper);
+
+  function update() {
+    // Buttons faerben
+    for (let i = 0; i < bits; i++) {
+      btnsA[i].textContent = state.a[i];
+      btnsA[i].className = 'bit-toggle ' + (state.a[i] ? 'high' : 'low');
+      btnsB[i].textContent = state.b[i];
+      btnsB[i].className = 'bit-toggle ' + (state.b[i] ? 'high' : 'low');
+    }
+
+    // Addition
+    const result = [];
+    let carry = 0;
+    for (let i = bits - 1; i >= 0; i--) {
+      const sum = state.a[i] + state.b[i] + carry;
+      result.unshift(sum % 2);
+      carry = Math.floor(sum / 2);
+    }
+
+    // Ergebnis anzeigen
+    resultDiv.innerHTML = '';
+
+    const labelS = document.createElement('span');
+    labelS.style.cssText = 'font-size:12px;color:var(--text-light);margin-right:4px;';
+    labelS.textContent = 'Σ:';
+    resultDiv.appendChild(labelS);
+
+    if (carry) {
+      const carryBtn = document.createElement('span');
+      carryBtn.className = 'bit-toggle';
+      carryBtn.style.cssText = 'background:var(--signal-carry);font-size:0.8rem;width:42px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;color:white;font-weight:bold;';
+      carryBtn.textContent = 'C=' + carry;
+      resultDiv.appendChild(carryBtn);
+    }
+
+    result.forEach(bit => {
+      const span = document.createElement('span');
+      span.className = 'bit-toggle ' + (bit ? 'high' : 'low');
+      span.style.cursor = 'default';
+      span.textContent = bit;
+      resultDiv.appendChild(span);
+    });
+
+    // Textuelle Zusammenfassung
+    const aStr = state.a.join('');
+    const bStr = state.b.join('');
+    const rStr = (carry ? carry : '') + result.join('');
+    resultText.textContent = `${aStr} + ${bStr} = ${rStr}`;
+  }
+
+  update();
+};
