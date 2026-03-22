@@ -21,6 +21,12 @@ const Exercises = {
         return Exercises.renderStateTable(exercise, container, onComplete);
       case 'matching':
         return Exercises.renderMatching(exercise, container, onComplete);
+      case 'circuit-exercise':
+        return Exercises.renderCircuitExercise(exercise, container, onComplete);
+      case 'circuit-matching':
+        return Exercises.renderCircuitMatching(exercise, container, onComplete);
+      case 'expression-tree-exercise':
+        return Exercises.renderExpressionTreeExercise(exercise, container, onComplete);
       default:
         const div = document.createElement('div');
         div.textContent = 'Übungstyp "' + exercise.type + '" wird noch implementiert.';
@@ -1006,4 +1012,291 @@ const Exercises = {
     wrapper.appendChild(feedbackEl);
     container.appendChild(wrapper);
   }
+};
+
+/**
+ * Rendert eine Schaltungs-Uebung: Eingaenge setzen, um gewuenschten Ausgang zu erreichen.
+ *
+ * @param {Object} exercise - { type, question, circuit, targetOutputs, explanation }
+ */
+Exercises.renderCircuitExercise = function(exercise, container, onComplete) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'exercise-circuit';
+
+  const questionEl = document.createElement('p');
+  questionEl.className = 'exercise-question';
+  questionEl.textContent = exercise.question;
+  wrapper.appendChild(questionEl);
+
+  // Schaltung rendern
+  const circuitDiv = document.createElement('div');
+  const circuitInstance = Visuals.renderCircuit(
+    { circuit: exercise.circuit, interactive: true },
+    circuitDiv,
+    { onUpdate: checkAnswer }
+  );
+  wrapper.appendChild(circuitDiv);
+
+  // Check-Button
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'exercise-check-btn';
+  checkBtn.textContent = 'Prüfen';
+  wrapper.appendChild(checkBtn);
+
+  const feedbackEl = document.createElement('div');
+  feedbackEl.className = 'exercise-feedback';
+  feedbackEl.style.display = 'none';
+  wrapper.appendChild(feedbackEl);
+
+  container.appendChild(wrapper);
+
+  let solved = false;
+
+  checkBtn.addEventListener('click', () => {
+    const outputs = circuitInstance.getOutputs();
+    const correct = Object.keys(exercise.targetOutputs).every(
+      key => outputs[key] === exercise.targetOutputs[key]
+    );
+
+    if (correct && !solved) {
+      solved = true;
+      feedbackEl.className = 'exercise-feedback correct';
+      feedbackEl.innerHTML = exercise.explanation
+        ? `Richtig! ${exercise.explanation}`
+        : 'Richtig – gut gemacht!';
+      feedbackEl.style.display = 'block';
+      checkBtn.disabled = true;
+      onComplete();
+    } else if (!correct) {
+      feedbackEl.className = 'exercise-feedback incorrect';
+      feedbackEl.textContent = 'Noch nicht richtig – versuche andere Eingangswerte.';
+      feedbackEl.style.display = 'block';
+    }
+  });
+
+  function checkAnswer(outputs) {
+    // Auto-Check bei jedem Toggle (optionales sofortiges Feedback)
+  }
+};
+
+/**
+ * Rendert eine Schaltungs-Zuordnung: Schaltbild ↔ Ausdruck zuordnen.
+ *
+ * @param {Object} exercise - { type, question, pairs: [{ circuit, expression }] }
+ */
+Exercises.renderCircuitMatching = function(exercise, container, onComplete) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'exercise-circuit-matching';
+
+  const questionEl = document.createElement('p');
+  questionEl.className = 'exercise-question';
+  questionEl.textContent = exercise.question;
+  wrapper.appendChild(questionEl);
+
+  const matchArea = document.createElement('div');
+  matchArea.className = 'matching-area';
+
+  // Linke Spalte: Gatter-Symbole
+  const leftCol = document.createElement('div');
+  // Rechte Spalte: Ausdrücke (gemischt)
+  const rightCol = document.createElement('div');
+
+  const shuffled = [...exercise.pairs].sort(() => Math.random() - 0.5);
+  const matchColors = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
+
+  let selectedLeft = null;
+  let selectedRight = null;
+  let matchCount = 0;
+  const matches = new Map(); // leftIndex → rightIndex
+
+  // Linke Items: Mini-Gatter
+  exercise.pairs.forEach((pair, idx) => {
+    const item = document.createElement('div');
+    item.className = 'match-item';
+    item.dataset.matchIndex = idx;
+    item.dataset.side = 'left';
+    item.dataset.circuit = pair.circuit;
+
+    // Mini-Gatter-SVG
+    const gateSvg = Renderer.renderGate(pair.circuit, 60, 40);
+    item.appendChild(gateSvg);
+    leftCol.appendChild(item);
+  });
+
+  // Rechte Items: Ausdrücke
+  shuffled.forEach((pair, idx) => {
+    const item = document.createElement('div');
+    item.className = 'match-item';
+    item.dataset.side = 'right';
+    item.dataset.expression = pair.expression;
+    item.dataset.circuit = pair.circuit;
+    item.textContent = pair.expression;
+    item.style.fontFamily = "'Courier New', monospace";
+    item.style.fontSize = '1.1rem';
+    rightCol.appendChild(item);
+  });
+
+  matchArea.appendChild(leftCol);
+  matchArea.appendChild(rightCol);
+  wrapper.appendChild(matchArea);
+
+  const feedbackEl = document.createElement('div');
+  feedbackEl.className = 'exercise-feedback';
+  feedbackEl.style.display = 'none';
+  wrapper.appendChild(feedbackEl);
+
+  container.appendChild(wrapper);
+
+  // Matching-Logik
+  matchArea.addEventListener('click', (e) => {
+    const item = e.target.closest('.match-item');
+    if (!item || item.classList.contains('matched')) return;
+
+    if (item.dataset.side === 'left') {
+      if (selectedLeft) selectedLeft.classList.remove('selected');
+      selectedLeft = item;
+      item.classList.add('selected');
+    } else {
+      if (selectedRight) selectedRight.classList.remove('selected');
+      selectedRight = item;
+      item.classList.add('selected');
+    }
+
+    // Wenn beide ausgewaehlt: pruefen
+    if (selectedLeft && selectedRight) {
+      const leftCircuit = selectedLeft.dataset.circuit;
+      const rightCircuit = selectedRight.dataset.circuit;
+
+      if (leftCircuit === rightCircuit) {
+        // Match!
+        const color = matchColors[matchCount % matchColors.length];
+        selectedLeft.classList.add('matched');
+        selectedLeft.classList.remove('selected');
+        selectedLeft.style.background = color;
+        selectedLeft.style.borderColor = color;
+
+        selectedRight.classList.add('matched');
+        selectedRight.classList.remove('selected');
+        selectedRight.style.background = color;
+        selectedRight.style.borderColor = color;
+        selectedRight.style.color = 'white';
+
+        matchCount++;
+        selectedLeft = null;
+        selectedRight = null;
+
+        if (matchCount === exercise.pairs.length) {
+          feedbackEl.className = 'exercise-feedback correct';
+          feedbackEl.textContent = 'Alle Zuordnungen richtig – super!';
+          feedbackEl.style.display = 'block';
+          onComplete();
+        }
+      } else {
+        // Kein Match
+        selectedLeft.classList.remove('selected');
+        selectedRight.classList.remove('selected');
+        feedbackEl.className = 'exercise-feedback incorrect';
+        feedbackEl.textContent = 'Diese Zuordnung passt nicht. Versuch es nochmal.';
+        feedbackEl.style.display = 'block';
+        selectedLeft = null;
+        selectedRight = null;
+      }
+    }
+  });
+};
+
+/**
+ * Rendert eine Ausdrucksbaum-Uebung: fehlende Operatoren einsetzen.
+ *
+ * @param {Object} exercise - { type, question, expression, hiddenNodes, explanation }
+ */
+Exercises.renderExpressionTreeExercise = function(exercise, container, onComplete) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'exercise-expression-tree';
+
+  const questionEl = document.createElement('p');
+  questionEl.className = 'exercise-question';
+  questionEl.textContent = exercise.question;
+  wrapper.appendChild(questionEl);
+
+  // Baum anzeigen MIT versteckten Knoten (als "?" dargestellt)
+  Visuals.renderExpressionTree({
+    expression: exercise.expression,
+    hiddenNodes: exercise.hiddenNodes
+  }, wrapper);
+
+  // Dropdown-Auswahl fuer versteckte Operatoren
+  const formDiv = document.createElement('div');
+  formDiv.style.cssText = 'margin:1rem 0;';
+
+  const operatorOptions = ['∧', '∨', '¬', '⊕', '⊼', '⊽', '⊙'];
+  const selects = [];
+
+  exercise.hiddenNodes.forEach((nodeType, idx) => {
+    const label = document.createElement('label');
+    label.style.cssText = 'margin-right:1rem;font-size:0.95rem;';
+    label.textContent = `Operator ${idx + 1}: `;
+
+    const select = document.createElement('select');
+    select.style.cssText = 'padding:4px 8px;font-size:1rem;font-family:monospace;';
+    const defaultOpt = document.createElement('option');
+    defaultOpt.value = '';
+    defaultOpt.textContent = '?';
+    select.appendChild(defaultOpt);
+
+    operatorOptions.forEach(op => {
+      const opt = document.createElement('option');
+      opt.value = op;
+      opt.textContent = op;
+      select.appendChild(opt);
+    });
+
+    selects.push({ select, correctOp: nodeType });
+    label.appendChild(select);
+    formDiv.appendChild(label);
+  });
+
+  wrapper.appendChild(formDiv);
+
+  // Check-Button
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'exercise-check-btn';
+  checkBtn.textContent = 'Prüfen';
+  wrapper.appendChild(checkBtn);
+
+  const feedbackEl = document.createElement('div');
+  feedbackEl.className = 'exercise-feedback';
+  feedbackEl.style.display = 'none';
+  wrapper.appendChild(feedbackEl);
+
+  container.appendChild(wrapper);
+
+  // Mapping: nodeType → korrekte Operatoren
+  const correctOps = {
+    'and': '∧', 'or': '∨', 'not': '¬',
+    'xor': '⊕', 'nand': '⊼', 'nor': '⊽', 'xnor': '⊙'
+  };
+
+  checkBtn.addEventListener('click', () => {
+    const allCorrect = selects.every(s => {
+      const expected = correctOps[s.correctOp] || s.correctOp;
+      return s.select.value === expected;
+    });
+
+    if (allCorrect) {
+      feedbackEl.className = 'exercise-feedback correct';
+      feedbackEl.innerHTML = exercise.explanation
+        ? `Richtig! ${exercise.explanation}`
+        : 'Richtig – gut gemacht!';
+      feedbackEl.style.display = 'block';
+      checkBtn.disabled = true;
+      selects.forEach(s => s.select.disabled = true);
+      onComplete();
+    } else {
+      feedbackEl.className = 'exercise-feedback incorrect';
+      feedbackEl.textContent = 'Nicht ganz richtig – überprüfe die Operatorrangfolge.';
+      feedbackEl.style.display = 'block';
+    }
+  });
+};
 };
