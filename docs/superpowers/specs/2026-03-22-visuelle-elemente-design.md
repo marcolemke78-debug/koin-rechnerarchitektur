@@ -65,10 +65,12 @@ Bestehendes Lektionsobjekt bekommt optionales `visuals`-Feld pro Phase:
 
 | Signal | Farbe | CSS-Variable |
 |--------|-------|-------------|
-| 1 / HIGH | `#16A34A` (grün) | `--success` |
-| 0 / LOW | `#9CA3AF` (grau) | – |
-| Carry / Übertrag | `#F59E0B` (orange) | – |
-| Aktiver Pfad | `#2563EB` (blau) | `--accent` |
+| 1 / HIGH | `#16A34A` (grün) | `--signal-high` (= `--success`) |
+| 0 / LOW | `#9CA3AF` (grau) | `--signal-low` |
+| Carry / Übertrag | `#F59E0B` (orange) | `--signal-carry` |
+| Aktiver Pfad | `#2563EB` (blau) | `--signal-active` (= `--accent`) |
+
+Alle 4 Variablen werden in `:root` in `style.css` definiert.
 
 ## Die 8 Visualisierungs-Komponenten
 
@@ -87,6 +89,65 @@ Zusammengesetzte Schaltung aus mehreren Gattern. SVG-basiert, Eingänge klickbar
 - **Vordefinierte Schaltungen:** half-adder, full-adder, sr-latch (in `circuits.js`)
 - **Konfiguration:** `{ type: 'circuit', circuit: 'half-adder', interactive: true|false }`
 - **Einsatz:** Lektionen 10, 13-15, 17, Sandbox
+
+#### circuits.js Datenformat
+
+Jede Schaltung wird deklarativ als Graph aus Gattern und Verbindungen definiert:
+
+```javascript
+const CIRCUITS = {
+  'half-adder': {
+    inputs: ['A', 'B'],
+    outputs: ['S', 'C'],
+    gates: [
+      { id: 'xor1', type: 'xor', inputs: ['A', 'B'], label: 'Summe' },
+      { id: 'and1', type: 'and', inputs: ['A', 'B'], label: 'Carry' }
+    ],
+    connections: [
+      { from: 'xor1', to: 'S' },
+      { from: 'and1', to: 'C' }
+    ],
+    layout: {
+      // Relative Positionen für SVG-Rendering (0-1 normalisiert)
+      inputs:  { A: { x: 0, y: 0.25 }, B: { x: 0, y: 0.75 } },
+      gates:   { xor1: { x: 0.45, y: 0.2 }, and1: { x: 0.45, y: 0.7 } },
+      outputs: { S: { x: 1, y: 0.25 }, C: { x: 1, y: 0.75 } }
+    }
+  },
+  'full-adder': {
+    inputs: ['A', 'B', 'Cin'],
+    outputs: ['S', 'Cout'],
+    gates: [
+      { id: 'xor1', type: 'xor', inputs: ['A', 'B'] },
+      { id: 'xor2', type: 'xor', inputs: ['xor1', 'Cin'], label: 'Summe' },
+      { id: 'and1', type: 'and', inputs: ['A', 'B'] },
+      { id: 'and2', type: 'and', inputs: ['xor1', 'Cin'] },
+      { id: 'or1',  type: 'or',  inputs: ['and1', 'and2'], label: 'Carry' }
+    ],
+    connections: [
+      { from: 'xor2', to: 'S' },
+      { from: 'or1',  to: 'Cout' }
+    ],
+    layout: { /* analog */ }
+  },
+  'sr-latch': {
+    inputs: ['S', 'R'],
+    outputs: ['Q', 'Q̄'],
+    gates: [
+      { id: 'nor1', type: 'nor', inputs: ['S', 'nor2'] },
+      { id: 'nor2', type: 'nor', inputs: ['R', 'nor1'] }
+    ],
+    connections: [
+      { from: 'nor1', to: 'Q' },
+      { from: 'nor2', to: 'Q̄' }
+    ],
+    feedback: true,  // Rückkopplung vorhanden
+    layout: { /* analog */ }
+  }
+};
+```
+
+`CircuitView` evaluiert den Graphen topologisch (bei feedback: iterativ bis stabil) und rendert ihn als SVG basierend auf dem `layout`.
 
 ### 3. TruthTableLinked
 
@@ -113,6 +174,7 @@ Zeitverlaufsdiagramm das sich live aufbaut. Zeigt S, R, Q, Q̄ als Signalverläu
 
 Baumdarstellung eines logischen Ausdrucks. Farbcodierung nach Operatorstärke (rot=NOT, grün=AND, blau=OR). Animation: Werte fließen von Blättern zur Wurzel.
 
+- **Parser:** Nutzt den bestehenden `Parser` aus `parser.js` (tokenize → parse → AST). Akzeptiert Unicode-Operatoren (∧∨¬⊕) und Kleinbuchstaben als Variablen. Klammern werden unterstützt. Bei Parsing-Fehlern wird eine Fehlermeldung im Container angezeigt.
 - **Konfiguration:** `{ type: 'expression-tree', expression: '¬a ∧ b ∨ c' }`
 - **Einsatz:** Lektionen 6-7, Sandbox
 
@@ -132,13 +194,51 @@ Wahrheitstabelle mit farbig markierten 1-Zeilen. Darunter entsteht die DNF-Forme
 
 ## Neue Übungstypen
 
-Ergänzend zu den bestehenden 6 Übungstypen:
+Ergänzend zu den bestehenden 6 Übungstypen. Werden im `exercises`-Array der Lektion eingetragen (wie die bestehenden Typen):
 
-| Typ | `type`-Wert | Beschreibung |
-|-----|-------------|--------------|
-| Schaltungs-Aufgabe | `'circuit-exercise'` | Eingänge setzen, um gewünschten Ausgang zu erreichen |
-| Schaltung zuordnen | `'circuit-matching'` | Schaltbild ↔ Ausdruck ↔ Wahrheitstabelle zuordnen |
-| Expression-Tree | `'expression-tree-exercise'` | Ausdruck gegeben → Baum vervollständigen |
+### circuit-exercise
+
+Eingänge setzen, um gewünschten Ausgang zu erreichen.
+
+```javascript
+{
+  type: 'circuit-exercise',
+  question: 'Setze die Eingänge so, dass Carry=1 und Summe=0 ist.',
+  circuit: 'half-adder',           // Schaltung aus circuits.js
+  targetOutputs: { S: 0, C: 1 },   // gewünschte Ausgangswerte
+  explanation: 'Beide Eingänge müssen 1 sein: 1 ∧ 1 = 1 (Carry), 1 ⊕ 1 = 0 (Summe)'
+}
+```
+
+### circuit-matching
+
+Schaltbild ↔ Ausdruck ↔ Wahrheitstabelle zuordnen. Nutzt die bestehende Matching-Logik aus `exercises.js`.
+
+```javascript
+{
+  type: 'circuit-matching',
+  question: 'Ordne jede Schaltung dem passenden Ausdruck zu.',
+  pairs: [
+    { circuit: 'and', expression: 'a ∧ b' },
+    { circuit: 'or',  expression: 'a ∨ b' },
+    { circuit: 'xor', expression: 'a ⊕ b' }
+  ]
+}
+```
+
+### expression-tree-exercise
+
+Ausdruck gegeben → fehlende Operatoren im Baum einsetzen.
+
+```javascript
+{
+  type: 'expression-tree-exercise',
+  question: 'Welche Operatoren fehlen im Baum?',
+  expression: '¬a ∧ b ∨ c',
+  hiddenNodes: ['and', 'or'],      // diese Knoten sind leer, müssen ausgefüllt werden
+  explanation: 'NOT bindet am stärksten, dann AND, dann OR.'
+}
+```
 
 ## Sandbox ("Labor")
 
@@ -157,6 +257,8 @@ Neuer Sidebar-Eintrag unterhalb der Module. Enthält alle Komponenten im freien 
 Kein Fortschritt, keine Bewertung – reines Experimentieren.
 
 ## Lektions-Zuordnung
+
+**Hinweis:** Lektionen 1 (Rechnerarchitektur), 2 (Serien-/Parallelschaltung) und 11 (Binärsystem) sind primär textuelle/konzeptuelle Lektionen und erhalten keine neuen Visualisierungen.
 
 ### C1 – Schaltalgebra
 
@@ -186,6 +288,15 @@ Kein Fortschritt, keine Bewertung – reines Experimentieren.
 
 | Phase | Visualisierungs-Typ | Interaktivität |
 |-------|--------------------|----|
-| Erklärung | Statische SVG-Grafiken + einfache Animationen | Keine – zum Anschauen |
+| Erklärung | Statische SVG-Grafiken + einfache CSS-Animationen. GateSimulator hier im **Demo-Modus**: Eingänge klickbar, aber keine Aufgabe/Bewertung – dient dem Verständnis | Leicht interaktiv (toggle zum Ausprobieren) |
 | Beispiel | Animierte Step-by-Step-Durchläufe | Play/Pause/Step-Buttons |
-| Übung | Interaktive Simulationen | Volle Interaktion, Aufgabe + Feedback |
+| Übung | Interaktive Simulationen als Übungstypen im `exercises`-Array | Volle Interaktion, Aufgabe + Feedback |
+
+## Sandbox-Integration
+
+Die Sandbox wird als **SPA-Ansatz** im bestehenden `#lesson-container` gerendert (keine separate HTML-Seite). Details:
+
+- Neuer Sidebar-Eintrag "Labor" unterhalb der Modul-Listen (eigener `<li>` mit Icon)
+- `app.js` bekommt `navigateToSandbox()` – analog zu `navigateToLesson()`, rendert Sandbox-Inhalt
+- Fortschrittsbalken wird im Labor ausgeblendet (kein Lektionsfortschritt)
+- Script-Ladereihenfolge in `index.html`: `parser.js` → `visuals.js` → `circuits.js` → `exercises.js` → `renderer.js` → `sandbox.js` → `lessons-c1.js` → `lessons-c2.js` → `app.js`
