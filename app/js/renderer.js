@@ -104,6 +104,10 @@ const Renderer = {
     explanationSection.className = 'phase explanation active';
     explanationSection.id = 'phase-explanation';
     explanationSection.innerHTML = lessonData.explanation.html;
+    // Visuals in der Erklaerungsphase rendern
+    if (lessonData.explanation.visuals) {
+      Renderer.renderVisuals(lessonData.explanation.visuals, explanationSection);
+    }
     container.appendChild(explanationSection);
 
     // Phase: Beispiel
@@ -133,6 +137,11 @@ const Renderer = {
 
         exampleSection.appendChild(details);
       });
+
+      // Visuals in der Beispielphase rendern
+      if (lessonData.example.visuals) {
+        Renderer.renderVisuals(lessonData.example.visuals, exampleSection);
+      }
     }
 
     container.appendChild(exampleSection);
@@ -264,6 +273,65 @@ Renderer.renderGate = function(type, width, height) {
   if (width) svg.setAttribute('width', width);
   if (height) svg.setAttribute('height', height);
   return svg;
+};
+
+/**
+ * Rendert Visualisierungen in einen Container.
+ * Liest das visuals-Array aus den Lektionsdaten und dispatcht an Visuals-Methoden.
+ *
+ * @param {Array} visuals - Array von Visual-Config-Objekten
+ * @param {HTMLElement} container - Ziel-Container
+ */
+Renderer.renderVisuals = function(visuals, container) {
+  if (!visuals || !Array.isArray(visuals) || visuals.length === 0) return;
+
+  // Instances merken fuer Kopplung (z.B. CircuitView + TimingDiagram)
+  let lastCircuitInstance = null;
+  let lastTimingInstance = null;
+
+  visuals.forEach(vis => {
+    switch (vis.type) {
+      case 'gate-sim':
+        Visuals.renderGateSim(vis, container);
+        break;
+      case 'circuit':
+        lastCircuitInstance = Visuals.renderCircuit(vis, container, {
+          onUpdate: (outputs) => {
+            // Automatische Kopplung mit Timing-Diagramm
+            if (lastTimingInstance && lastCircuitInstance) {
+              const vals = Object.assign({}, lastCircuitInstance.state.inputs, outputs);
+              lastTimingInstance.addEvent(vals);
+            }
+          }
+        });
+        break;
+      case 'truth-table-linked':
+        Visuals.renderTruthTableLinked(vis, container);
+        break;
+      case 'binary-animation':
+        Visuals.renderBinaryAnimation(vis, container);
+        break;
+      case 'expression-tree':
+        Visuals.renderExpressionTree(vis, container);
+        break;
+      case 'dnf-highlighter':
+        Visuals.renderDNFHighlighter(vis, container);
+        break;
+      case 'timing-diagram':
+        lastTimingInstance = Visuals.renderTimingDiagram(vis, container);
+        // Initiales Event vom gekoppelten Circuit
+        if (lastCircuitInstance) {
+          const outputs = lastCircuitInstance.getOutputs();
+          lastTimingInstance.addEvent(Object.assign({}, lastCircuitInstance.state.inputs, outputs));
+        }
+        break;
+      case 'adder-sim':
+        Visuals.renderAdderSim(vis, container);
+        break;
+      default:
+        console.warn('Unbekannter Visual-Typ:', vis.type);
+    }
+  });
 };
 
 // Event-Delegation: Klicks auf Sidebar-<li>-Elemente abfangen
