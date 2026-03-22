@@ -8,10 +8,12 @@ const Renderer = {
   renderSidebar(lessons) {
     const listC1 = document.getElementById('lesson-list-c1');
     const listC2 = document.getElementById('lesson-list-c2');
+    const listC5 = document.getElementById('lesson-list-c5');
 
     // Listen leeren, bevor wir neu rendern
     listC1.innerHTML = '';
     listC2.innerHTML = '';
+    if (listC5) listC5.innerHTML = '';
 
     lessons.forEach(lesson => {
       const li = document.createElement('li');
@@ -35,6 +37,8 @@ const Renderer = {
       // In die richtige Liste einfuegen
       if (lesson.module === 'c1') {
         listC1.appendChild(li);
+      } else if (lesson.module === 'c5') {
+        if (listC5) listC5.appendChild(li);
       } else {
         listC2.appendChild(li);
       }
@@ -46,7 +50,7 @@ const Renderer = {
    * Zeigt den Gesamtfortschritt ueber alle 17 Lektionen.
    */
   renderProgressBar() {
-    const percent = Progress.getCompletionPercent(1, 17);
+    const percent = Progress.getCompletionPercent(1, 25);
     const bar = document.getElementById('progress-bar');
     bar.style.width = percent + '%';
   },
@@ -61,7 +65,8 @@ const Renderer = {
 
     // Lektionsdaten aus den Content-Arrays suchen
     const lessonData = LessonsC1.find(l => l.id === id)
-      || LessonsC2.find(l => l.id === id);
+      || LessonsC2.find(l => l.id === id)
+      || LessonsC5.find(l => l.id === id);
 
     // Titel aus der LESSONS-Liste (hat immer einen Eintrag)
     const lessonMeta = LESSONS.find(l => l.id === id);
@@ -327,6 +332,18 @@ Renderer.renderVisuals = function(visuals, container) {
         break;
       case 'adder-sim':
         Visuals.renderAdderSim(vis, container);
+        break;
+      case 'ip-converter':
+        Visuals.renderIPConverter(vis, container);
+        break;
+      case 'subnet-calculator':
+        Visuals.renderSubnetCalculator(vis, container);
+        break;
+      case 'subnetting-viz':
+        Visuals.renderSubnettingViz(vis, container);
+        break;
+      case 'network-diagram':
+        Visuals.renderNetworkDiagram(vis, container);
         break;
       default:
         console.warn('Unbekannter Visual-Typ:', vis.type);

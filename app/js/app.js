@@ -1,4 +1,4 @@
-// Alle 17 Lektionen mit ID, Titel und Modul-Zuordnung
+// Alle 25 Lektionen mit ID, Titel und Modul-Zuordnung
 const LESSONS = [
   { id: 1, title: 'Was ist Rechnerarchitektur?', module: 'c1' },
   { id: 2, title: 'Serien- & Parallelschaltung', module: 'c1' },
@@ -16,7 +16,15 @@ const LESSONS = [
   { id: 14, title: 'Volladdierer', module: 'c2' },
   { id: 15, title: 'Addierwerk', module: 'c2' },
   { id: 16, title: 'Sequenzielle Logik & Flipflops', module: 'c2' },
-  { id: 17, title: 'SR-Riegel', module: 'c2' }
+  { id: 17, title: 'SR-Riegel', module: 'c2' },
+  { id: 18, title: 'Das Internet und Adressierung', module: 'c5' },
+  { id: 19, title: 'Netztypen & Geräte', module: 'c5' },
+  { id: 20, title: 'Technische Grundlagen', module: 'c5' },
+  { id: 21, title: 'IP-Adressen: IPv4, IPv6, MAC', module: 'c5' },
+  { id: 22, title: 'Subnetzmaske & Net-ID', module: 'c5' },
+  { id: 23, title: 'Subnetze berechnen', module: 'c5' },
+  { id: 24, title: 'Hands-on: ping', module: 'c5' },
+  { id: 25, title: 'Lokale vs. globale IPs', module: 'c5' },
 ];
 
 /**

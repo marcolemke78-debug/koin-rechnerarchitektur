@@ -942,3 +942,443 @@ p {
   background: var(--accent-light);
   border-style: solid;
 }
+
+/* === C5: Netzwerk-Visualisierungen === */
+
+/* IP-Converter */
+.ip-converter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.ip-converter .octet-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.ip-converter .octet-separator {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--text-light);
+  align-self: center;
+  padding-top: 1.5rem;
+}
+
+.ip-converter .place-values {
+  display: flex;
+  gap: 2px;
+}
+
+.ip-converter .place-values span {
+  width: 32px;
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-light);
+}
+
+.ip-converter .bit-row {
+  display: flex;
+  gap: 2px;
+}
+
+.ip-converter .bit-btn {
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.ip-converter .bit-btn.high {
+  background: var(--signal-high);
+  color: white;
+  border-color: var(--signal-high);
+}
+
+.ip-converter .bit-btn.low {
+  background: var(--signal-low);
+  color: white;
+  border-color: var(--signal-low);
+}
+
+.ip-converter .octet-decimal input {
+  width: 60px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 4px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.ip-converter .octet-decimal input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.ip-converter .full-ip-display {
+  width: 100%;
+  text-align: center;
+  font-family: monospace;
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-top: 0.5rem;
+  padding: 8px;
+  background: var(--sidebar-bg);
+  border-radius: 6px;
+}
+
+/* Subnet-Calculator */
+.subnet-calculator {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.subnet-calculator .input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.subnet-calculator .input-row label {
+  font-weight: 600;
+  min-width: 120px;
+}
+
+.subnet-calculator .octet-input {
+  width: 55px;
+  text-align: center;
+  font-family: monospace;
+  font-size: 1rem;
+  padding: 6px 4px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+}
+
+.subnet-calculator .octet-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.subnet-calculator .octet-dot {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.subnet-calculator .cidr-input {
+  width: 50px;
+  text-align: center;
+  font-family: monospace;
+  font-size: 1rem;
+  padding: 6px 4px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+}
+
+.subnet-calculator .results {
+  margin-top: 1rem;
+}
+
+.subnet-calculator .result-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.subnet-calculator .result-row:last-child {
+  border-bottom: none;
+}
+
+.subnet-calculator .result-label {
+  font-weight: 600;
+  min-width: 140px;
+  color: var(--text);
+}
+
+.subnet-calculator .result-value {
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.subnet-calculator .binary-display {
+  margin-top: 1rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  background: var(--sidebar-bg);
+  padding: 12px;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.subnet-calculator .net-part {
+  color: var(--signal-high);
+  font-weight: bold;
+}
+
+.subnet-calculator .host-part {
+  color: var(--accent);
+  font-weight: bold;
+}
+
+/* Subnetting-Visualizer */
+.subnetting-viz {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.subnetting-viz .controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.subnetting-viz .controls label {
+  font-weight: 600;
+}
+
+.subnetting-viz .controls select {
+  padding: 6px 12px;
+  font-size: 1rem;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  min-width: 80px;
+}
+
+.subnetting-viz .address-bar {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.subnetting-viz .subnet-segment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  transition: flex 0.3s;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 4px;
+}
+
+.subnetting-viz .subnet-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+
+.subnetting-viz .subnet-card {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border-left: 4px solid;
+  background: var(--sidebar-bg);
+  font-size: 0.85rem;
+}
+
+.subnetting-viz .subnet-card strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.subnetting-viz .subnet-card code {
+  font-family: monospace;
+}
+
+/* Network-Diagram */
+.network-diagram {
+  text-align: center;
+}
+
+.network-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.network-diagram .device-label {
+  font-size: 11px;
+  fill: var(--text);
+  text-anchor: middle;
+  font-weight: 600;
+}
+
+.network-diagram .device-sublabel {
+  font-size: 9px;
+  fill: var(--text-light);
+  text-anchor: middle;
+}
+
+.network-diagram .connection-line {
+  stroke: var(--border);
+  stroke-width: 2;
+}
+
+.network-diagram .device-icon {
+  fill: white;
+  stroke: var(--text);
+  stroke-width: 1.5;
+}
+
+/* Network-Labeling Exercise */
+.network-labeling .label-slot {
+  cursor: pointer;
+  fill: var(--accent-light);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  rx: 4;
+}
+
+.network-labeling .label-slot:hover {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+.network-labeling .label-slot.assigned {
+  fill: var(--accent);
+}
+
+.network-labeling .label-text {
+  font-size: 10px;
+  fill: var(--text);
+  text-anchor: middle;
+  pointer-events: none;
+  font-weight: 600;
+}
+
+.network-labeling .label-text.assigned {
+  fill: white;
+}
+
+.network-labeling .label-dropdown {
+  position: absolute;
+  background: white;
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 100;
+  padding: 4px 0;
+}
+
+.network-labeling .label-dropdown div {
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.network-labeling .label-dropdown div:hover {
+  background: var(--accent-light);
+}
+
+/* Binary-Decimal Exercise */
+.binary-decimal-exercise .round-display {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.binary-decimal-exercise .given-value {
+  font-family: monospace;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent);
+  margin: 0.5rem 0;
+}
+
+.binary-decimal-exercise .direction-hint {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.binary-decimal-exercise input {
+  font-family: monospace;
+  font-size: 1.2rem;
+  text-align: center;
+  width: 180px;
+  padding: 8px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+}
+
+.binary-decimal-exercise input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.binary-decimal-exercise .round-counter {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+/* Subnet Exercise */
+.subnet-exercise .field-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.5rem 0;
+  flex-wrap: wrap;
+}
+
+.subnet-exercise .field-row label {
+  font-weight: 600;
+  min-width: 140px;
+}
+
+.subnet-exercise .field-row input {
+  font-family: monospace;
+  font-size: 1rem;
+  padding: 6px 8px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  width: 180px;
+}
+
+.subnet-exercise .field-row input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.subnet-exercise .field-row .field-feedback {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.subnet-exercise .field-row .field-feedback.correct {
+  color: var(--success);
+}
+
+.subnet-exercise .field-row .field-feedback.wrong {
+  color: var(--error);
+}
