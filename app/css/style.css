@@ -10,6 +10,10 @@
   --sidebar-bg: #F9FAFB;
   --border: #E5E7EB;
   --sidebar-width: 280px;
+  --signal-high: #16A34A;
+  --signal-low: #9CA3AF;
+  --signal-carry: #F59E0B;
+  --signal-active: #2563EB;
 }
 
 /* === Reset === */
@@ -531,6 +535,29 @@ p {
   vertical-align: middle;
 }
 
+/* === Schaltungsdiagramme (Lektionen 13-17) === */
+.circuit-diagram {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  margin: 1rem auto;
+  background: #fafbfc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+.cd-wire { stroke: #374151; stroke-width: 2; fill: none; }
+.cd-gate { fill: #fff; stroke: #374151; stroke-width: 2; }
+.cd-gate-text { text-anchor: middle; font-size: 14px; font-weight: bold; font-family: inherit; fill: #374151; }
+.cd-label { font-size: 14px; font-weight: bold; font-family: inherit; fill: #374151; }
+.cd-label-small { font-size: 12px; font-family: inherit; fill: #6B7280; }
+.cd-junction { fill: #374151; }
+.cd-block { fill: #DBEAFE; stroke: #374151; stroke-width: 2; }
+.cd-block-text { text-anchor: middle; font-size: 15px; font-weight: bold; font-family: inherit; fill: #1F2937; }
+.cd-neg { fill: #fff; stroke: #374151; stroke-width: 2; }
+.cd-feedback { stroke: #2563EB; stroke-width: 2; stroke-dasharray: 6,3; fill: none; }
+
 /* === Responsive: Tablet (< 1024px) === */
 @media (max-width: 1024px) {
   body {
@@ -581,4 +608,337 @@ p {
   font-size: 1.2rem;
   cursor: pointer;
   display: none;
+}
+
+/* === Visualisierungen === */
+.visual-container {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.visual-container .visual-label {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.gate-sim {
+  display: inline-block;
+  cursor: default;
+}
+
+.gate-sim .gate-input {
+  cursor: pointer;
+  transition: fill 0.15s;
+}
+
+.gate-sim .gate-input:hover {
+  filter: brightness(1.2);
+}
+
+.gate-sim .wire-high {
+  stroke: var(--signal-high);
+}
+
+.gate-sim .wire-low {
+  stroke: var(--signal-low);
+}
+
+.gate-sim .signal-dot-high {
+  fill: var(--signal-high);
+}
+
+.gate-sim .signal-dot-low {
+  fill: var(--signal-low);
+}
+
+/* Circuit View */
+.circuit-view {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  margin: 1rem auto;
+  background: #fafbfc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.circuit-view .gate-body {
+  fill: white;
+  stroke: var(--text);
+  stroke-width: 2;
+}
+
+.circuit-view .gate-label {
+  font-size: 10px;
+  fill: var(--text-light);
+  text-anchor: middle;
+}
+
+/* Verknüpfte Wahrheitstabelle */
+.truth-table-linked {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.truth-table-linked .truth-table tr.highlighted {
+  background: var(--accent-light);
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.truth-table-linked .truth-table tr {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.truth-table-linked .truth-table tbody tr:hover {
+  background: var(--accent-light);
+}
+
+/* Binäraddition Animation */
+.binary-anim {
+  font-family: 'Courier New', monospace;
+  font-size: 1.3rem;
+  line-height: 2;
+  display: inline-block;
+  text-align: right;
+}
+
+.binary-anim .carry-bit {
+  color: var(--signal-carry);
+  font-size: 0.9rem;
+}
+
+.binary-anim .active-col {
+  background: var(--accent-light);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.binary-anim .result-bit {
+  color: var(--signal-high);
+}
+
+.binary-anim-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.binary-anim-controls button {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--sidebar-bg);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s;
+}
+
+.binary-anim-controls button:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.binary-anim-controls .btn-primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.binary-anim-controls .btn-primary:hover {
+  background: #1D4ED8;
+}
+
+.binary-anim-step-info {
+  text-align: center;
+  color: var(--accent);
+  font-size: 0.85rem;
+  margin-top: 8px;
+}
+
+/* Timing-Diagramm */
+.timing-diagram {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 16px;
+}
+
+.timing-diagram .timing-label {
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Ausdrucksbaum */
+.expression-tree-view {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.expression-tree-view .op-node {
+  stroke-width: 2;
+}
+
+.expression-tree-view .op-not { fill: #FEF2F2; stroke: var(--error); }
+.expression-tree-view .op-and { fill: #F0FDF4; stroke: var(--signal-high); }
+.expression-tree-view .op-or  { fill: #EFF6FF; stroke: var(--accent); }
+.expression-tree-view .op-text-not { fill: var(--error); }
+.expression-tree-view .op-text-and { fill: var(--signal-high); }
+.expression-tree-view .op-text-or  { fill: var(--accent); }
+
+.expression-tree-view .op-hidden { fill: #FEF3C7; stroke: #F59E0B; stroke-dasharray: 4,3; }
+.expression-tree-view .op-text-hidden { fill: #F59E0B; }
+
+.expression-tree-view .var-node {
+  fill: var(--sidebar-bg);
+  stroke: var(--signal-low);
+  stroke-width: 1.5;
+}
+
+.expression-tree-legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 8px;
+  font-size: 0.8rem;
+}
+
+/* DNF Highlighter */
+.dnf-view {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.dnf-view .dnf-formula {
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  line-height: 2.2;
+}
+
+.dnf-view .dnf-minterm {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.dnf-view .dnf-rule {
+  background: #FEF3C7;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #92400E;
+  margin-top: 12px;
+}
+
+/* Adder Simulation */
+.adder-sim {
+  text-align: center;
+}
+
+.adder-sim .bit-toggle {
+  width: 48px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  color: white;
+  transition: all 0.15s;
+  border: none;
+  font-size: 1rem;
+}
+
+.adder-sim .bit-toggle.high {
+  background: var(--signal-high);
+}
+
+.adder-sim .bit-toggle.low {
+  background: var(--signal-low);
+}
+
+.adder-sim .bit-toggle:hover {
+  filter: brightness(1.15);
+}
+
+.adder-sim .adder-result {
+  color: var(--signal-high);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+/* Sandbox / Labor */
+.sandbox-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.sandbox-section:last-child {
+  border-bottom: none;
+}
+
+.sandbox-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+
+.sandbox-section p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.sandbox-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.sandbox-controls select,
+.sandbox-controls input {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Labor-Eintrag in Sidebar */
+#sidebar .lab-entry {
+  margin-top: 1rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+  border: 1px dashed var(--accent);
+  text-align: center;
+  transition: all 0.15s;
+}
+
+#sidebar .lab-entry:hover {
+  background: var(--accent-light);
+}
+
+#sidebar .lab-entry.active {
+  background: var(--accent-light);
+  border-style: solid;
 }
