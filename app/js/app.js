@@ -25,6 +25,13 @@ const LESSONS = [
  * und rendert den Lektionsinhalt.
  */
 function navigateToLesson(id) {
+  // Fortschrittsbalken wieder einblenden (falls vom Labor kommend)
+  document.getElementById('progress-bar-container').style.display = '';
+
+  // Labor-Eintrag deselektieren
+  const labEntry = document.getElementById('lab-entry');
+  if (labEntry) labEntry.classList.remove('active');
+
   // Sidebar schliessen (auf Tablet/Mobil)
   document.getElementById('sidebar').classList.remove('open');
 
@@ -61,6 +68,30 @@ function navigateToLesson(id) {
   }
 }
 
+/**
+ * Navigiert zur Labor-/Sandbox-Seite.
+ * Blendet den Fortschrittsbalken aus und rendert die Sandbox.
+ */
+function navigateToSandbox() {
+  // Sidebar schliessen
+  document.getElementById('sidebar').classList.remove('open');
+
+  // Aktive Lektion deselektieren
+  const allItems = document.querySelectorAll('#sidebar li');
+  allItems.forEach(li => li.classList.remove('active'));
+
+  // Labor-Eintrag hervorheben
+  const labEntry = document.getElementById('lab-entry');
+  if (labEntry) labEntry.classList.add('active');
+
+  // Fortschrittsbalken ausblenden
+  document.getElementById('progress-bar-container').style.display = 'none';
+
+  // Sandbox rendern
+  const container = document.getElementById('lesson-container');
+  Sandbox.render(container);
+}
+
 // === Initialisierung beim Laden der Seite ===
 document.addEventListener('DOMContentLoaded', () => {
   // Sidebar mit allen Lektionen aufbauen
@@ -89,4 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
       location.reload();
     }
   });
+
+  // Labor-Klick-Handler
+  const labEntry = document.getElementById('lab-entry');
+  if (labEntry) {
+    labEntry.addEventListener('click', () => {
+      navigateToSandbox();
+    });
+  }
 });
