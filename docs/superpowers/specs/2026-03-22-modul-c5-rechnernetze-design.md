@@ -309,7 +309,7 @@ progress.js → parser.js → visuals.js → circuits.js → exercises.js → re
 | Lektion | Visuals in Erklärung | Visuals in Beispiel |
 |---------|---------------------|---------------------|
 | 18 | NetworkDiagram (static, internet-overview) | – |
-| 19 | NetworkDiagram (interactive, school-network) | – |
+| 19 | NetworkDiagram (static, school-network) | – |
 | 20 | – | – |
 | 21 | IPConverter | – |
 | 22 | SubnetCalculator, IPConverter | – |
