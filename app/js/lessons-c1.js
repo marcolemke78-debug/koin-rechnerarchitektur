@@ -160,7 +160,13 @@ const LessonsC1 = [
         + '<h3>Schreibweise</h3>'
         + '<p>In diesem Kurs verwenden wir die Symbole <strong>∧</strong> (AND), '
         + '<strong>∨</strong> (OR) und <strong>¬</strong> (NOT). '
-        + 'Nicht den Malpunkt (·) oder das Pluszeichen (+), die man manchmal in anderen Büchern sieht.</p>'
+        + 'Nicht den Malpunkt (·) oder das Pluszeichen (+), die man manchmal in anderen Büchern sieht.</p>',
+      visuals: [
+        { type: 'gate-sim', gate: 'and', label: 'AND-Gatter: Probiere es aus!' },
+        { type: 'gate-sim', gate: 'or', label: 'OR-Gatter' },
+        { type: 'gate-sim', gate: 'not', label: 'NOT-Gatter' },
+        { type: 'truth-table-linked', gate: 'and' }
+      ]
     },
     example: {
       title: 'Beispiel: Tim und Lea',
@@ -249,7 +255,14 @@ const LessonsC1 = [
         + '(beide 0 oder beide 1). Man kann es sich als „Gleichheits-Prüfer" vorstellen.</p>'
 
         + '<p><strong>Merke:</strong> Alle diese Operatoren lassen sich aus den drei Grundoperatoren '
-        + 'AND, OR und NOT zusammensetzen!</p>'
+        + 'AND, OR und NOT zusammensetzen!</p>',
+      visuals: [
+        { type: 'gate-sim', gate: 'xor', label: 'XOR-Gatter' },
+        { type: 'gate-sim', gate: 'nand', label: 'NAND-Gatter' },
+        { type: 'gate-sim', gate: 'nor', label: 'NOR-Gatter' },
+        { type: 'gate-sim', gate: 'xnor', label: 'XNOR-Gatter' },
+        { type: 'truth-table-linked', gate: 'xor' }
+      ]
     },
     example: {
       title: 'Beispiel: XOR im Alltag',
@@ -334,7 +347,10 @@ const LessonsC1 = [
         + '<p>Bei komplexen Ausdrücken wie <code>(a ∨ b) ∧ ¬b</code> lohnt es sich, '
         + '<strong>Zwischenschritte als eigene Spalten</strong> einzufügen. '
         + 'Berechne z.&thinsp;B. zuerst <code>¬b</code>, dann erst den Gesamtausdruck. '
-        + 'So behältst du den Überblick.</p>'
+        + 'So behältst du den Überblick.</p>',
+      visuals: [
+        { type: 'truth-table-linked', gate: 'and' }
+      ]
     },
     example: {
       title: 'Beispiel: Wahrheitstabelle für a ∧ b ∧ c',
@@ -417,7 +433,10 @@ const LessonsC1 = [
         + 'Was in Klammern steht, wird zuerst berechnet – von innen nach außen.</p>'
         + '<p><strong>Beispiel:</strong> <code>a ∨ ¬b ∧ c</code> bedeutet <code>a ∨ ((¬b) ∧ c)</code>.</p>'
         + '<p>Möchte man, dass OR zuerst ausgewertet wird, muss man Klammern setzen: '
-        + '<code>(a ∨ b) ∧ c</code>.</p>'
+        + '<code>(a ∨ b) ∧ c</code>.</p>',
+      visuals: [
+        { type: 'expression-tree', expression: '¬a ∧ b ∨ c' }
+      ]
     },
     example: {
       title: 'Beispiel: a ∨ ¬b ∧ c Schritt für Schritt',
@@ -505,6 +524,10 @@ const LessonsC1 = [
     },
     example: {
       title: 'Beispiel: (a ∨ b) ∧ ¬b Schritt für Schritt',
+      visuals: [
+        { type: 'expression-tree', expression: '(a ∨ b) ∧ ¬c' },
+        { type: 'truth-table-linked', gate: 'and' }
+      ],
       steps: [
         {
           label: 'Variablen & Zeilen',
@@ -599,7 +622,10 @@ const LessonsC1 = [
         + '<p>Stell dir vor, du beschreibst einem Freund, wann eine Alarmanlage losgeht. '
         + 'Du zählst jeden einzelnen „Erfolgsfall" auf und sagst: '
         + '„<em>Einer dieser Fälle muss zutreffen, dann geht der Alarm los.</em>" '
-        + 'Genau das macht die DNF – sie beschreibt jeden Fall einzeln (AND) und verknüpft sie mit OR.</p>'
+        + 'Genau das macht die DNF – sie beschreibt jeden Fall einzeln (AND) und verknüpft sie mit OR.</p>',
+      visuals: [
+        { type: 'dnf-highlighter', variables: ['a', 'b', 'c'], results: [0, 1, 0, 0, 1, 0, 1, 0] }
+      ]
     },
     example: {
       title: 'Beispiel: DNF aus einer 3-Variablen-Tabelle',
@@ -685,7 +711,11 @@ const LessonsC1 = [
         + '<li>Wenn <strong>auch nur eine Zeile</strong> abweicht → nicht äquivalent!</li>'
         + '</ol>'
         + '<p><strong>Wichtig:</strong> Man muss wirklich <em>beide</em> Seiten komplett durchrechnen. '
-        + 'Ein einzelnes Gegenbeispiel reicht, um Nicht-Äquivalenz zu zeigen.</p>'
+        + 'Ein einzelnes Gegenbeispiel reicht, um Nicht-Äquivalenz zu zeigen.</p>',
+      visuals: [
+        { type: 'expression-tree', expression: '¬(a ∧ b)' },
+        { type: 'expression-tree', expression: '¬a ∨ ¬b' }
+      ]
     },
     example: {
       title: 'Beispiel: Distributivgesetz beweisen',
@@ -870,7 +900,10 @@ const LessonsC1 = [
         + '<tr><td><strong>De Morgan</strong></td><td>¬(a ∧ b) = ¬a ∨ ¬b</td><td>¬(a ∨ b) = ¬a ∧ ¬b</td></tr>'
         + '<tr><td><strong>Dualität</strong></td><td colspan="2">Vertauscht man ∧↔∨ und 0↔1, bleibt die Gültigkeit erhalten</td></tr>'
         + '<tr><td><strong>Absorption</strong></td><td>a ∧ (a ∨ b) = a</td><td>a ∨ (a ∧ b) = a</td></tr>'
-        + '</tbody></table>'
+        + '</tbody></table>',
+      visuals: [
+        { type: 'circuit', circuit: 'half-adder', interactive: true }
+      ]
     },
     example: {
       title: 'Beispiel: Gatternetz lesen',
