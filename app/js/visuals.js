@@ -1233,3 +1233,651 @@ Visuals.renderAdderSim = function(config, container) {
 
   update();
 };
+
+/**
+ * Rendert einen interaktiven IP-Adresse Dezimal ↔ Binär Konverter.
+ * 4 Oktette × 8 klickbare Bits mit bidirektionaler Konvertierung.
+ *
+ * @param {Object} config - { type: 'ip-converter' }
+ * @param {HTMLElement} container
+ */
+Visuals.renderIPConverter = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container ip-converter';
+
+  const PLACE_VALUES = [128, 64, 32, 16, 8, 4, 2, 1];
+  // State: 4 Oktette, je 8 Bits (default: 192.168.1.1)
+  const state = {
+    octets: [
+      [1,1,0,0,0,0,0,0],  // 192
+      [1,0,1,0,1,0,0,0],  // 168
+      [0,0,0,0,0,0,0,1],  // 1
+      [0,0,0,0,0,0,0,1]   // 1
+    ]
+  };
+
+  const octetElements = []; // { bitBtns: [], decInput: HTMLInputElement }[]
+
+  for (let o = 0; o < 4; o++) {
+    // Separator-Punkt (außer vor dem ersten Oktett)
+    if (o > 0) {
+      const sep = document.createElement('span');
+      sep.className = 'octet-separator';
+      sep.textContent = '.';
+      wrapper.appendChild(sep);
+    }
+
+    const group = document.createElement('div');
+    group.className = 'octet-group';
+
+    // Stellenwerte
+    const placeRow = document.createElement('div');
+    placeRow.className = 'place-values';
+    PLACE_VALUES.forEach(pv => {
+      const span = document.createElement('span');
+      span.textContent = pv;
+      placeRow.appendChild(span);
+    });
+    group.appendChild(placeRow);
+
+    // Bit-Buttons
+    const bitRow = document.createElement('div');
+    bitRow.className = 'bit-row';
+    const bitBtns = [];
+
+    for (let b = 0; b < 8; b++) {
+      const btn = document.createElement('button');
+      btn.className = 'bit-btn';
+      btn.dataset.octet = o;
+      btn.dataset.bit = b;
+      btn.addEventListener('click', () => {
+        state.octets[o][b] = state.octets[o][b] === 0 ? 1 : 0;
+        update();
+      });
+      bitBtns.push(btn);
+      bitRow.appendChild(btn);
+    }
+    group.appendChild(bitRow);
+
+    // Dezimal-Eingabe
+    const decDiv = document.createElement('div');
+    decDiv.className = 'octet-decimal';
+    const decInput = document.createElement('input');
+    decInput.type = 'number';
+    decInput.min = 0;
+    decInput.max = 255;
+    decInput.dataset.octet = o;
+    decInput.addEventListener('input', () => {
+      let val = parseInt(decInput.value, 10);
+      if (isNaN(val)) val = 0;
+      if (val < 0) val = 0;
+      if (val > 255) val = 255;
+      // Dezimal → Bits umrechnen
+      for (let b = 0; b < 8; b++) {
+        state.octets[o][b] = (val >> (7 - b)) & 1;
+      }
+      update();
+    });
+    decDiv.appendChild(decInput);
+    group.appendChild(decDiv);
+
+    wrapper.appendChild(group);
+    octetElements.push({ bitBtns, decInput });
+  }
+
+  // Vollständige IP-Anzeige
+  const fullDisplay = document.createElement('div');
+  fullDisplay.className = 'full-ip-display';
+  wrapper.appendChild(fullDisplay);
+
+  container.appendChild(wrapper);
+
+  function bitsToDecimal(bits) {
+    let val = 0;
+    for (let i = 0; i < 8; i++) {
+      val += bits[i] * PLACE_VALUES[i];
+    }
+    return val;
+  }
+
+  function update() {
+    const decimals = [];
+    const binaries = [];
+
+    for (let o = 0; o < 4; o++) {
+      const dec = bitsToDecimal(state.octets[o]);
+      decimals.push(dec);
+      binaries.push(state.octets[o].join(''));
+
+      // Buttons aktualisieren
+      for (let b = 0; b < 8; b++) {
+        const btn = octetElements[o].bitBtns[b];
+        btn.textContent = state.octets[o][b];
+        btn.className = 'bit-btn ' + (state.octets[o][b] ? 'high' : 'low');
+      }
+
+      // Dezimal-Eingabe aktualisieren (nur wenn nicht fokussiert)
+      if (document.activeElement !== octetElements[o].decInput) {
+        octetElements[o].decInput.value = dec;
+      }
+    }
+
+    fullDisplay.innerHTML =
+      '<strong>Dezimal:</strong> ' + decimals.join('.') +
+      ' &nbsp; | &nbsp; ' +
+      '<strong>Binär:</strong> ' + binaries.join('.');
+  }
+
+  update();
+};
+
+/**
+ * Rendert einen Subnetz-Rechner.
+ * IP + Maske eingeben → Net-ID, Broadcast, Hostbereich, Hostanzahl.
+ * Binärdarstellung mit farbigen Netz-/Hostanteilen.
+ *
+ * @param {Object} config - { type: 'subnet-calculator' }
+ * @param {HTMLElement} container
+ */
+Visuals.renderSubnetCalculator = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container subnet-calculator';
+
+  // --- Eingabe: IP-Adresse ---
+  const ipRow = document.createElement('div');
+  ipRow.className = 'input-row';
+  const ipLabel = document.createElement('label');
+  ipLabel.textContent = 'IP-Adresse:';
+  ipRow.appendChild(ipLabel);
+
+  const ipInputs = [];
+  for (let i = 0; i < 4; i++) {
+    if (i > 0) {
+      const dot = document.createElement('span');
+      dot.className = 'octet-dot';
+      dot.textContent = '.';
+      ipRow.appendChild(dot);
+    }
+    const inp = document.createElement('input');
+    inp.className = 'octet-input';
+    inp.type = 'number'; inp.min = 0; inp.max = 255;
+    inp.value = [192, 168, 20, 45][i];
+    inp.addEventListener('input', calculate);
+    ipInputs.push(inp);
+    ipRow.appendChild(inp);
+  }
+  wrapper.appendChild(ipRow);
+
+  // --- Eingabe: CIDR ---
+  const cidrRow = document.createElement('div');
+  cidrRow.className = 'input-row';
+  const cidrLabel = document.createElement('label');
+  cidrLabel.textContent = 'CIDR-Prefix:';
+  cidrRow.appendChild(cidrLabel);
+
+  const cidrSlash = document.createElement('span');
+  cidrSlash.textContent = '/';
+  cidrSlash.style.fontWeight = 'bold';
+  cidrRow.appendChild(cidrSlash);
+
+  const cidrInput = document.createElement('input');
+  cidrInput.className = 'cidr-input';
+  cidrInput.type = 'number'; cidrInput.min = 0; cidrInput.max = 32;
+  cidrInput.value = 24;
+  cidrInput.addEventListener('input', calculate);
+  cidrRow.appendChild(cidrInput);
+  wrapper.appendChild(cidrRow);
+
+  // --- Berechnen-Button ---
+  const calcBtn = document.createElement('button');
+  calcBtn.className = 'exercise-check-btn';
+  calcBtn.textContent = 'Berechnen';
+  calcBtn.style.marginTop = '0.5rem';
+  calcBtn.addEventListener('click', calculate);
+  wrapper.appendChild(calcBtn);
+
+  // --- Binär-Anzeige ---
+  const binaryDiv = document.createElement('div');
+  binaryDiv.className = 'binary-display';
+  wrapper.appendChild(binaryDiv);
+
+  // --- Ergebnis-Anzeige ---
+  const resultsDiv = document.createElement('div');
+  resultsDiv.className = 'results';
+  wrapper.appendChild(resultsDiv);
+
+  container.appendChild(wrapper);
+
+  // --- Hilfsfunktionen ---
+  function octetToBinary(val) {
+    return val.toString(2).padStart(8, '0');
+  }
+
+  function ipToArray() {
+    return ipInputs.map(inp => {
+      let v = parseInt(inp.value, 10);
+      if (isNaN(v) || v < 0) v = 0;
+      if (v > 255) v = 255;
+      return v;
+    });
+  }
+
+  function calculate() {
+    const ip = ipToArray();
+    let cidr = parseInt(cidrInput.value, 10);
+    if (isNaN(cidr) || cidr < 0) cidr = 0;
+    if (cidr > 32) cidr = 32;
+
+    // Subnetzmaske berechnen
+    const maskBits = cidr;
+    const mask = [];
+    for (let i = 0; i < 4; i++) {
+      const bitsInOctet = Math.min(Math.max(maskBits - i * 8, 0), 8);
+      mask.push(256 - Math.pow(2, 8 - bitsInOctet));
+    }
+
+    // Net-ID = IP AND Maske
+    const netId = ip.map((o, i) => o & mask[i]);
+
+    // Broadcast = Net-ID OR invertierte Maske
+    const broadcast = netId.map((o, i) => o | (255 - mask[i]));
+
+    // Erster Host = Net-ID + 1 (letztes Oktett)
+    const firstHost = [...netId];
+    firstHost[3] += 1;
+
+    // Letzter Host = Broadcast - 1 (letztes Oktett)
+    const lastHost = [...broadcast];
+    lastHost[3] -= 1;
+
+    // Hostanzahl
+    const hostBits = 32 - cidr;
+    const hostCount = hostBits >= 2 ? Math.pow(2, hostBits) - 2 : 0;
+
+    // --- Binär-Anzeige mit farbigen Anteilen ---
+    const ipBin = ip.map(o => octetToBinary(o)).join('');
+    const maskBin = mask.map(o => octetToBinary(o)).join('');
+
+    let ipColoredHtml = '<strong>IP (binär):</strong> ';
+    let maskColoredHtml = '<strong>Maske (binär):</strong> ';
+    for (let i = 0; i < 32; i++) {
+      const cssClass = i < cidr ? 'net-part' : 'host-part';
+      ipColoredHtml += `<span class="${cssClass}">${ipBin[i]}</span>`;
+      maskColoredHtml += `<span class="${cssClass}">${maskBin[i]}</span>`;
+      if ((i + 1) % 8 === 0 && i < 31) {
+        ipColoredHtml += '.';
+        maskColoredHtml += '.';
+      }
+    }
+    binaryDiv.innerHTML = ipColoredHtml + '<br>' + maskColoredHtml
+      + '<br><br><span class="net-part">■ Netzanteil</span> &nbsp; '
+      + '<span class="host-part">■ Hostanteil</span>';
+
+    // --- Ergebnisse ---
+    const fmt = arr => arr.join('.');
+    resultsDiv.innerHTML = '';
+
+    const fields = [
+      ['Subnetzmaske', fmt(mask)],
+      ['Net-ID', fmt(netId)],
+      ['Broadcast', fmt(broadcast)],
+      ['Erster Host', fmt(firstHost)],
+      ['Letzter Host', fmt(lastHost)],
+      ['Nutzbare Hosts', hostCount.toString()]
+    ];
+
+    fields.forEach(([label, value]) => {
+      const row = document.createElement('div');
+      row.className = 'result-row';
+      row.innerHTML = `<span class="result-label">${label}:</span>`
+        + `<span class="result-value">${value}</span>`;
+      resultsDiv.appendChild(row);
+    });
+  }
+
+  calculate();
+};
+
+/**
+ * Rendert eine Subnetting-Visualisierung.
+ * Horizontaler Balken = Adressbereich, wird in farbige Subnet-Segmente aufgeteilt.
+ *
+ * @param {Object} config - { network: '192.168.10.0', cidr: 24 }
+ * @param {HTMLElement} container
+ */
+Visuals.renderSubnettingViz = function(config, container) {
+  const network = config.network || '192.168.10.0';
+  const baseCidr = config.cidr || 24;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container subnetting-viz';
+
+  // Steuerung
+  const controls = document.createElement('div');
+  controls.className = 'controls';
+
+  const netLabel = document.createElement('label');
+  netLabel.textContent = `Netz: ${network}/${baseCidr}`;
+  controls.appendChild(netLabel);
+
+  const selectLabel = document.createElement('label');
+  selectLabel.textContent = 'Aufteilen in:';
+  controls.appendChild(selectLabel);
+
+  const select = document.createElement('select');
+  // Optionen: vom baseCidr+1 bis baseCidr+6 (max /30)
+  const maxCidr = Math.min(baseCidr + 6, 30);
+  for (let c = baseCidr + 1; c <= maxCidr; c++) {
+    const numSubnets = Math.pow(2, c - baseCidr);
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = `/${c} (${numSubnets} Subnetze)`;
+    select.appendChild(opt);
+  }
+  controls.appendChild(select);
+  wrapper.appendChild(controls);
+
+  // Farbbalken
+  const bar = document.createElement('div');
+  bar.className = 'address-bar';
+  wrapper.appendChild(bar);
+
+  // Detail-Karten
+  const details = document.createElement('div');
+  details.className = 'subnet-details';
+  wrapper.appendChild(details);
+
+  container.appendChild(wrapper);
+
+  const COLORS = [
+    '#2563EB', '#16A34A', '#D97706', '#DC2626',
+    '#7C3AED', '#0891B2', '#BE185D', '#4F46E5',
+    '#059669', '#CA8A04', '#E11D48', '#6D28D9',
+    '#0D9488', '#B45309', '#9333EA', '#0284C7',
+    '#65A30D', '#C026D3', '#EA580C', '#4338CA',
+    '#15803D', '#A21CAF', '#DB2777', '#1D4ED8',
+    '#84CC16', '#8B5CF6', '#F97316', '#06B6D4',
+    '#E879F9', '#22D3EE', '#FB923C', '#A3E635',
+    '#F472B6', '#34D399', '#FACC15', '#818CF8',
+    '#F87171', '#2DD4BF', '#FCD34D', '#A78BFA',
+    '#FB7185', '#5EEAD4', '#FDE047', '#C4B5FD',
+    '#FDA4AF', '#99F6E4', '#FEF08A', '#DDD6FE',
+    '#FECDD3', '#CCFBF1', '#FEF9C3', '#EDE9FE',
+    '#FFE4E6', '#D1FAE5', '#FFFBEB', '#F5F3FF',
+    '#FFF1F2', '#ECFDF5', '#FFFBEB', '#FAF5FF',
+    '#FFF5F5', '#F0FDF4', '#FEFCE8', '#F5F3FF'
+  ];
+
+  function parseIP(str) {
+    return str.split('.').map(Number);
+  }
+
+  function ipToNumber(octets) {
+    return ((octets[0] << 24) | (octets[1] << 16) | (octets[2] << 8) | octets[3]) >>> 0;
+  }
+
+  function numberToIP(num) {
+    return [
+      (num >>> 24) & 255,
+      (num >>> 16) & 255,
+      (num >>> 8) & 255,
+      num & 255
+    ].join('.');
+  }
+
+  function render() {
+    const subnetCidr = parseInt(select.value, 10);
+    const numSubnets = Math.pow(2, subnetCidr - baseCidr);
+    const hostsPerSubnet = Math.pow(2, 32 - subnetCidr);
+
+    const baseIP = ipToNumber(parseIP(network));
+
+    bar.innerHTML = '';
+    details.innerHTML = '';
+
+    for (let i = 0; i < numSubnets; i++) {
+      const subnetStart = baseIP + i * hostsPerSubnet;
+      const subnetBroadcast = subnetStart + hostsPerSubnet - 1;
+      const color = COLORS[i % COLORS.length];
+
+      // Segment im Balken
+      const seg = document.createElement('div');
+      seg.className = 'subnet-segment';
+      seg.style.flex = '1';
+      seg.style.background = color;
+      seg.textContent = `#${i + 1}`;
+      seg.title = numberToIP(subnetStart) + '/' + subnetCidr;
+      bar.appendChild(seg);
+
+      // Detail-Karte
+      const card = document.createElement('div');
+      card.className = 'subnet-card';
+      card.style.borderLeftColor = color;
+
+      const hostCount = hostsPerSubnet >= 2 ? hostsPerSubnet - 2 : 0;
+      card.innerHTML =
+        `<strong style="color:${color}">Subnetz ${i + 1}</strong>`
+        + `<code>Net-ID: ${numberToIP(subnetStart)}/${subnetCidr}</code><br>`
+        + `<code>Broadcast: ${numberToIP(subnetBroadcast)}</code><br>`
+        + `<code>Hosts: ${hostCount}</code>`;
+      details.appendChild(card);
+    }
+  }
+
+  select.addEventListener('change', render);
+  render();
+};
+
+/**
+ * SVG-Geräteicons für Netzwerkdiagramme.
+ * Jede Funktion gibt einen SVG-Group-String zurück (g-Element Inhalt).
+ */
+Visuals.NETWORK_ICONS = {
+  // Router: Rechteck mit 2 Pfeilen
+  router: function(x, y) {
+    return `<g transform="translate(${x},${y})">
+      <rect x="-20" y="-15" width="40" height="30" rx="4" class="device-icon" fill="#DBEAFE" stroke="#2563EB"/>
+      <path d="M-8,-4 L8,-4 L4,-8 M8,-4 L4,0" stroke="#2563EB" stroke-width="1.5" fill="none"/>
+      <path d="M8,4 L-8,4 L-4,0 M-8,4 L-4,8" stroke="#2563EB" stroke-width="1.5" fill="none"/>
+    </g>`;
+  },
+  // Switch: Rechteck mit 4 Ports
+  switch: function(x, y) {
+    return `<g transform="translate(${x},${y})">
+      <rect x="-22" y="-12" width="44" height="24" rx="3" class="device-icon" fill="#D1FAE5" stroke="#16A34A"/>
+      <rect x="-16" y="-6" width="6" height="6" rx="1" fill="#16A34A"/>
+      <rect x="-6" y="-6" width="6" height="6" rx="1" fill="#16A34A"/>
+      <rect x="4" y="-6" width="6" height="6" rx="1" fill="#16A34A"/>
+      <rect x="14" y="-6" width="6" height="6" rx="1" fill="#16A34A" opacity="0.4"/>
+    </g>`;
+  },
+  // Host/PC: Monitor
+  host: function(x, y) {
+    return `<g transform="translate(${x},${y})">
+      <rect x="-14" y="-14" width="28" height="20" rx="2" class="device-icon" fill="#F3F4F6" stroke="#6B7280"/>
+      <rect x="-3" y="6" width="6" height="6" fill="#6B7280"/>
+      <rect x="-8" y="12" width="16" height="2" rx="1" fill="#6B7280"/>
+    </g>`;
+  },
+  // Modem: Rechteck mit Wellen
+  modem: function(x, y) {
+    return `<g transform="translate(${x},${y})">
+      <rect x="-18" y="-10" width="36" height="20" rx="3" class="device-icon" fill="#FEF3C7" stroke="#D97706"/>
+      <path d="M-6,-3 Q-3,-8 0,-3 Q3,2 6,-3" stroke="#D97706" stroke-width="1.5" fill="none"/>
+    </g>`;
+  },
+  // Access Point: Dreieck/Antenne
+  ap: function(x, y) {
+    return `<g transform="translate(${x},${y})">
+      <rect x="-14" y="-6" width="28" height="18" rx="3" class="device-icon" fill="#EDE9FE" stroke="#7C3AED"/>
+      <line x1="0" y1="-6" x2="0" y2="-14" stroke="#7C3AED" stroke-width="2"/>
+      <path d="M-6,-12 Q0,-18 6,-12" stroke="#7C3AED" stroke-width="1.5" fill="none"/>
+      <path d="M-10,-10 Q0,-20 10,-10" stroke="#7C3AED" stroke-width="1" fill="none" opacity="0.5"/>
+    </g>`;
+  },
+  // Cloud (Internet)
+  cloud: function(x, y) {
+    return `<g transform="translate(${x},${y})">
+      <ellipse cx="0" cy="0" rx="28" ry="16" fill="#F0F9FF" stroke="#0EA5E9" stroke-width="1.5"/>
+      <text x="0" y="4" text-anchor="middle" font-size="9" fill="#0EA5E9" font-weight="600">Internet</text>
+    </g>`;
+  },
+  // Smartphone
+  phone: function(x, y) {
+    return `<g transform="translate(${x},${y})">
+      <rect x="-8" y="-14" width="16" height="28" rx="3" class="device-icon" fill="#F3F4F6" stroke="#6B7280"/>
+      <rect x="-5" y="-10" width="10" height="16" fill="#E5E7EB"/>
+      <circle cx="0" cy="10" r="2" fill="#6B7280"/>
+    </g>`;
+  },
+  // Tablet
+  tablet: function(x, y) {
+    return `<g transform="translate(${x},${y})">
+      <rect x="-12" y="-14" width="24" height="28" rx="3" class="device-icon" fill="#F3F4F6" stroke="#6B7280"/>
+      <rect x="-9" y="-10" width="18" height="18" fill="#E5E7EB"/>
+      <circle cx="0" cy="11" r="1.5" fill="#6B7280"/>
+    </g>`;
+  }
+};
+
+/**
+ * Netzwerkdiagramm-Presets.
+ * Jedes Preset definiert nodes (Geräte) und edges (Verbindungen).
+ */
+Visuals.NETWORK_PRESETS = {
+  'internet-overview': {
+    width: 500, height: 160,
+    nodes: [
+      { id: 'sender', type: 'host', x: 50, y: 80, label: 'Absender' },
+      { id: 'router1', type: 'router', x: 150, y: 80, label: 'Router' },
+      { id: 'internet', type: 'cloud', x: 250, y: 80, label: '' },
+      { id: 'router2', type: 'router', x: 350, y: 80, label: 'Router' },
+      { id: 'receiver', type: 'host', x: 450, y: 80, label: 'Empfänger' }
+    ],
+    edges: [
+      ['sender', 'router1'],
+      ['router1', 'internet'],
+      ['internet', 'router2'],
+      ['router2', 'receiver']
+    ]
+  },
+  'school-network': {
+    width: 520, height: 320,
+    nodes: [
+      { id: 'internet', type: 'cloud', x: 260, y: 40, label: '' },
+      { id: 'modem', type: 'modem', x: 260, y: 100, label: 'Modem' },
+      { id: 'router', type: 'router', x: 260, y: 160, label: 'Router' },
+      { id: 'switch1', type: 'switch', x: 130, y: 220, label: 'Switch' },
+      { id: 'ap', type: 'ap', x: 390, y: 220, label: 'Access Point' },
+      { id: 'pc1', type: 'host', x: 60, y: 285, label: 'PC (Klasse)' },
+      { id: 'pc2', type: 'host', x: 130, y: 285, label: 'PC (Lehrer)' },
+      { id: 'pc3', type: 'host', x: 200, y: 285, label: 'PC (Raum)' },
+      { id: 'phone', type: 'phone', x: 350, y: 285, label: 'Handy' },
+      { id: 'tablet', type: 'tablet', x: 430, y: 285, label: 'Tablet' }
+    ],
+    edges: [
+      ['internet', 'modem'],
+      ['modem', 'router'],
+      ['router', 'switch1'],
+      ['router', 'ap'],
+      ['switch1', 'pc1'],
+      ['switch1', 'pc2'],
+      ['switch1', 'pc3'],
+      ['ap', 'phone'],
+      ['ap', 'tablet']
+    ]
+  },
+  'home-network': {
+    width: 500, height: 300,
+    nodes: [
+      { id: 'internet', type: 'cloud', x: 250, y: 40, label: '' },
+      { id: 'modem', type: 'modem', x: 250, y: 110, label: 'Modem/Router', sublabel: 'öffentl. IP' },
+      { id: 'pc', type: 'host', x: 80, y: 230, label: 'PC', sublabel: '192.168.1.2' },
+      { id: 'phone', type: 'phone', x: 200, y: 230, label: 'Handy', sublabel: '192.168.1.3' },
+      { id: 'tablet', type: 'tablet', x: 320, y: 230, label: 'Tablet', sublabel: '192.168.1.4' },
+      { id: 'laptop', type: 'host', x: 440, y: 230, label: 'Laptop', sublabel: '192.168.1.5' }
+    ],
+    edges: [
+      ['internet', 'modem'],
+      ['modem', 'pc'],
+      ['modem', 'phone'],
+      ['modem', 'tablet'],
+      ['modem', 'laptop']
+    ]
+  }
+};
+
+/**
+ * Rendert ein statisches Netzwerkdiagramm (SVG).
+ *
+ * @param {Object} config - { preset: 'internet-overview'|'school-network'|'home-network', mode: 'static' }
+ * @param {HTMLElement} container
+ */
+Visuals.renderNetworkDiagram = function(config, container) {
+  const preset = Visuals.NETWORK_PRESETS[config.preset];
+  if (!preset) {
+    console.warn('Unbekanntes Netzwerk-Preset:', config.preset);
+    return;
+  }
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container network-diagram';
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${preset.width} ${preset.height}`);
+  svg.setAttribute('width', '100%');
+
+  // Lookup: Node-ID → Position
+  const nodeMap = {};
+  preset.nodes.forEach(n => { nodeMap[n.id] = n; });
+
+  // Verbindungslinien zeichnen
+  preset.edges.forEach(([fromId, toId]) => {
+    const from = nodeMap[fromId];
+    const to = nodeMap[toId];
+    if (!from || !to) return;
+    const line = document.createElementNS(svgNS, 'line');
+    line.setAttribute('x1', from.x);
+    line.setAttribute('y1', from.y);
+    line.setAttribute('x2', to.x);
+    line.setAttribute('y2', to.y);
+    line.setAttribute('class', 'connection-line');
+    svg.appendChild(line);
+  });
+
+  // Geräte-Icons und Labels zeichnen
+  preset.nodes.forEach(node => {
+    const iconFn = Visuals.NETWORK_ICONS[node.type];
+    if (!iconFn) return;
+
+    // Icon als SVG-Gruppe einfügen (innerHTML auf g)
+    const iconSvg = iconFn(node.x, node.y);
+    const g = document.createElementNS(svgNS, 'g');
+    g.innerHTML = iconSvg;
+    svg.appendChild(g);
+
+    // Label unter dem Icon
+    if (node.label) {
+      const text = document.createElementNS(svgNS, 'text');
+      text.setAttribute('x', node.x);
+      text.setAttribute('y', node.y + 28);
+      text.setAttribute('class', 'device-label');
+      text.textContent = node.label;
+      svg.appendChild(text);
+    }
+
+    // Sublabel (z.B. IP-Adresse)
+    if (node.sublabel) {
+      const sub = document.createElementNS(svgNS, 'text');
+      sub.setAttribute('x', node.x);
+      sub.setAttribute('y', node.y + 39);
+      sub.setAttribute('class', 'device-sublabel');
+      sub.textContent = node.sublabel;
+      svg.appendChild(sub);
+    }
+  });
+
+  wrapper.appendChild(svg);
+  container.appendChild(wrapper);
+};
