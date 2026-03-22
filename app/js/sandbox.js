@@ -29,6 +29,15 @@ const Sandbox = {
 
     // 7. DNF-Generator
     Sandbox.renderDNFLab(container);
+
+    // 8. IP-Rechner
+    Sandbox.renderIPConverterLab(container);
+
+    // 9. Subnetz-Kalkulator
+    Sandbox.renderSubnetLab(container);
+
+    // 10. Subnetting-Tool
+    Sandbox.renderSubnettingLab(container);
   },
 
   renderGateLab(container) {
@@ -215,6 +224,76 @@ const Sandbox = {
       variables: ['a', 'b', 'c'],
       results: [0, 1, 0, 0, 1, 0, 1, 0]
     }, section);
+
+    container.appendChild(section);
+  },
+
+  renderIPConverterLab(container) {
+    const section = Sandbox.createSection('IP-Rechner',
+      'Klicke auf die Bits oder gib Dezimalwerte ein – die Umrechnung erfolgt sofort.');
+
+    Visuals.renderIPConverter({}, section);
+
+    container.appendChild(section);
+  },
+
+  renderSubnetLab(container) {
+    const section = Sandbox.createSection('Subnetz-Kalkulator',
+      'Gib eine IP-Adresse und CIDR-Prefix ein, um Net-ID, Broadcast und Hostbereich zu berechnen.');
+
+    Visuals.renderSubnetCalculator({}, section);
+
+    container.appendChild(section);
+  },
+
+  renderSubnettingLab(container) {
+    const section = Sandbox.createSection('Subnetting-Tool',
+      'Wähle eine Subnetzgröße und beobachte, wie der Adressbereich aufgeteilt wird.');
+
+    // Eingabefelder für Netzwerk und CIDR
+    const controls = document.createElement('div');
+    controls.className = 'sandbox-controls';
+
+    const netInput = document.createElement('input');
+    netInput.type = 'text';
+    netInput.value = '192.168.10.0';
+    netInput.placeholder = 'Netzwerk (z.B. 192.168.10.0)';
+    netInput.style.width = '160px';
+
+    const cidrInput = document.createElement('input');
+    cidrInput.type = 'number';
+    cidrInput.value = 24;
+    cidrInput.min = 8;
+    cidrInput.max = 28;
+    cidrInput.style.width = '60px';
+
+    const goBtn = document.createElement('button');
+    goBtn.className = 'exercise-check-btn';
+    goBtn.textContent = 'Visualisieren';
+    goBtn.style.marginTop = '0';
+
+    controls.appendChild(netInput);
+    const slash = document.createElement('span');
+    slash.textContent = ' / ';
+    slash.style.fontWeight = 'bold';
+    controls.appendChild(slash);
+    controls.appendChild(cidrInput);
+    controls.appendChild(goBtn);
+    section.appendChild(controls);
+
+    const vizContainer = document.createElement('div');
+    section.appendChild(vizContainer);
+
+    function renderViz() {
+      vizContainer.innerHTML = '';
+      Visuals.renderSubnettingViz({
+        network: netInput.value.trim() || '192.168.10.0',
+        cidr: parseInt(cidrInput.value, 10) || 24
+      }, vizContainer);
+    }
+
+    goBtn.addEventListener('click', renderViz);
+    renderViz();
 
     container.appendChild(section);
   },
