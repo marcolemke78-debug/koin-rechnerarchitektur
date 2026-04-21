@@ -18,7 +18,7 @@ const LessonsC1 = [
         + '<h3>Klausur-Vorgehen (3 Schritte):</h3>'
         + '<ol>'
         + '<li><strong>Schaltkreis lesen</strong> &rarr; logischen Ausdruck aufschreiben</li>'
-        + '<li><strong>Wahrheitstabelle erstellen</strong> &rarr; alle 2&sup;n Kombinationen, bin&auml;r aufsteigend</li>'
+        + '<li><strong>Wahrheitstabelle erstellen</strong> &rarr; alle 2<sup>n</sup> Kombinationen, bin&auml;r aufsteigend</li>'
         + '<li><strong>Gatterschaltung zeichnen</strong> &rarr; IEC-Symbole verwenden</li>'
         + '</ol>'
     },
@@ -208,7 +208,7 @@ const LessonsC1 = [
         + '<p>Eine Wahrheitstabelle zeigt f&uuml;r <strong>alle m&ouml;glichen Eingaben</strong>, was der Ausdruck ergibt. '
         + 'So geht\'s Schritt f&uuml;r Schritt:</p>'
         + '<ol>'
-        + '<li><strong>Variablen z&auml;hlen:</strong> n Variablen &rarr; 2&sup;n Zeilen. (2 Var. = 4 Zeilen, 3 Var. = 8 Zeilen)</li>'
+        + '<li><strong>Variablen z&auml;hlen:</strong> n Variablen &rarr; 2<sup>n</sup> Zeilen. (2 Var. = 4 Zeilen, 3 Var. = 8 Zeilen)</li>'
         + '<li><strong>Spalten anlegen:</strong> Eine Spalte pro Variable, dann eine f&uuml;r jeden Teilausdruck, dann das Ergebnis.</li>'
         + '<li><strong>Bin&auml;r aufsteigend z&auml;hlen:</strong> Erste Zeile: alle 0. Letzte Zeile: alle 1. Linkste Variable wechselt am seltensten.</li>'
         + '<li><strong>Teilausdr&uuml;cke berechnen:</strong> Von innen nach au&szlig;en, Klammern zuerst, dann NOT, dann AND, dann OR.</li>'

@@ -1,6 +1,6 @@
 const Progress = {
   STORAGE_KEY: 'koin_lernprogramm_progress',
-  VERSION: 3,
+  VERSION: 3, // v3: 21 Lektionen C1+C2+C5+C6, Migration von v2 (25 Lektionen)
   TOTAL_LESSONS: 21,
 
   // Standard-Zustand: alle 21 Lektionen auf not_started, letzte Lektion = 1

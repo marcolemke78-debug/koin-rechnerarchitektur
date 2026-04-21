@@ -14,7 +14,7 @@ const LESSONS = [
   { id: 10, module: 'c2', title: 'Addierwerk 4-Bit' },
   { id: 11, module: 'c2', title: 'SR-Riegel & Timing-Diagramme' },
   // C5 – Rechnernetze I
-  { id: 12, module: 'c5', title: 'IP-Grundlagen & Multiple Choice' },
+  { id: 12, module: 'c5', title: 'IP-Grundlagen' },
   { id: 13, module: 'c5', title: 'IP-Adressen validieren' },
   { id: 14, module: 'c5', title: 'Subnetzmasken & binäre Schreibweise' },
   { id: 15, module: 'c5', title: 'Netzwerk-IDs berechnen' },
