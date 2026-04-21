@@ -78,7 +78,7 @@ const Progress = {
   },
 
   // Prozent der abgeschlossenen Lektionen im Bereich [start, end]
-  // z.B. getCompletionPercent(1, 10) fuer C1, getCompletionPercent(11, 17) fuer C2
+  // z.B. getCompletionPercent(1, 6) fuer C1, getCompletionPercent(7, 11) fuer C2
   getCompletionPercent(start, end) {
     const data = this.load();
     let completed = 0;

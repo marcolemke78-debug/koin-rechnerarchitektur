@@ -44,7 +44,7 @@ const Renderer = {
 
   /**
    * Fortschrittsbalken aktualisieren.
-   * Zeigt den Gesamtfortschritt ueber alle 17 Lektionen.
+   * Zeigt den Gesamtfortschritt ueber alle 21 Lektionen.
    */
   renderProgressBar() {
     const percent = Progress.getCompletionPercent(1, 21);
