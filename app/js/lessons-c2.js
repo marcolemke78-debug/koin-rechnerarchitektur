@@ -1,807 +1,336 @@
 const LessonsC2 = [
 
-  // ===== LEKTION 11: Binärsystem als Schalter =====
+  // ===== LEKTION 7: Binärsystem & Subtraktion =====
+  {
+    id: 7,
+    title: 'Binärsystem & Subtraktion',
+    explanation: {
+      html:
+        '<h2>Binärsystem & Subtraktion</h2>'
+        + '<p>Im Binärsystem gibt es nur zwei Ziffern: <strong>0</strong> und <strong>1</strong>. Jede Stelle ist eine Zweierpotenz.</p>'
+        + '<table style="border-collapse:collapse;margin:8px 0">'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:4px">Stelle</th><th style="border:1px solid #ccc;padding:4px">2\u00B3</th><th style="border:1px solid #ccc;padding:4px">2\u00B2</th><th style="border:1px solid #ccc;padding:4px">2\u00B9</th><th style="border:1px solid #ccc;padding:4px">2\u2070</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:4px">Wert</td><td style="border:1px solid #ccc;padding:4px">8</td><td style="border:1px solid #ccc;padding:4px">4</td><td style="border:1px solid #ccc;padding:4px">2</td><td style="border:1px solid #ccc;padding:4px">1</td></tr>'
+        + '</table>'
+        + '<p>Beispiel: <code>1011\u2082 = 8+0+2+1 = 11\u2081\u2080</code></p>'
+        + '<h3>Bin\u00E4re Subtraktion</h3>'
+        + '<p>Genauso wie beim Dezimalsystem \u2013 mit <strong>Borgen</strong> (Borrow) statt \u00DCbertrag:</p>'
+        + '<ul>'
+        + '<li><code>0 - 0 = 0</code></li>'
+        + '<li><code>1 - 0 = 1</code></li>'
+        + '<li><code>1 - 1 = 0</code></li>'
+        + '<li><code>0 - 1 = 1</code> mit Borgen (wie beim Dezimalsystem: 10\u2082 - 1 = 1)</li>'
+        + '</ul>'
+        + '<p><strong>Analogie Borgen:</strong> Wie beim Dezimalsystem \u2013 wenn du 3-7 rechnest, borgst du dir eine 10 von der n\u00E4chsten Stelle. Im Bin\u00E4rsystem borgst du eine 2.</p>'
+    },
+    example: {
+      title: 'Beispiel: Bin\u00E4re Subtraktion',
+      steps: [
+        {
+          label: '5 - 3 = 2 im Bin\u00E4rsystem',
+          html: '<p><code>101\u2082 - 011\u2082</code><br>Stelle 0: 1-1=0<br>Stelle 1: 0-1 \u2192 borgen: 10\u2082-1=1, Borgen=1<br>Stelle 2: 1-0-1(Borgen)=0<br>Ergebnis: <strong>010\u2082 = 2\u2081\u2080</strong> \u2713</p>'
+        },
+        {
+          label: 'Wann brauche ich Borgen?',
+          html: '<p>Immer wenn die obere Ziffer <strong>kleiner</strong> ist als die untere: <code>0 - 1</code> geht nicht ohne Borgen. Ich borge eine 2 von der n\u00E4chst-h\u00F6herwertigen Stelle. Aus <code>0 - 1</code> wird <code>10\u2082 - 1 = 1</code>, aber die Geberstelle wird um 1 kleiner.</p>'
+        }
+      ]
+    },
+    exercises: [
+      {
+        type: 'multiple-choice',
+        question: 'Was ergibt 1010\u2082 in Dezimal?',
+        options: ['8', '10', '12', '5'],
+        correct: 1,
+        explanation: '1010\u2082 = 1\u00D78 + 0\u00D74 + 1\u00D72 + 0\u00D71 = 8+2 = 10\u2081\u2080'
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Was bedeutet "Borgen" bei der bin\u00E4ren Subtraktion?',
+        options: [
+          'Man holt sich eine 2 von der n\u00E4chst-h\u00F6herwertigen Stelle, die dann um 1 kleiner wird',
+          'Man addiert 1 zum Ergebnis',
+          'Man negiert das Ergebnis',
+          'Das Ergebnis wird 0'
+        ],
+        correct: 0,
+        explanation: 'Borgen: Die n\u00E4chst-h\u00F6herwertige Stelle gibt eine 2 ab. Aus 0-1 wird 10\u2082-1=1, aber die Stelle links wird um 1 kleiner.'
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Was ergibt 1100\u2082 - 0101\u2082?',
+        options: ['0111\u2082', '0011\u2082', '0110\u2082', '1001\u2082'],
+        correct: 0,
+        explanation: '12\u2081\u2080 - 5\u2081\u2080 = 7\u2081\u2080 = 0111\u2082. Probe: 0\u00D78+1\u00D74+1\u00D72+1\u00D71 = 7 \u2713'
+      }
+    ]
+  },
+
+  // ===== LEKTION 8: Halbsubtrahierer =====
+  {
+    id: 8,
+    title: 'Halbsubtrahierer',
+    explanation: {
+      html:
+        '<h2>Halbsubtrahierer</h2>'
+        + '<p>Der Halbsubtrahierer subtrahiert <strong>2 Bits</strong> (A und B) und liefert zwei Ausg\u00E4nge:</p>'
+        + '<ul>'
+        + '<li><strong>D (Differenz):</strong> Das Ergebnis von A - B</li>'
+        + '<li><strong>B_out (Borgen-Ausgang):</strong> Wurde von der n\u00E4chsten Stelle geborgt?</li>'
+        + '</ul>'
+        + '<h3>Formeln:</h3>'
+        + '<p><code>D = A \u2295 B</code> (XOR \u2013 Differenz ohne Borgen)</p>'
+        + '<p><code>B_out = \u00ACA \u2227 B</code> (Borgen n\u00F6tig wenn A=0 und B=1)</p>'
+        + '<h3>Gatterschaltung:</h3>'
+        + '<ul>'
+        + '<li>XOR-Gatter f\u00FCr D</li>'
+        + '<li>NOT-Gatter f\u00FCr \u00ACA, dann AND-Gatter (\u00ACA, B) f\u00FCr B_out</li>'
+        + '</ul>'
+        + '<p><strong>Analogie:</strong> \u00C4hnlich wie der Halbaddierer, aber \u201Er\u00FCckw\u00E4rts\u201C \u2013 statt \u00DCbertrag gibt es Borgen.</p>'
+    },
+    example: {
+      title: 'Beispiel: Halbsubtrahierer Wahrheitstabelle',
+      steps: [
+        {
+          label: 'Vollst\u00E4ndige Wahrheitstabelle',
+          html: '<table style="border-collapse:collapse;margin:8px 0"><tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:4px">A</th><th style="border:1px solid #ccc;padding:4px">B</th><th style="border:1px solid #ccc;padding:4px">D=A\u2295B</th><th style="border:1px solid #ccc;padding:4px">B_out=\u00ACA\u2227B</th></tr><tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td></tr><tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td></tr></table>'
+        },
+        {
+          label: 'Warum B_out = \u00ACA \u2227 B?',
+          html: '<p>Borgen ist n\u00F6tig wenn <strong>A=0 und B=1</strong>: 0-1 geht nicht ohne Borgen. Das ist genau die Bedingung \u00ACA\u2227B. In allen anderen F\u00E4llen (A=B oder A>B) kein Borgen n\u00F6tig.</p>'
+        }
+      ]
+    },
+    exercises: [
+      {
+        type: 'truth-table',
+        question: 'Klausur-Aufgabe: F\u00FClle die WTT f\u00FCr den Halbsubtrahierer aus (D=Differenz, B_out=Borgen):',
+        variables: ['A', 'B'],
+        resultColumns: ['D', 'B_out'],
+        correctResults: [[0,0],[1,1],[1,0],[0,0]]
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Welche Formel gilt f\u00FCr den Borgen-Ausgang B_out des Halbsubtrahierers?',
+        options: ['\u00ACA \u2227 B', 'A \u2227 B', 'A \u2295 B', 'A \u2228 \u00ACB'],
+        correct: 0,
+        explanation: 'B_out = \u00ACA \u2227 B: Borgen n\u00F6tig wenn A=0 (\u00ACA=1) UND B=1. Nur dann ist 0-1 nicht ohne Borgen l\u00F6sbar.'
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Welches Gatter berechnet die Differenz D im Halbsubtrahierer?',
+        options: ['XOR (\u2295)', 'AND (\u2227)', 'OR (\u2228)', 'NAND'],
+        correct: 0,
+        explanation: 'D = A \u2295 B (XOR): Differenz ist 1 wenn genau einer der Eing\u00E4nge 1 ist \u2013 genau wie beim 1-Bit-Subtraktionsergebnis ohne Borgen.'
+      }
+    ]
+  },
+
+  // ===== LEKTION 9: Vollsubtrahierer =====
+  {
+    id: 9,
+    title: 'Vollsubtrahierer',
+    explanation: {
+      html:
+        '<h2>Vollsubtrahierer</h2>'
+        + '<p>Der Vollsubtrahierer erweitert den Halbsubtrahierer um einen <strong>Borgen-Eingang B_in</strong> (von der niedrigerwertigen Stelle). Er hat also 3 Eing\u00E4nge: A, B, B_in.</p>'
+        + '<h3>Aufbau aus zwei Halbsubtrahierern:</h3>'
+        + '<ol>'
+        + '<li><strong>Halbsubtrahierer 1 (HS1):</strong> Subtrahiert A - B \u2192 D1, B_out1</li>'
+        + '<li><strong>Halbsubtrahierer 2 (HS2):</strong> Subtrahiert D1 - B_in \u2192 D, B_out2</li>'
+        + '<li><strong>OR-Gatter:</strong> Gesamt-Borgen = B_out1 \u2228 B_out2</li>'
+        + '</ol>'
+        + '<h3>Ausg\u00E4nge:</h3>'
+        + '<ul>'
+        + '<li><strong>D:</strong> Endg\u00FCltige Differenz</li>'
+        + '<li><strong>B_out:</strong> Borgen an n\u00E4chste Stelle = B_out1 \u2228 B_out2</li>'
+        + '</ul>'
+    },
+    example: {
+      title: 'Beispiel: Vollsubtrahierer Schaltung & WTT (Auszug)',
+      steps: [
+        {
+          label: 'Aufbau der Schaltung (Klausur-Zeichnung)',
+          html: '<p>Eing\u00E4nge: A, B, B_in<br>HS1: A und B \u2192 D1, B_out1<br>HS2: D1 und B_in \u2192 D, B_out2<br>OR-Gatter: B_out1 \u2228 B_out2 \u2192 B_out<br>Ausg\u00E4nge: D, B_out</p>'
+        },
+        {
+          label: 'Ausgew\u00E4hlte WTT-Zeilen',
+          html: '<table style="border-collapse:collapse;font-size:13px;margin:8px 0"><tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:4px">A</th><th style="border:1px solid #ccc;padding:4px">B</th><th style="border:1px solid #ccc;padding:4px">B_in</th><th style="border:1px solid #ccc;padding:4px">D</th><th style="border:1px solid #ccc;padding:4px">B_out</th></tr><tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td></tr><tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td></tr><tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td></tr></table>'
+        }
+      ]
+    },
+    exercises: [
+      {
+        type: 'multiple-choice',
+        question: 'Wie viele Eing\u00E4nge hat ein Vollsubtrahierer?',
+        options: ['2 (A, B)', '3 (A, B, B_in)', '4 (A, B, B_in, Takt)', '2 (Differenz, Borgen)'],
+        correct: 1,
+        explanation: 'Vollsubtrahierer hat 3 Eing\u00E4nge: A (Minuend), B (Subtrahend), B_in (Borgen-Eingang von der niedrigerwertigen Stelle).'
+      },
+      {
+        type: 'truth-table',
+        question: 'Klausur-Aufgabe: Vollsubtrahierer WTT. F\u00FClle D (Differenz) und B_out (Borgen-Ausgang) aus:',
+        variables: ['A', 'B', 'B_in'],
+        resultColumns: ['D', 'B_out'],
+        correctResults: [[0,0],[1,1],[1,1],[0,1],[1,0],[0,0],[0,0],[1,1]]
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Aus welchen Bausteinen besteht ein Vollsubtrahierer?',
+        options: [
+          '2 Halbsubtrahierer + 1 OR-Gatter',
+          '1 Halbsubtrahierer + 1 AND-Gatter',
+          '2 Halbaddierer + 1 XOR-Gatter',
+          '3 AND-Gatter + 1 OR-Gatter'
+        ],
+        correct: 0,
+        explanation: 'Vollsubtrahierer = HS1 (subtrahiert A-B) + HS2 (subtrahiert D1-B_in) + OR-Gatter (kombiniert beide Borgen-Ausg\u00E4nge).'
+      }
+    ]
+  },
+
+  // ===== LEKTION 10: Addierwerk 4-Bit =====
+  {
+    id: 10,
+    title: 'Addierwerk 4-Bit',
+    explanation: {
+      html:
+        '<h2>Addierwerk 4-Bit</h2>'
+        + '<p>Ein 4-Bit-Addierwerk addiert zwei 4-Bit-Zahlen (A\u2083A\u2082A\u2081A\u2080 + B\u2083B\u2082B\u2081B\u2080). Es besteht aus:</p>'
+        + '<ul>'
+        + '<li><strong>Stelle 0:</strong> Halbaddierer (kein Carry-Eingang)</li>'
+        + '<li><strong>Stellen 1-3:</strong> je ein Volladdierer (mit Carry-Eingang C_in vom Vorg\u00E4nger)</li>'
+        + '</ul>'
+        + '<h3>Volladdierer-Formeln:</h3>'
+        + '<p><code>S = A \u2295 B \u2295 C_in</code> (Summe)</p>'
+        + '<p><code>C_out = (A\u2227B) \u2228 (A\u2227C_in) \u2228 (B\u2227C_in)</code> (\u00DCbertrag)</p>'
+        + '<h3>In der Klausur (Aufgabe mit Farbmarkierung):</h3>'
+        + '<p>Die Eingabebits werden nach Farbe beschriftet (z.B. gr\u00FCn=A, rot=B, gelb=Carry). Du musst nachvollziehen, wie der Carry von Stelle zu Stelle propagiert.</p>'
+    },
+    example: {
+      title: 'Beispiel: 0101\u2082 + 0110\u2082 = 1011\u2082',
+      steps: [
+        {
+          label: 'Stelle 0 (Halbaddierer): A\u2080=1, B\u2080=0',
+          html: '<p>S\u2080 = 1\u22950 = 1, C\u2080 = 1\u22270 = 0</p>'
+        },
+        {
+          label: 'Stelle 1 (Volladdierer): A\u2081=0, B\u2081=1, C_in=0',
+          html: '<p>S\u2081 = 0\u22951\u22950 = 1, C\u2081 = (0\u22271)\u2228(0\u22270)\u2228(1\u22270) = 0</p>'
+        },
+        {
+          label: 'Stelle 2 (Volladdierer): A\u2082=1, B\u2082=1, C_in=0',
+          html: '<p>S\u2082 = 1\u22951\u22950 = 0, C\u2082 = (1\u22271)\u2228(1\u22270)\u2228(1\u22270) = 1</p>'
+        },
+        {
+          label: 'Stelle 3 (Volladdierer): A\u2083=0, B\u2083=0, C_in=1',
+          html: '<p>S\u2083 = 0\u22950\u22951 = 1, C\u2083 = 0 (kein \u00DCberlauf)</p><p>Ergebnis: S\u2083S\u2082S\u2081S\u2080 = <strong>1011\u2082 = 11\u2081\u2080</strong> = 5+6 \u2713</p>'
+        }
+      ]
+    },
+    exercises: [
+      {
+        type: 'multiple-choice',
+        question: 'Warum verwendet Stelle 0 einen Halbaddierer, alle anderen einen Volladdierer?',
+        options: [
+          'Stelle 0 hat keinen Carry-Eingang \u2013 es gibt keine niedrigere Stelle die einen Carry liefern k\u00F6nnte',
+          'Stelle 0 ist immer 0',
+          'Der Halbaddierer ist schneller',
+          'Stelle 0 addiert keine Bits'
+        ],
+        correct: 0,
+        explanation: 'Stelle 0 ist die niedrigstwertige Stelle. Sie hat keinen Vorg\u00E4nger, daher keinen Carry-Eingang. Alle anderen Stellen k\u00F6nnen einen Carry von der niedrigeren Stelle erhalten \u2192 Volladdierer.'
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Was ergibt 0011\u2082 + 0101\u2082 im 4-Bit-Addierwerk?',
+        options: ['1000\u2082', '0111\u2082', '1001\u2082', '0110\u2082'],
+        correct: 0,
+        explanation: '3\u2081\u2080 + 5\u2081\u2080 = 8\u2081\u2080 = 1000\u2082. Stelle 0: 1+1=0, C=1. Stelle 1: 1+0+1=0, C=1. Stelle 2: 0+1+1=0, C=1. Stelle 3: 0+0+1=1, C=0.'
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Volladdierer: A=1, B=1, C_in=1. Welche Summe S und welchen Carry C_out ergibt das?',
+        options: ['S=1, C_out=1', 'S=0, C_out=0', 'S=1, C_out=0', 'S=0, C_out=1'],
+        correct: 0,
+        explanation: 'S = 1\u22951\u22951 = 1. C_out = (1\u22271)\u2228(1\u22271)\u2228(1\u22271) = 1. Also S=1, C_out=1. Probe: 1+1+1=3\u2081\u2080=11\u2082 \u2192 S=1, C=1 \u2713'
+      }
+    ]
+  },
+
+  // ===== LEKTION 11: SR-Riegel & Timing-Diagramme =====
   {
     id: 11,
-    title: 'Binärsystem als Schalter',
+    title: 'SR-Riegel & Timing-Diagramme',
     explanation: {
       html:
-        '<h3>Bits – die kleinste Einheit</h3>'
-        + '<p>Ein <strong>Bit</strong> (Binary Digit = Binärziffer) ist die kleinste Informationseinheit '
-        + 'in einem Computer. Es kennt nur zwei Werte: <strong>0</strong> oder <strong>1</strong>.</p>'
-        + '<p><strong>Analogie:</strong> Stell dir einen Lichtschalter vor – er ist entweder '
-        + '<em>aus</em> (0) oder <em>an</em> (1). Ein Bit ist genau so ein Schalter.</p>'
-
-        + '<h3>Binärzahlen lesen</h3>'
-        + '<p>Mehrere Bits nebeneinander bilden eine <strong>Binärzahl</strong>. '
-        + 'Jede Stelle hat einen bestimmten Wert – ähnlich wie im Dezimalsystem:</p>'
-        + '<table class="truth-table">'
-        + '<thead><tr><th>Stelle</th><th>3</th><th>2</th><th>1</th><th>0</th></tr></thead>'
-        + '<tbody><tr><td><strong>Stellenwert</strong></td><td>8</td><td>4</td><td>2</td><td>1</td></tr></tbody>'
+        '<h2>SR-Riegel & Timing-Diagramme</h2>'
+        + '<p>Der SR-Riegel ist eine <strong>bistabile Kippstufe</strong> \u2013 er kann sich einen Zustand merken (0 oder 1), auch wenn die Eing\u00E4nge wieder 0 werden.</p>'
+        + '<h3>Eing\u00E4nge & Ausg\u00E4nge:</h3>'
+        + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px">Eingang</th><th style="border:1px solid #ccc;padding:6px">Bedeutung</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>S (Set)</strong></td><td style="border:1px solid #ccc;padding:6px">Ausgang Q auf 1 setzen</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>R (Reset)</strong></td><td style="border:1px solid #ccc;padding:6px">Ausgang Q auf 0 zur\u00FCcksetzen</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>C (Clock/Takt)</strong></td><td style="border:1px solid #ccc;padding:6px">Zustands\u00E4nderung nur wenn C=1</td></tr>'
         + '</table>'
-        + '<p>Die Stellenwerte sind Zweierpotenzen: 2<sup>0</sup>=1, 2<sup>1</sup>=2, 2<sup>2</sup>=4, 2<sup>3</sup>=8, …</p>'
-
-        + '<h3>Gerade oder ungerade?</h3>'
-        + '<p>Ein einfacher Trick: Das <strong>letzte Bit</strong> (ganz rechts, Stelle 0) verrät, '
-        + 'ob eine Zahl <strong>gerade</strong> oder <strong>ungerade</strong> ist:</p>'
-        + '<ul>'
-        + '<li>Letztes Bit = <strong>0</strong> → Zahl ist <strong>gerade</strong></li>'
-        + '<li>Letztes Bit = <strong>1</strong> → Zahl ist <strong>ungerade</strong></li>'
-        + '</ul>'
-        + '<p>Das liegt daran, dass Stelle 0 den Wert 1 hat. Ist sie gesetzt, wird eine ungerade Zahl draufaddiert.</p>'
+        + '<h3>Zustands\u00FCbergangstabelle:</h3>'
+        + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px">C</th><th style="border:1px solid #ccc;padding:6px">S</th><th style="border:1px solid #ccc;padding:6px">R</th><th style="border:1px solid #ccc;padding:6px">Q (n\u00E4chster)</th><th style="border:1px solid #ccc;padding:6px">Bedeutung</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">x</td><td style="border:1px solid #ccc;padding:6px">x</td><td style="border:1px solid #ccc;padding:6px">Q (h\u00E4lt)</td><td style="border:1px solid #ccc;padding:6px">Keine \u00C4nderung (Takt=0)</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">Q (h\u00E4lt)</td><td style="border:1px solid #ccc;padding:6px">Speichern</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">Setzen</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">R\u00FCcksetzen</td></tr>'
+        + '<tr style="background:#fff3cd"><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">\u26A0\uFE0F verboten</td><td style="border:1px solid #ccc;padding:6px">Undefiniert!</td></tr>'
+        + '</table>'
+        + '<p><strong>Analogie:</strong> Wie ein Lichtschalter mit Ged\u00E4chtnis: S dr\u00FCcken = Licht an (bleibt an!). R dr\u00FCcken = Licht aus (bleibt aus!). C=0 = Schalter gesperrt.</p>'
+        + '<p><strong>Q\u0305 (Q-Quer):</strong> Immer das Gegenteil von Q.</p>'
     },
     example: {
-      title: 'Beispiel: Dezimal 5 im Binärsystem',
+      title: 'Klausur-Beispiel: Timing-Diagramm ausf\u00FCllen',
       steps: [
         {
-          label: 'Stellenwerte aufschreiben',
-          html:
-            '<p>Wir wollen die Dezimalzahl <strong>5</strong> binär darstellen. '
-            + 'Dazu prüfen wir, welche Zweierpotenzen in 5 „passen":</p>'
-            + '<table class="truth-table">'
-            + '<thead><tr><th>Stellenwert</th><th>4</th><th>2</th><th>1</th></tr></thead>'
-            + '<tbody><tr><td><strong>Bit</strong></td><td>1</td><td>0</td><td>1</td></tr></tbody>'
-            + '</table>'
+          label: 'Gegeben: C, S, R \u2013 Gesucht: Q und Q\u0305',
+          html: '<p>Startbedingung: Q=0<br><br>Takt 1: C=1, S=1, R=0 \u2192 <strong>Setzen</strong> \u2192 Q wird 1<br>Takt 2: C=1, S=0, R=0 \u2192 <strong>Halten</strong> \u2192 Q bleibt 1<br>Takt 3: C=0, S=1, R=0 \u2192 <strong>gesperrt</strong> \u2192 Q bleibt 1<br>Takt 4: C=1, S=0, R=1 \u2192 <strong>R\u00FCcksetzen</strong> \u2192 Q wird 0</p>'
         },
         {
-          label: 'Berechnung',
-          html:
-            '<p><code>1·4 + 0·2 + 1·1 = 4 + 0 + 1 = 5</code></p>'
-            + '<p>Also: Dezimal <strong>5</strong> = Binär <strong>101</strong></p>'
-        },
-        {
-          label: 'Gerade oder ungerade?',
-          html:
-            '<p>Das letzte Bit von 101 ist <strong>1</strong>.</p>'
-            + '<p>→ Die Zahl ist <strong>ungerade</strong>. ✓ (5 ist tatsächlich ungerade)</p>'
+          label: 'Wichtige Regel',
+          html: '<p><strong>Nur bei C=1 kann sich Q \u00E4ndern!</strong> Selbst wenn S=1 und R=0 ist, passiert nichts solange C=0. Das ist der Sinn des Taktsignals: Es kontrolliert, wann der Riegel reagiert.</p><p>Q\u0305 ist immer das Gegenteil von Q. Wenn Q=1, dann Q\u0305=0 und umgekehrt.</p>'
         }
       ]
     },
     exercises: [
       {
         type: 'multiple-choice',
-        question: 'Was ist ein Bit?',
-        options: [
-          'Eine Zahl zwischen 0 und 9',
-          'Die kleinste Informationseinheit mit den Werten 0 oder 1',
-          'Eine Einheit für Speicherplatz (8 Byte)',
-          'Ein elektrischer Widerstand'
-        ],
-        correct: 1,
-        explanation: 'Ein Bit (Binary Digit) ist die kleinste Informationseinheit und kann nur 0 oder 1 sein – wie ein Schalter.'
+        question: 'SR-Riegel: C=1, S=1, R=0. Was passiert mit Q?',
+        options: ['Q wird 1 (Setzen)', 'Q wird 0 (R\u00FCcksetzen)', 'Q h\u00E4lt seinen Wert', 'Undefiniert'],
+        correct: 0,
+        explanation: 'Bei C=1, S=1, R=0 wird der Riegel gesetzt: Q \u2192 1. Das S-Signal "setzt" Q auf 1.'
       },
       {
         type: 'multiple-choice',
-        question: 'Ist die Binärzahl 1010 gerade oder ungerade?',
-        options: [
-          'Ungerade',
-          'Gerade',
-          'Kann man nicht sagen',
-          'Weder noch'
-        ],
-        correct: 1,
-        explanation: 'Das letzte Bit (ganz rechts) ist 0, also ist die Zahl gerade. (1010₂ = 10₁₀)'
-      }
-    ]
-  },
-
-  // ===== LEKTION 12: ALU und Binäraddition =====
-  {
-    id: 12,
-    title: 'ALU und Binäraddition',
-    explanation: {
-      html:
-        '<h3>Die ALU – das Herzstück des Prozessors</h3>'
-        + '<p>Die <strong>ALU</strong> (Arithmetic Logic Unit = Arithmetisch-Logische Einheit) ist der Teil '
-        + 'des Prozessors, der rechnen kann. Sie führt arithmetische Operationen (Addition, Subtraktion) '
-        + 'und logische Operationen (AND, OR, NOT) aus.</p>'
-        + '<p><strong>Analogie:</strong> Die ALU ist wie das „Rechenwerk" in deinem Kopf – '
-        + 'der Teil, der 3+4 zusammenzählt.</p>'
-
-        + '<h3>Additionsregeln im Binärsystem</h3>'
-        + '<p>Im Binärsystem gibt es nur vier mögliche Additionen:</p>'
-        + '<table class="truth-table">'
-        + '<thead><tr><th>Rechnung</th><th>Ergebnis</th><th>Erklärung</th></tr></thead>'
-        + '<tbody>'
-        + '<tr><td><code>0 + 0</code></td><td><code>0</code></td><td>Null plus Null</td></tr>'
-        + '<tr><td><code>0 + 1</code></td><td><code>1</code></td><td>Wie im Dezimalsystem</td></tr>'
-        + '<tr><td><code>1 + 0</code></td><td><code>1</code></td><td>Wie im Dezimalsystem</td></tr>'
-        + '<tr><td><code>1 + 1</code></td><td><code>10</code></td><td>Summe 0, Übertrag 1</td></tr>'
-        + '</tbody></table>'
-
-        + '<h3>Übertrag (Carry)</h3>'
-        + '<p>Bei <code>1 + 1</code> passiert dasselbe wie bei <code>5 + 5</code> im Dezimalsystem: '
-        + 'Das Ergebnis „passt nicht mehr in eine Stelle" und wir bekommen einen <strong>Übertrag</strong> '
-        + '(englisch: <em>carry</em>).</p>'
-        + '<p>Ein Addierer braucht deshalb <strong>zwei Ausgänge</strong>:</p>'
-        + '<ul>'
-        + '<li><strong>s</strong> (Summe) – das Ergebnis an dieser Stelle</li>'
-        + '<li><strong>c</strong> (Carry/Übertrag) – der Übertrag zur nächsten Stelle</li>'
-        + '</ul>',
-      visuals: [
-        { type: 'binary-animation', operandA: '1011', operandB: '0110' }
-      ]
-    },
-    example: {
-      title: 'Beispiel: 1 + 1 im Binärsystem',
-      steps: [
-        {
-          label: 'Die Rechnung',
-          html:
-            '<p>Wir rechnen <code>1 + 1</code> im Binärsystem.</p>'
-            + '<p>Im Dezimalsystem wäre das einfach: 1 + 1 = 2. '
-            + 'Aber im Binärsystem gibt es keine Ziffer „2"!</p>'
-        },
-        {
-          label: 'Übertrag bilden',
-          html:
-            '<p>Genau wie bei 9 + 1 = 10 im Dezimalsystem (Übertrag!) gilt:</p>'
-            + '<p><code>1 + 1 = 10₂</code></p>'
-            + '<p>Das bedeutet: Summe = <strong>0</strong>, Übertrag = <strong>1</strong></p>'
-            + '<p>Die „10" im Binärsystem ist die Dezimalzahl 2. ✓</p>'
-        }
-      ]
-    },
-    exercises: [
-      {
-        type: 'multiple-choice',
-        question: 'Was ist das Ergebnis von 1 + 1 im Binärsystem?',
-        options: [
-          '2',
-          '11',
-          '10',
-          '01'
-        ],
-        correct: 2,
-        explanation: '1 + 1 = 10 im Binärsystem (Summe 0, Übertrag 1). Die Binärzahl 10 entspricht der Dezimalzahl 2.'
-      },
-      {
-        type: 'binary-calculation',
-        question: 'Berechne: 11 + 01 (binär). Trage Überträge und Ergebnis ein.',
-        operand1: [1, 1],
-        operand2: [0, 1],
-        correctResult: [1, 0, 0],
-        correctCarries: [1, 0],
-        explanation: 'Stelle 0: 1+1 = 10 → s=0, c=1. Stelle 1: 1+0+1(Übertrag) = 10 → s=0, c=1. Übertrag wird höchstes Bit → 100.'
-      }
-    ]
-  },
-
-  // ===== LEKTION 13: Halbaddierer =====
-  {
-    id: 13,
-    title: 'Halbaddierer',
-    explanation: {
-      html:
-        '<h3>Was ist ein Halbaddierer?</h3>'
-        + '<p>Ein <strong>Halbaddierer</strong> (englisch: <em>Half Adder</em>) ist eine Schaltung, '
-        + 'die zwei einzelne Bits addiert. Er hat:</p>'
-        + '<ul>'
-        + '<li><strong>Zwei Eingänge:</strong> a und b (die beiden Bits, die addiert werden)</li>'
-        + '<li><strong>Zwei Ausgänge:</strong> s (Summe) und c (Carry/Übertrag)</li>'
-        + '</ul>'
-
-        + '<h3>Die Logik dahinter</h3>'
-        + '<p>Wenn wir die Additionsregeln aus der letzten Lektion betrachten, erkennen wir ein Muster:</p>'
-        + '<ul>'
-        + '<li><strong>Summe (s)</strong>: Ist genau dann 1, wenn a und b <em>unterschiedlich</em> sind '
-        + '→ Das ist die <strong>XOR</strong>-Verknüpfung: <code>s = a ⊕ b</code></li>'
-        + '<li><strong>Übertrag (c)</strong>: Ist genau dann 1, wenn <em>beide</em> Eingänge 1 sind '
-        + '→ Das ist die <strong>AND</strong>-Verknüpfung: <code>c = a ∧ b</code></li>'
-        + '</ul>'
-
-        + '<p><strong>So sieht der Halbaddierer als Schaltung aus:</strong></p>'
-        + '<svg viewBox="0 0 400 185" class="circuit-diagram" role="img" aria-label="Schaltplan Halbaddierer">'
-        + '<text x="8" y="35" class="cd-label">a</text>'
-        + '<text x="8" y="155" class="cd-label">b</text>'
-        + '<rect x="170" y="15" width="60" height="50" class="cd-gate"/>'
-        + '<text x="200" y="47" class="cd-gate-text">&amp;</text>'
-        + '<rect x="170" y="115" width="60" height="50" class="cd-gate"/>'
-        + '<text x="200" y="147" class="cd-gate-text">=1</text>'
-        + '<line x1="25" y1="30" x2="170" y2="30" class="cd-wire"/>'
-        + '<line x1="90" y1="30" x2="90" y2="130" class="cd-wire"/>'
-        + '<line x1="90" y1="130" x2="170" y2="130" class="cd-wire"/>'
-        + '<circle cx="90" cy="30" r="3.5" class="cd-junction"/>'
-        + '<line x1="25" y1="150" x2="170" y2="150" class="cd-wire"/>'
-        + '<line x1="110" y1="150" x2="110" y2="50" class="cd-wire"/>'
-        + '<line x1="110" y1="50" x2="170" y2="50" class="cd-wire"/>'
-        + '<circle cx="110" cy="150" r="3.5" class="cd-junction"/>'
-        + '<line x1="230" y1="40" x2="310" y2="40" class="cd-wire"/>'
-        + '<text x="318" y="45" class="cd-label">c (Übertrag)</text>'
-        + '<line x1="230" y1="140" x2="310" y2="140" class="cd-wire"/>'
-        + '<text x="318" y="145" class="cd-label">s (Summe)</text>'
-        + '</svg>'
-
-        + '<h3>Warum „halb"?</h3>'
-        + '<p>Er heißt <strong>Halb</strong>addierer, weil er keinen <strong>eingehenden Übertrag</strong> '
-        + 'von einer vorherigen Stelle berücksichtigt. Er kann also nur die erste (niederwertigste) Stelle '
-        + 'einer mehrstelligen Addition berechnen.</p>'
-        + '<p><strong>Analogie:</strong> Stell dir vor, du rechnest schriftlich 27 + 15. '
-        + 'Beim Einer-Platz (7+5) brauchst du keinen Übertrag von vorher – das ist der „Halbaddierer". '
-        + 'Beim Zehner-Platz musst du den Übertrag von den Einern berücksichtigen – '
-        + 'dafür braucht man einen Volladdierer (kommt in der nächsten Lektion).</p>',
-      visuals: [
-        { type: 'gate-sim', gate: 'xor', label: 'XOR als Summenbit' },
-        { type: 'gate-sim', gate: 'and', label: 'AND als Carry-Bit' }
-      ]
-    },
-    example: {
-      title: 'Beispiel: Halbaddierer mit a=1, b=1',
-      visuals: [
-        { type: 'circuit', circuit: 'half-adder', interactive: true }
-      ],
-      steps: [
-        {
-          label: 'Eingangswerte',
-          html:
-            '<p>Wir setzen <strong>a = 1</strong> und <strong>b = 1</strong>.</p>'
-        },
-        {
-          label: 'Summe berechnen (XOR)',
-          html:
-            '<p>Die Summe ist <code>s = a ⊕ b = 1 ⊕ 1 = <strong>0</strong></code></p>'
-            + '<p>XOR gibt 1 zurück, wenn die Eingänge <em>unterschiedlich</em> sind. '
-            + 'Hier sind beide 1 (gleich), also ist das Ergebnis 0.</p>'
-        },
-        {
-          label: 'Übertrag berechnen (AND)',
-          html:
-            '<p>Der Übertrag ist <code>c = a ∧ b = 1 ∧ 1 = <strong>1</strong></code></p>'
-            + '<p>AND gibt 1 zurück, wenn <em>beide</em> Eingänge 1 sind. ✓</p>'
-        },
-        {
-          label: 'Ergebnis',
-          html:
-            '<p>Übertrag c = <strong>1</strong>, Summe s = <strong>0</strong></p>'
-            + '<p>Zusammen: <code>1 + 1 = 10₂</code> (dezimal: 2) ✓</p>'
-        }
-      ]
-    },
-    exercises: [
-      {
-        type: 'state-table',
-        question: 'Fülle die Ausgangsspalten des Halbaddierers aus (Klicke auf "?" um zwischen 0 und 1 zu wechseln):',
-        inputColumns: ['a', 'b'],
-        outputColumns: ['s (Summe)', 'c (Übertrag)'],
-        inputs: [[0, 0], [0, 1], [1, 0], [1, 1]],
-        correctOutputs: [[0, 0], [1, 0], [1, 0], [0, 1]],
-        explanation: 'Summe s = a ⊕ b (XOR): unterschiedliche Eingänge → 1. Übertrag c = a ∧ b (AND): beide 1 → 1.'
+        question: 'SR-Riegel: C=0, S=1, R=0. Was passiert mit Q (aktuell Q=0)?',
+        options: ['Q bleibt 0 \u2013 Takt=0, keine \u00C4nderung', 'Q wird 1 wegen S=1', 'Q wird undefiniert', 'Q wechselt auf 1'],
+        correct: 0,
+        explanation: 'Bei C=0 ist der Riegel gesperrt. Egal was S und R sind \u2013 Q \u00E4ndert sich NICHT. Q bleibt bei 0.'
       },
       {
         type: 'multiple-choice',
-        question: 'Welches Gatter berechnet die Summe im Halbaddierer?',
+        question: 'Warum ist der Zustand S=1, R=1 beim SR-Riegel verboten?',
         options: [
-          'AND',
-          'OR',
-          'XOR',
-          'NOT'
+          'Weil gleichzeitiges Setzen und R\u00FCcksetzen widerspr\u00FCchlich ist und zu undefiniertem Verhalten f\u00FChrt',
+          'Weil dann C ignoriert wird',
+          'Weil dann Q=0 erzwungen wird',
+          'Weil dann Q\u0305=Q w\u00E4re, was einen Kurzschluss bedeutet'
         ],
-        correct: 2,
-        explanation: 'Die Summe ist s = a ⊕ b (XOR). XOR gibt 1 aus, wenn genau ein Eingang 1 ist – genau das Muster der Addition ohne Übertrag.'
-      }
-    ]
-  },
-
-  // ===== LEKTION 14: Volladdierer =====
-  {
-    id: 14,
-    title: 'Volladdierer',
-    explanation: {
-      html:
-        '<h3>Vom Halbaddierer zum Volladdierer</h3>'
-        + '<p>Der Halbaddierer kann nur zwei Bits addieren. Aber bei mehrstelligen Zahlen '
-        + 'gibt es ab der zweiten Stelle einen <strong>eingehenden Übertrag</strong> von der vorherigen Stelle. '
-        + 'Dafür brauchen wir den <strong>Volladdierer</strong> (englisch: <em>Full Adder</em>).</p>'
-
-        + '<h3>Drei Eingänge, zwei Ausgänge</h3>'
-        + '<ul>'
-        + '<li><strong>Eingänge:</strong> a, b, c<sub>in</sub> (eingehender Übertrag)</li>'
-        + '<li><strong>Ausgänge:</strong> s (Summe), c<sub>out</sub> (ausgehender Übertrag)</li>'
-        + '</ul>'
-
-        + '<h3>Aufbau aus zwei Halbaddierern</h3>'
-        + '<p>Ein Volladdierer besteht intern aus <strong>zwei Halbaddierern</strong> und einem <strong>OR-Gatter</strong>:</p>'
-        + '<ol>'
-        + '<li>Halbaddierer 1: addiert a und b → Zwischensumme und Zwischenübertrag</li>'
-        + '<li>Halbaddierer 2: addiert Zwischensumme und c<sub>in</sub> → endgültige Summe und zweiter Übertrag</li>'
-        + '<li>OR-Gatter: verknüpft beide Überträge → c<sub>out</sub></li>'
-        + '</ol>'
-
-        + '<p><strong>Aufbau des Volladdierers aus Gattern (wie in den Folien):</strong></p>'
-        + '<svg viewBox="0 0 560 260" class="circuit-diagram" role="img" aria-label="Schaltplan Volladdierer">'
-        + '<rect x="130" y="0" width="105" height="155" rx="4" fill="none" stroke="#93C5FD" stroke-width="1.5" stroke-dasharray="4,2"/>'
-        + '<text x="135" y="168" font-size="11" fill="#2563EB" font-style="italic" font-family="inherit">Halbaddierer</text>'
-        + '<rect x="290" y="80" width="105" height="155" rx="4" fill="none" stroke="#93C5FD" stroke-width="1.5" stroke-dasharray="4,2"/>'
-        + '<text x="295" y="248" font-size="11" fill="#2563EB" font-style="italic" font-family="inherit">Halbaddierer</text>'
-        + '<rect x="155" y="10" width="60" height="50" class="cd-gate"/>'
-        + '<text x="185" y="42" class="cd-gate-text">&amp;</text>'
-        + '<rect x="155" y="90" width="60" height="50" class="cd-gate"/>'
-        + '<text x="185" y="122" class="cd-gate-text">=1</text>'
-        + '<rect x="315" y="90" width="60" height="50" class="cd-gate"/>'
-        + '<text x="345" y="122" class="cd-gate-text">&amp;</text>'
-        + '<rect x="315" y="175" width="60" height="50" class="cd-gate"/>'
-        + '<text x="345" y="207" class="cd-gate-text">=1</text>'
-        + '<rect x="445" y="20" width="60" height="50" class="cd-gate"/>'
-        + '<text x="475" y="52" class="cd-gate-text">≥1</text>'
-        + '<text x="8" y="30" class="cd-label">a</text>'
-        + '<line x1="25" y1="25" x2="155" y2="25" class="cd-wire"/>'
-        + '<circle cx="80" cy="25" r="3.5" class="cd-junction"/>'
-        + '<line x1="80" y1="25" x2="80" y2="105" class="cd-wire"/>'
-        + '<line x1="80" y1="105" x2="155" y2="105" class="cd-wire"/>'
-        + '<text x="8" y="145" class="cd-label">b</text>'
-        + '<line x1="25" y1="140" x2="100" y2="140" class="cd-wire"/>'
-        + '<line x1="100" y1="140" x2="100" y2="45" class="cd-wire"/>'
-        + '<line x1="100" y1="45" x2="155" y2="45" class="cd-wire"/>'
-        + '<circle cx="100" cy="125" r="3.5" class="cd-junction"/>'
-        + '<line x1="100" y1="125" x2="155" y2="125" class="cd-wire"/>'
-        + '<text x="3" y="245" class="cd-label">c<tspan dy="3" font-size="10">in</tspan></text>'
-        + '<line x1="38" y1="240" x2="275" y2="240" class="cd-wire"/>'
-        + '<line x1="275" y1="240" x2="275" y2="125" class="cd-wire"/>'
-        + '<line x1="275" y1="125" x2="315" y2="125" class="cd-wire"/>'
-        + '<circle cx="275" cy="210" r="3.5" class="cd-junction"/>'
-        + '<line x1="275" y1="210" x2="315" y2="210" class="cd-wire"/>'
-        + '<line x1="215" y1="115" x2="250" y2="115" class="cd-wire"/>'
-        + '<circle cx="250" cy="115" r="3.5" class="cd-junction"/>'
-        + '<line x1="250" y1="115" x2="250" y2="105" class="cd-wire"/>'
-        + '<line x1="250" y1="105" x2="315" y2="105" class="cd-wire"/>'
-        + '<line x1="250" y1="115" x2="250" y2="190" class="cd-wire"/>'
-        + '<line x1="250" y1="190" x2="315" y2="190" class="cd-wire"/>'
-        + '<text x="225" y="108" class="cd-label-small">s₁</text>'
-        + '<line x1="215" y1="35" x2="445" y2="35" class="cd-wire"/>'
-        + '<text x="320" y="28" class="cd-label-small">c₁</text>'
-        + '<line x1="375" y1="115" x2="415" y2="115" class="cd-wire"/>'
-        + '<line x1="415" y1="115" x2="415" y2="55" class="cd-wire"/>'
-        + '<line x1="415" y1="55" x2="445" y2="55" class="cd-wire"/>'
-        + '<text x="395" y="85" class="cd-label-small">c₂</text>'
-        + '<line x1="375" y1="200" x2="535" y2="200" class="cd-wire"/>'
-        + '<text x="540" y="205" class="cd-label">s</text>'
-        + '<line x1="505" y1="45" x2="535" y2="45" class="cd-wire"/>'
-        + '<text x="510" y="38" class="cd-label">c<tspan dy="3" font-size="10">out</tspan></text>'
-        + '</svg>'
-
-        + '<h3>Formeln</h3>'
-        + '<p><code>s = (a ⊕ b) ⊕ c<sub>in</sub></code></p>'
-        + '<p><code>c<sub>out</sub> = (a ∧ b) ∨ ((a ⊕ b) ∧ c<sub>in</sub>)</code></p>'
-        + '<p>In Worten: Es gibt einen ausgehenden Übertrag, wenn <em>beide</em> Originalbits 1 sind '
-        + '<strong>oder</strong> wenn die Zwischensumme und der eingehende Übertrag beide 1 sind.</p>',
-      visuals: [
-        { type: 'circuit', circuit: 'full-adder', interactive: true }
-      ]
-    },
-    example: {
-      title: 'Beispiel: 4-Bit-Addition 1011 + 0111',
-      steps: [
-        {
-          label: 'Stelle 0 (von rechts): 1 + 1, cin=0',
-          html:
-            '<p><code>a=1, b=1, c<sub>in</sub>=0</code></p>'
-            + '<p>s = (1⊕1)⊕0 = 0⊕0 = <strong>0</strong></p>'
-            + '<p>c<sub>out</sub> = (1∧1)∨(0∧0) = 1∨0 = <strong>1</strong></p>'
-        },
-        {
-          label: 'Stelle 1: 1 + 1, cin=1',
-          html:
-            '<p><code>a=1, b=1, c<sub>in</sub>=1</code> (Übertrag von Stelle 0)</p>'
-            + '<p>s = (1⊕1)⊕1 = 0⊕1 = <strong>1</strong></p>'
-            + '<p>c<sub>out</sub> = (1∧1)∨(0∧1) = 1∨0 = <strong>1</strong></p>'
-        },
-        {
-          label: 'Stelle 2: 0 + 1, cin=1',
-          html:
-            '<p><code>a=0, b=1, c<sub>in</sub>=1</code> (Übertrag von Stelle 1)</p>'
-            + '<p>s = (0⊕1)⊕1 = 1⊕1 = <strong>0</strong></p>'
-            + '<p>c<sub>out</sub> = (0∧1)∨(1∧1) = 0∨1 = <strong>1</strong></p>'
-        },
-        {
-          label: 'Stelle 3: 1 + 0, cin=1',
-          html:
-            '<p><code>a=1, b=0, c<sub>in</sub>=1</code> (Übertrag von Stelle 2)</p>'
-            + '<p>s = (1⊕0)⊕1 = 1⊕1 = <strong>0</strong></p>'
-            + '<p>c<sub>out</sub> = (1∧0)∨(1∧1) = 0∨1 = <strong>1</strong></p>'
-        },
-        {
-          label: 'Ergebnis zusammensetzen',
-          html:
-            '<p>Der letzte c<sub>out</sub> wird zum höchsten Bit:</p>'
-            + '<p><code>1011 + 0111 = <strong>10010</strong></code></p>'
-            + '<p>Dezimal: 11 + 7 = 18 ✓ (10010₂ = 16+2 = 18)</p>'
-        }
-      ]
-    },
-    exercises: [
-      {
-        type: 'state-table',
-        question: 'Fülle die Wahrheitstabelle des Volladdierers aus:',
-        inputColumns: ['a', 'b', 'cin'],
-        outputColumns: ['s', 'cout'],
-        inputs: [[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]],
-        correctOutputs: [[0,0],[1,0],[1,0],[0,1],[1,0],[0,1],[0,1],[1,1]],
-        explanation: 's = (a ⊕ b) ⊕ cin, cout = (a ∧ b) ∨ ((a ⊕ b) ∧ cin). Bei 1+1+1: s=1, cout=1 (dezimal 3 = binär 11).'
-      },
-      {
-        type: 'binary-calculation',
-        question: 'Berechne: 101 + 111 (binär). Trage Überträge und Ergebnis ein.',
-        operand1: [1, 0, 1],
-        operand2: [1, 1, 1],
-        correctResult: [1, 1, 0, 0],
-        correctCarries: [1, 1, 1],
-        explanation: 'Stelle 0: 1+1=10 (s=0,c=1). Stelle 1: 0+1+1=10 (s=0,c=1). Stelle 2: 1+1+1=11 (s=1,c=1). Ergebnis: 1100 (dezimal: 5+7=12).'
-      }
-    ]
-  },
-
-  // ===== LEKTION 15: Addierwerk für mehrstellige Binärzahlen =====
-  {
-    id: 15,
-    title: 'Addierwerk für mehrstellige Binärzahlen',
-    explanation: {
-      html:
-        '<h3>Vom Volladdierer zum Addierwerk</h3>'
-        + '<p>Ein einzelner Volladdierer kann nur <em>eine</em> Stelle addieren. '
-        + 'Um mehrstellige Binärzahlen zu addieren, werden mehrere Volladdierer '
-        + '<strong>hintereinander geschaltet</strong> (verkettet).</p>'
-
-        + '<h3>Das Prinzip: Übertragskette</h3>'
-        + '<p>Der <strong>c<sub>out</sub></strong> eines Volladdierers wird zum '
-        + '<strong>c<sub>in</sub></strong> des nächsten Volladdierers. So „wandert" '
-        + 'der Übertrag von Stelle zu Stelle – genau wie beim schriftlichen Addieren.</p>'
-        + '<p><strong>Analogie:</strong> Stell dir eine Reihe von Schülern vor. Jeder Schüler '
-        + 'addiert zwei Ziffern und gibt den Übertrag an seinen Nachbarn weiter. '
-        + 'Der erste Schüler hat keinen Übertrag (c<sub>in</sub>=0), der letzte gibt '
-        + 'seinen Übertrag als höchstes Bit aus.</p>'
-
-        + '<p><strong>So sieht ein 3-Bit-Addierwerk aus – drei verkettete Volladdierer:</strong></p>'
-        + '<svg viewBox="0 0 530 200" class="circuit-diagram" role="img" aria-label="Blockschaltbild 3-Bit-Addierwerk">'
-        + '<rect x="60" y="55" width="100" height="80" rx="4" class="cd-block"/>'
-        + '<text x="110" y="100" class="cd-block-text">VA₀</text>'
-        + '<rect x="220" y="55" width="100" height="80" rx="4" class="cd-block"/>'
-        + '<text x="270" y="100" class="cd-block-text">VA₁</text>'
-        + '<rect x="380" y="55" width="100" height="80" rx="4" class="cd-block"/>'
-        + '<text x="430" y="100" class="cd-block-text">VA₂</text>'
-        + '<line x1="90" y1="20" x2="90" y2="55" class="cd-wire"/>'
-        + '<text x="83" y="15" class="cd-label-small">a₀</text>'
-        + '<line x1="130" y1="20" x2="130" y2="55" class="cd-wire"/>'
-        + '<text x="124" y="15" class="cd-label-small">b₀</text>'
-        + '<line x1="250" y1="20" x2="250" y2="55" class="cd-wire"/>'
-        + '<text x="243" y="15" class="cd-label-small">a₁</text>'
-        + '<line x1="290" y1="20" x2="290" y2="55" class="cd-wire"/>'
-        + '<text x="284" y="15" class="cd-label-small">b₁</text>'
-        + '<line x1="410" y1="20" x2="410" y2="55" class="cd-wire"/>'
-        + '<text x="403" y="15" class="cd-label-small">a₂</text>'
-        + '<line x1="450" y1="20" x2="450" y2="55" class="cd-wire"/>'
-        + '<text x="444" y="15" class="cd-label-small">b₂</text>'
-        + '<line x1="30" y1="95" x2="60" y2="95" class="cd-wire"/>'
-        + '<text x="18" y="100" class="cd-label">0</text>'
-        + '<line x1="160" y1="95" x2="220" y2="95" class="cd-wire"/>'
-        + '<text x="183" y="88" class="cd-label-small">c₀</text>'
-        + '<line x1="320" y1="95" x2="380" y2="95" class="cd-wire"/>'
-        + '<text x="343" y="88" class="cd-label-small">c₁</text>'
-        + '<line x1="480" y1="95" x2="510" y2="95" class="cd-wire"/>'
-        + '<line x1="110" y1="135" x2="110" y2="175" class="cd-wire"/>'
-        + '<text x="103" y="190" class="cd-label">s₀</text>'
-        + '<line x1="270" y1="135" x2="270" y2="175" class="cd-wire"/>'
-        + '<text x="263" y="190" class="cd-label">s₁</text>'
-        + '<line x1="430" y1="135" x2="430" y2="175" class="cd-wire"/>'
-        + '<text x="423" y="190" class="cd-label">s₂</text>'
-        + '<line x1="510" y1="95" x2="510" y2="175" class="cd-wire"/>'
-        + '<text x="503" y="190" class="cd-label">s₃</text>'
-        + '</svg>'
-
-        + '<h3>Aufbau eines n-Bit-Addierwerks</h3>'
-        + '<ul>'
-        + '<li>Ein <strong>n-Bit-Addierwerk</strong> besteht aus <strong>n Volladdierern</strong></li>'
-        + '<li>Der c<sub>in</sub> des ersten Volladdierers ist <strong>0</strong></li>'
-        + '<li>Das Ergebnis hat <strong>n+1 Bits</strong> (n Summenbits + 1 Übertragsbit)</li>'
-        + '</ul>',
-      visuals: [
-        { type: 'adder-sim', bits: 4 },
-        { type: 'binary-animation', operandA: '1101', operandB: '1011' }
-      ]
-    },
-    example: {
-      title: 'Beispiel: 3-Bit-Addierwerk – 101 + 111 = 1100',
-      steps: [
-        {
-          label: 'VA0: Stelle 0 (a₀=1, b₀=1, cin=0)',
-          html:
-            '<p>Der erste Volladdierer bekommt keinen eingehenden Übertrag (c<sub>in</sub>=0).</p>'
-            + '<p><code>1 + 1 + 0 → s₀ = 0, c<sub>out</sub> = 1</code></p>'
-        },
-        {
-          label: 'VA1: Stelle 1 (a₁=0, b₁=1, cin=1)',
-          html:
-            '<p>Der Übertrag von VA0 fließt hier ein.</p>'
-            + '<p><code>0 + 1 + 1 → s₁ = 0, c<sub>out</sub> = 1</code></p>'
-        },
-        {
-          label: 'VA2: Stelle 2 (a₂=1, b₂=1, cin=1)',
-          html:
-            '<p>Der Übertrag von VA1 fließt hier ein.</p>'
-            + '<p><code>1 + 1 + 1 → s₂ = 1, c<sub>out</sub> = 1</code></p>'
-        },
-        {
-          label: 'Ergebnis zusammensetzen',
-          html:
-            '<p>Der letzte c<sub>out</sub> wird zum höchsten Bit s₃:</p>'
-            + '<p><code>s₃s₂s₁s₀ = <strong>1100</strong></code></p>'
-            + '<p>Dezimal: 5 + 7 = 12 ✓ (1100₂ = 8+4 = 12)</p>'
-        }
-      ]
-    },
-    exercises: [
-      {
-        type: 'binary-calculation',
-        question: 'Berechne: 110 + 011 (binär). Trage Überträge und Ergebnis ein.',
-        operand1: [1, 1, 0],
-        operand2: [0, 1, 1],
-        correctResult: [1, 0, 0, 1],
-        correctCarries: [0, 1, 1],
-        explanation: 'Stelle 0: 0+1=1 (s=1,c=0). Stelle 1: 1+1+0=10 (s=0,c=1). Stelle 2: 1+0+1=10 (s=0,c=1). Ergebnis: 1001 (dezimal: 6+3=9).'
+        correct: 0,
+        explanation: 'S=1 bedeutet "setze Q auf 1", R=1 bedeutet "setze Q auf 0" \u2013 beides gleichzeitig ist ein Widerspruch. Der Ausgangszustand w\u00E4re undefiniert.'
       },
       {
         type: 'multiple-choice',
-        question: 'Wie viele Volladdierer braucht man für ein 8-Bit-Addierwerk?',
-        options: [
-          '7',
-          '8',
-          '9',
-          '16'
-        ],
-        correct: 1,
-        explanation: 'Ein n-Bit-Addierwerk braucht genau n Volladdierer – also 8 Stück für 8 Bit. Das Ergebnis hat dann 9 Bit (8+1 Übertragsbit).'
-      }
-    ]
-  },
-
-  // ===== LEKTION 16: Sequenzielle Logik & Flipflops =====
-  {
-    id: 16,
-    title: 'Sequenzielle Logik & Flipflops',
-    explanation: {
-      html:
-        '<h3>Bisher: Schaltnetze (kombinatorische Logik)</h3>'
-        + '<p>Alles, was wir bisher gebaut haben (Gatter, Addierer), sind <strong>Schaltnetze</strong>. '
-        + 'Bei einem Schaltnetz hängt der Ausgang <strong>nur von den aktuellen Eingängen</strong> ab. '
-        + 'Sobald sich die Eingänge ändern, ändert sich sofort der Ausgang.</p>'
-        + '<p><strong>Analogie:</strong> Ein Taschenrechner, der nur die aktuelle Eingabe anzeigt – '
-        + 'er „vergisst" sofort, was vorher war.</p>'
-
-        + '<h3>Jetzt neu: Schaltwerke (sequenzielle Logik)</h3>'
-        + '<p>Ein <strong>Schaltwerk</strong> ist anders: Sein Ausgang hängt nicht nur von den aktuellen '
-        + 'Eingängen ab, sondern auch vom <strong>vorherigen Zustand</strong>. '
-        + 'Es kann sich also „erinnern"!</p>'
-        + '<p><strong>Analogie:</strong> Eine Stoppuhr – sie zeigt nicht nur die aktuelle Eingabe, '
-        + 'sondern erinnert sich an die vergangene Zeit.</p>'
-
-        + '<h3>Rückkopplung – das Geheimnis der Speicherung</h3>'
-        + '<p>Der Trick bei Schaltwerken ist die <strong>Rückkopplung</strong>: '
-        + 'Ausgänge werden wieder zu den Eingängen zurückgeführt. '
-        + 'Dadurch kann die Schaltung einen Zustand „festhalten".</p>'
-
-        + '<h3>Der Takt</h3>'
-        + '<p>Der <strong>Takt</strong> (englisch: <em>clock</em>) gibt den zeitlichen Rhythmus vor. '
-        + 'Er bestimmt, <em>wann</em> sich der Zustand ändern darf. '
-        + 'Ohne Takt würde das Schaltwerk unkontrolliert „flattern".</p>'
-
-        + '<h3>Flipflop / Bistabile Kippstufe</h3>'
-        + '<p>Ein <strong>Flipflop</strong> (auch: bistabile Kippstufe) ist das einfachste Speicherelement. '
-        + 'Es hat <strong>zwei stabile Zustände</strong> – wie eine Wippe auf dem Spielplatz: '
-        + 'Sie kann links unten oder rechts unten sein und bleibt in dieser Position, '
-        + 'bis jemand sie umkippt.</p>',
-      visuals: [
-        { type: 'circuit', circuit: 'sr-latch', interactive: false }
-      ]
-    },
-    example: {
-      title: 'Beispiel: Die Wippe als Analogie',
-      steps: [
-        {
-          label: 'Zustand 1: Links unten',
-          html:
-            '<p>Die Wippe ist auf der <strong>linken Seite</strong> unten. '
-            + 'Das entspricht dem Zustand <strong>Q = 0</strong>.</p>'
-            + '<p>Sie bleibt stabil in dieser Position – niemand drückt.</p>'
-        },
-        {
-          label: 'Umkippen',
-          html:
-            '<p>Jemand drückt die Wippe auf die andere Seite. '
-            + 'Das ist wie ein <strong>Set-Signal</strong>.</p>'
-        },
-        {
-          label: 'Zustand 2: Rechts unten',
-          html:
-            '<p>Die Wippe ist jetzt auf der <strong>rechten Seite</strong> unten. '
-            + 'Das entspricht <strong>Q = 1</strong>.</p>'
-            + '<p>Sie bleibt wieder stabil – auch wenn niemand mehr drückt. '
-            + 'Das ist <strong>Speicherung</strong>!</p>'
-        },
-        {
-          label: 'Übertragung auf die Technik',
-          html:
-            '<p>Genau so funktioniert ein Flipflop: Es hat zwei stabile Zustände (0 oder 1) '
-            + 'und wechselt nur, wenn es ein Signal bekommt.</p>'
-            + '<p>Ein einzelnes Flipflop speichert <strong>1 Bit</strong> Information.</p>'
-        }
-      ]
-    },
-    exercises: [
-      {
-        type: 'multiple-choice',
-        question: 'Was ist der Hauptunterschied zwischen einem Schaltnetz und einem Schaltwerk?',
-        options: [
-          'Ein Schaltwerk ist schneller',
-          'Ein Schaltwerk kann Zustände speichern (Rückkopplung)',
-          'Ein Schaltnetz hat mehr Gatter',
-          'Ein Schaltnetz braucht keinen Strom'
-        ],
-        correct: 1,
-        explanation: 'Der entscheidende Unterschied: Ein Schaltwerk hat eine Rückkopplung und kann dadurch Zustände speichern. Ein Schaltnetz reagiert nur auf aktuelle Eingänge.'
-      },
-      {
-        type: 'multiple-choice',
-        question: 'Was bedeutet „bistabil"?',
-        options: [
-          'Die Schaltung hat zwei Eingänge',
-          'Die Schaltung hat zwei stabile Zustände',
-          'Die Schaltung braucht zwei Takte',
-          'Die Schaltung besteht aus zwei Gattern'
-        ],
-        correct: 1,
-        explanation: '„Bi" = zwei, „stabil" = stabil. Ein bistabiles Element hat zwei stabile Zustände (0 und 1) – wie eine Wippe.'
-      },
-      {
-        type: 'multiple-choice',
-        question: 'Wozu dient der Takt in einem Schaltwerk?',
-        options: [
-          'Er liefert den Strom',
-          'Er gibt den zeitlichen Rhythmus für Zustandsänderungen vor',
-          'Er zählt die Anzahl der Gatter',
-          'Er bestimmt die Farbe der LEDs'
-        ],
-        correct: 1,
-        explanation: 'Der Takt (Clock) gibt den zeitlichen Rhythmus vor und bestimmt, wann sich Zustände ändern dürfen. Ohne Takt wären die Zustandsänderungen unkontrolliert.'
-      }
-    ]
-  },
-
-  // ===== LEKTION 17: SR-Riegel =====
-  {
-    id: 17,
-    title: 'SR-Riegel (Set-Reset-Latch)',
-    explanation: {
-      html:
-        '<h3>Der SR-Riegel – das einfachste Speicherelement</h3>'
-        + '<p>Der <strong>SR-Riegel</strong> (auch: SR-Latch, Set-Reset-Latch) ist die einfachste '
-        + 'Schaltung, die 1 Bit speichern kann. Er besteht aus <strong>zwei NOR-Gattern</strong>, '
-        + 'die über Kreuz miteinander verbunden sind (Rückkopplung!).</p>'
-
-        + '<p><strong>Schaltplan des SR-Riegels:</strong></p>'
-        + '<svg viewBox="0 0 400 210" class="circuit-diagram" role="img" aria-label="Schaltplan SR-Riegel">'
-        + '<rect x="155" y="20" width="60" height="50" class="cd-gate"/>'
-        + '<text x="185" y="52" class="cd-gate-text">≥1</text>'
-        + '<circle cx="219" cy="45" r="4" class="cd-neg"/>'
-        + '<rect x="155" y="135" width="60" height="50" class="cd-gate"/>'
-        + '<text x="185" y="167" class="cd-gate-text">≥1</text>'
-        + '<circle cx="219" cy="160" r="4" class="cd-neg"/>'
-        + '<text x="8" y="40" class="cd-label">S</text>'
-        + '<line x1="25" y1="35" x2="155" y2="35" class="cd-wire"/>'
-        + '<text x="8" y="175" class="cd-label">R</text>'
-        + '<line x1="25" y1="170" x2="155" y2="170" class="cd-wire"/>'
-        + '<line x1="223" y1="45" x2="370" y2="45" class="cd-wire"/>'
-        + '<text x="375" y="50" class="cd-label">Q̅</text>'
-        + '<line x1="223" y1="160" x2="370" y2="160" class="cd-wire"/>'
-        + '<text x="375" y="165" class="cd-label">Q</text>'
-        + '<circle cx="270" cy="45" r="3.5" class="cd-junction"/>'
-        + '<line x1="270" y1="45" x2="270" y2="150" class="cd-feedback"/>'
-        + '<line x1="270" y1="150" x2="155" y2="150" class="cd-feedback"/>'
-        + '<circle cx="290" cy="160" r="3.5" class="cd-junction"/>'
-        + '<line x1="290" y1="160" x2="290" y2="55" class="cd-feedback"/>'
-        + '<line x1="290" y1="55" x2="276" y2="55" class="cd-feedback"/>'
-        + '<path d="M 276,55 A 6,6 0 0,0 264,55" class="cd-feedback"/>'
-        + '<line x1="264" y1="55" x2="155" y2="55" class="cd-feedback"/>'
-        + '<text x="295" y="105" class="cd-label-small" fill="#2563EB">Rück-</text>'
-        + '<text x="295" y="118" class="cd-label-small" fill="#2563EB">kopplung</text>'
-        + '</svg>'
-
-        + '<h3>Eingänge und Ausgänge</h3>'
-        + '<ul>'
-        + '<li><strong>S</strong> (Set) – setzt den Ausgang auf 1</li>'
-        + '<li><strong>R</strong> (Reset) – setzt den Ausgang auf 0</li>'
-        + '<li><strong>Q</strong> – der gespeicherte Wert</li>'
-        + '<li><strong>Q̅</strong> (Q-quer) – das Gegenteil von Q (immer invertiert)</li>'
-        + '</ul>'
-
-        + '<h3>Die vier Zustände</h3>'
-        + '<table class="truth-table">'
-        + '<thead><tr><th>S</th><th>R</th><th>Q (nächster Zustand)</th><th>Bedeutung</th></tr></thead>'
-        + '<tbody>'
-        + '<tr><td>0</td><td>0</td><td>Q (bleibt)</td><td><strong>Speichern</strong> – Zustand wird gehalten</td></tr>'
-        + '<tr><td>1</td><td>0</td><td>1</td><td><strong>Setzen</strong> – Q wird auf 1 gesetzt</td></tr>'
-        + '<tr><td>0</td><td>1</td><td>0</td><td><strong>Rücksetzen</strong> – Q wird auf 0 gesetzt</td></tr>'
-        + '<tr><td>1</td><td>1</td><td>?</td><td><strong>Verboten!</strong> Undefinierter Zustand</td></tr>'
-        + '</tbody></table>'
-
-        + '<h3>Warum ist S=1, R=1 verboten?</h3>'
-        + '<p>Wenn man gleichzeitig „Setze auf 1" und „Setze auf 0" sagt, ist das ein Widerspruch. '
-        + 'Die Schaltung kann nicht beides gleichzeitig – das Ergebnis ist nicht vorhersagbar.</p>'
-
-        + '<p><strong>Analogie:</strong> Stell dir einen Lichtschalter mit zwei Knöpfen vor – '
-        + 'einer zum <em>Einschalten</em> (Set) und einer zum <em>Ausschalten</em> (Reset). '
-        + 'Drückt man keinen, bleibt das Licht wie es ist (Speichern). '
-        + 'Drückt man beide gleichzeitig, weiß die Lampe nicht, was sie tun soll (verboten!).</p>',
-      visuals: [
-        { type: 'circuit', circuit: 'sr-latch', interactive: true },
-        { type: 'timing-diagram', signals: ['S', 'R', 'Q', 'Q\u0304'] }
-      ]
-    },
-    example: {
-      title: 'Beispiel: Zustandsfolge eines SR-Riegels',
-      steps: [
-        {
-          label: 'Startzustand: Q = 0',
-          html:
-            '<p>Der SR-Riegel startet mit <strong>Q = 0</strong> und <strong>Q̅ = 1</strong>.</p>'
-            + '<p>Beide Eingänge sind 0 → der Zustand wird gespeichert.</p>'
-        },
-        {
-          label: 'Setzen: S=1, R=0',
-          html:
-            '<p>Wir aktivieren den Set-Eingang: <strong>S = 1</strong>, R = 0.</p>'
-            + '<p>→ Q wird auf <strong>1</strong> gesetzt, Q̅ wird <strong>0</strong>.</p>'
-        },
-        {
-          label: 'Speichern: S=0, R=0',
-          html:
-            '<p>Wir nehmen Set wieder weg: S = 0, R = 0.</p>'
-            + '<p>→ Q bleibt auf <strong>1</strong>! Der Wert wurde <strong>gespeichert</strong>.</p>'
-            + '<p>Das ist der entscheidende Moment: Obwohl kein Eingang mehr aktiv ist, '
-            + '„erinnert" sich die Schaltung an den vorherigen Zustand.</p>'
-        },
-        {
-          label: 'Rücksetzen: S=0, R=1',
-          html:
-            '<p>Wir aktivieren den Reset-Eingang: S = 0, <strong>R = 1</strong>.</p>'
-            + '<p>→ Q wird auf <strong>0</strong> zurückgesetzt, Q̅ wird <strong>1</strong>.</p>'
-        }
-      ]
-    },
-    exercises: [
-      {
-        type: 'multiple-choice',
-        question: 'Was passiert beim SR-Riegel, wenn S=1 und R=0?',
-        options: [
-          'Q wird auf 0 gesetzt',
-          'Q wird auf 1 gesetzt',
-          'Q bleibt unverändert',
-          'Verbotener Zustand'
-        ],
-        correct: 1,
-        explanation: 'S=1 (Set) und R=0 → Q wird auf 1 gesetzt. Das „S" steht für „Set" = Setzen auf 1.'
-      },
-      {
-        type: 'multiple-choice',
-        question: 'Was passiert, wenn S=1 und R=1 gleichzeitig?',
-        options: [
-          'Q wird auf 1 gesetzt',
-          'Q wird auf 0 gesetzt',
-          'Q bleibt unverändert',
-          'Verbotener Zustand (undefiniert)'
-        ],
-        correct: 3,
-        explanation: 'S=1 und R=1 ist der verbotene Zustand. Die Schaltung kann nicht gleichzeitig setzen und rücksetzen – das Ergebnis ist undefiniert.'
-      },
-      {
-        type: 'multiple-choice',
-        question: 'Wie speichert der SR-Riegel seinen Zustand?',
-        options: [
-          'Durch eine Batterie',
-          'Durch einen Kondensator',
-          'Durch Rückkopplung (Ausgang wird wieder zum Eingang)',
-          'Durch einen eingebauten Speicherchip'
-        ],
-        correct: 2,
-        explanation: 'Die Rückkopplung ist das Geheimnis: Die Ausgänge der NOR-Gatter werden über Kreuz wieder zu Eingängen. So hält sich die Schaltung selbst in ihrem Zustand.'
+        question: 'Q=1. Was ist Q\u0305?',
+        options: ['0', '1', 'Undefiniert', 'H\u00E4ngt von S und R ab'],
+        correct: 0,
+        explanation: 'Q\u0305 (Q-Quer) ist immer die Negation von Q. Q=1 \u2192 Q\u0305=0. Q=0 \u2192 Q\u0305=1.'
       }
     ]
   }
