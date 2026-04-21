@@ -1,9 +1,9 @@
 const Progress = {
   STORAGE_KEY: 'koin_lernprogramm_progress',
-  VERSION: 2,
-  TOTAL_LESSONS: 25,
+  VERSION: 3,
+  TOTAL_LESSONS: 21,
 
-  // Standard-Zustand: alle 25 Lektionen auf not_started, letzte Lektion = 1
+  // Standard-Zustand: alle 21 Lektionen auf not_started, letzte Lektion = 1
   createDefault() {
     const data = { version: this.VERSION, lessons: {}, lastLesson: 1 };
     for (let i = 1; i <= this.TOTAL_LESSONS; i++) {

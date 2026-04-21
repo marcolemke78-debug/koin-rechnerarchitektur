@@ -1,30 +1,30 @@
-// Alle 25 Lektionen mit ID, Titel und Modul-Zuordnung
+// Alle 21 Lektionen mit ID, Titel und Modul-Zuordnung
 const LESSONS = [
-  { id: 1, title: 'Was ist Rechnerarchitektur?', module: 'c1' },
-  { id: 2, title: 'Serien- & Parallelschaltung', module: 'c1' },
-  { id: 3, title: 'Logische Operatoren: AND, OR, NOT', module: 'c1' },
-  { id: 4, title: 'Weitere Operatoren: XOR, NAND, NOR, XNOR', module: 'c1' },
-  { id: 5, title: 'Wahrheitstabellen erstellen', module: 'c1' },
-  { id: 6, title: 'Logische Ausdrücke & Operatorrangfolge', module: 'c1' },
-  { id: 7, title: 'Gleichung → Wahrheitstabelle', module: 'c1' },
-  { id: 8, title: 'Wahrheitstabelle → Gleichung (DNF)', module: 'c1' },
-  { id: 9, title: 'Äquivalenz zeigen', module: 'c1' },
-  { id: 10, title: 'Gatterschaltungen & Axiomensystem', module: 'c1' },
-  { id: 11, title: 'Binärsystem als Schalter', module: 'c2' },
-  { id: 12, title: 'ALU und Binäraddition', module: 'c2' },
-  { id: 13, title: 'Halbaddierer', module: 'c2' },
-  { id: 14, title: 'Volladdierer', module: 'c2' },
-  { id: 15, title: 'Addierwerk', module: 'c2' },
-  { id: 16, title: 'Sequenzielle Logik & Flipflops', module: 'c2' },
-  { id: 17, title: 'SR-Riegel', module: 'c2' },
-  { id: 18, title: 'Das Internet und Adressierung', module: 'c5' },
-  { id: 19, title: 'Netztypen & Geräte', module: 'c5' },
-  { id: 20, title: 'Technische Grundlagen', module: 'c5' },
-  { id: 21, title: 'IP-Adressen: IPv4, IPv6, MAC', module: 'c5' },
-  { id: 22, title: 'Subnetzmaske & Net-ID', module: 'c5' },
-  { id: 23, title: 'Subnetze berechnen', module: 'c5' },
-  { id: 24, title: 'Hands-on: ping', module: 'c5' },
-  { id: 25, title: 'Lokale vs. globale IPs', module: 'c5' },
+  // C1 – Schaltalgebra
+  { id: 1,  module: 'c1', title: 'Schaltkreise lesen & umwandeln' },
+  { id: 2,  module: 'c1', title: 'Logische Operatoren: AND, OR, NOT, XOR' },
+  { id: 3,  module: 'c1', title: 'Wahrheitstabelle aus Ausdruck erstellen' },
+  { id: 4,  module: 'c1', title: 'Disjunktive Normalform (DNF) ableiten' },
+  { id: 5,  module: 'c1', title: 'Äquivalenz mit Wahrheitstabellen beweisen' },
+  { id: 6,  module: 'c1', title: 'Gatterschaltungen zeichnen & lesen' },
+  // C2 – Binärarithmetik & Sequenzielle Logik
+  { id: 7,  module: 'c2', title: 'Binärsystem & Subtraktion' },
+  { id: 8,  module: 'c2', title: 'Halbsubtrahierer' },
+  { id: 9,  module: 'c2', title: 'Vollsubtrahierer' },
+  { id: 10, module: 'c2', title: 'Addierwerk 4-Bit' },
+  { id: 11, module: 'c2', title: 'SR-Riegel & Timing-Diagramme' },
+  // C5 – Rechnernetze I
+  { id: 12, module: 'c5', title: 'IP-Grundlagen & Multiple Choice' },
+  { id: 13, module: 'c5', title: 'IP-Adressen validieren' },
+  { id: 14, module: 'c5', title: 'Subnetzmasken & binäre Schreibweise' },
+  { id: 15, module: 'c5', title: 'Netzwerk-IDs berechnen' },
+  { id: 16, module: 'c5', title: 'Subnetting Praxis (/27, Broadcast)' },
+  // C6 – Rechnernetze II
+  { id: 17, module: 'c6', title: 'DNS & IP im Internet finden' },
+  { id: 18, module: 'c6', title: 'Netzwerkstruktur & Wahr/Falsch' },
+  { id: 19, module: 'c6', title: 'IP-Adressen im Netz prüfen' },
+  { id: 20, module: 'c6', title: 'Routing-Tabellen ausfüllen' },
+  { id: 21, module: 'c6', title: 'Netzwerktopologien' },
 ];
 
 /**

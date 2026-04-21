@@ -9,20 +9,17 @@ const Renderer = {
     const listC1 = document.getElementById('lesson-list-c1');
     const listC2 = document.getElementById('lesson-list-c2');
     const listC5 = document.getElementById('lesson-list-c5');
+    const listC6 = document.getElementById('lesson-list-c6');
 
-    // Listen leeren, bevor wir neu rendern
     listC1.innerHTML = '';
     listC2.innerHTML = '';
     if (listC5) listC5.innerHTML = '';
+    if (listC6) listC6.innerHTML = '';
 
     lessons.forEach(lesson => {
       const li = document.createElement('li');
       li.dataset.lessonId = lesson.id;
-
-      // Status aus dem Progress-Modul abfragen
       const status = Progress.getStatus(lesson.id);
-
-      // CSS-Klasse je nach Status setzen
       if (status === 'completed') {
         li.classList.add('completed');
         li.textContent = `✓ ${lesson.title}`;
@@ -33,14 +30,14 @@ const Renderer = {
         li.classList.add('not-started');
         li.textContent = lesson.title;
       }
-
-      // In die richtige Liste einfuegen
       if (lesson.module === 'c1') {
         listC1.appendChild(li);
+      } else if (lesson.module === 'c2') {
+        listC2.appendChild(li);
       } else if (lesson.module === 'c5') {
         if (listC5) listC5.appendChild(li);
-      } else {
-        listC2.appendChild(li);
+      } else if (lesson.module === 'c6') {
+        if (listC6) listC6.appendChild(li);
       }
     });
   },
@@ -50,7 +47,7 @@ const Renderer = {
    * Zeigt den Gesamtfortschritt ueber alle 17 Lektionen.
    */
   renderProgressBar() {
-    const percent = Progress.getCompletionPercent(1, 25);
+    const percent = Progress.getCompletionPercent(1, 21);
     const bar = document.getElementById('progress-bar');
     bar.style.width = percent + '%';
   },
@@ -66,7 +63,8 @@ const Renderer = {
     // Lektionsdaten aus den Content-Arrays suchen
     const lessonData = LessonsC1.find(l => l.id === id)
       || LessonsC2.find(l => l.id === id)
-      || LessonsC5.find(l => l.id === id);
+      || LessonsC5.find(l => l.id === id)
+      || LessonsC6.find(l => l.id === id);
 
     // Titel aus der LESSONS-Liste (hat immer einen Eintrag)
     const lessonMeta = LESSONS.find(l => l.id === id);
