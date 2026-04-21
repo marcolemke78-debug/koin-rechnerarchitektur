@@ -93,7 +93,7 @@ const LessonsC5 = [
         + '</ol>'
         + '<h3>Sonderf\u00e4lle (die du kennen solltest):</h3>'
         + '<ul>'
-        + '<li><code>0.0.0.0</code> \u2013 g\u00fcltig (wird als \u201ekein Netz\u201c verwendet)</li>'
+        + '<li><code>0.0.0.0</code> \u2013 g\u00fcltig (Sonderadresse: kein Netz)</li>'
         + '<li><code>255.255.255.255</code> \u2013 g\u00fcltig (Broadcast an alle)</li>'
         + '<li><code>256.0.0.1</code> \u2013 <strong>ung\u00fcltig!</strong> (256 > 255)</li>'
         + '<li><code>192.168.1</code> \u2013 <strong>ung\u00fcltig!</strong> (nur 3 Oktette)</li>'
