@@ -1,5 +1,31 @@
-// Alle 21 Lektionen mit ID, Titel und Modul-Zuordnung
+// Alle Lektionen mit ID, Titel und Modul-Zuordnung
+// A-Module: IDs 22-41 (A1: 22-26, A2: 27-31, A3: 32-36, A4: 37-41)
+// C-Module: IDs 1-21 (bleiben unveraendert, damit localStorage-Progress erhalten bleibt)
 const LESSONS = [
+  // A1 – Stellenwertsysteme & Codierung
+  { id: 22, module: 'a1', title: 'Stellenwertsysteme verstehen' },
+  { id: 23, module: 'a1', title: 'Binär ↔ Dezimal umrechnen' },
+  { id: 24, module: 'a1', title: 'Oktal ↔ Binär umrechnen' },
+  { id: 25, module: 'a1', title: 'Hexadezimal ↔ Binär (RGB-Farben)' },
+  { id: 26, module: 'a1', title: 'BCD – Binary Coded Decimal' },
+  // A2 – Binärrechnung & Codierung II
+  { id: 27, module: 'a2', title: 'Binäre Addition (schriftlich)' },
+  { id: 28, module: 'a2', title: 'Einerkomplement' },
+  { id: 29, module: 'a2', title: 'Zweierkomplement & Rechnen' },
+  { id: 30, module: 'a2', title: 'IEEE 754 Gleitkommazahlen' },
+  { id: 31, module: 'a2', title: 'ASCII-Codierung' },
+  // A3 – Datenstrukturen I
+  { id: 32, module: 'a3', title: 'Binäre Suchbäume – Grundlagen' },
+  { id: 33, module: 'a3', title: 'BST – Einfügen' },
+  { id: 34, module: 'a3', title: 'BST – Löschen (3 Fälle)' },
+  { id: 35, module: 'a3', title: 'Hashing & Divisions-Rest-Methode' },
+  { id: 36, module: 'a3', title: 'Kollisionen durch Verkettung' },
+  // A4 – Algorithmik & Datenstrukturen II
+  { id: 37, module: 'a4', title: 'Algorithmus-Charakteristika' },
+  { id: 38, module: 'a4', title: 'Pseudocode, Struktogramm, Flussdiagramm' },
+  { id: 39, module: 'a4', title: 'Arrays & Listen (einfach/doppelt/Ring)' },
+  { id: 40, module: 'a4', title: 'Sieb des Eratosthenes' },
+  { id: 41, module: 'a4', title: 'Prüfziffern – ISBN-13' },
   // C1 – Schaltalgebra
   { id: 1,  module: 'c1', title: 'Schaltkreise lesen & umwandeln' },
   { id: 2,  module: 'c1', title: 'Logische Operatoren: AND, OR, NOT, XOR' },

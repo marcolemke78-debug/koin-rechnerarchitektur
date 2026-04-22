@@ -6,11 +6,19 @@ const Renderer = {
    * CSS-Klasse je nach Fortschrittsstatus.
    */
   renderSidebar(lessons) {
+    const listA1 = document.getElementById('lesson-list-a1');
+    const listA2 = document.getElementById('lesson-list-a2');
+    const listA3 = document.getElementById('lesson-list-a3');
+    const listA4 = document.getElementById('lesson-list-a4');
     const listC1 = document.getElementById('lesson-list-c1');
     const listC2 = document.getElementById('lesson-list-c2');
     const listC5 = document.getElementById('lesson-list-c5');
     const listC6 = document.getElementById('lesson-list-c6');
 
+    if (listA1) listA1.innerHTML = '';
+    if (listA2) listA2.innerHTML = '';
+    if (listA3) listA3.innerHTML = '';
+    if (listA4) listA4.innerHTML = '';
     listC1.innerHTML = '';
     listC2.innerHTML = '';
     if (listC5) listC5.innerHTML = '';
@@ -30,24 +38,21 @@ const Renderer = {
         li.classList.add('not-started');
         li.textContent = lesson.title;
       }
-      if (lesson.module === 'c1') {
-        listC1.appendChild(li);
-      } else if (lesson.module === 'c2') {
-        listC2.appendChild(li);
-      } else if (lesson.module === 'c5') {
-        if (listC5) listC5.appendChild(li);
-      } else if (lesson.module === 'c6') {
-        if (listC6) listC6.appendChild(li);
-      }
+      const moduleTargets = {
+        a1: listA1, a2: listA2, a3: listA3, a4: listA4,
+        c1: listC1, c2: listC2, c5: listC5, c6: listC6
+      };
+      const target = moduleTargets[lesson.module];
+      if (target) target.appendChild(li);
     });
   },
 
   /**
    * Fortschrittsbalken aktualisieren.
-   * Zeigt den Gesamtfortschritt ueber alle 21 Lektionen.
+   * Zeigt den Gesamtfortschritt ueber alle Lektionen (A1-A4 + C1/C2/C5/C6).
    */
   renderProgressBar() {
-    const percent = Progress.getCompletionPercent(1, 21);
+    const percent = Progress.getCompletionPercent(1, 41);
     const bar = document.getElementById('progress-bar');
     bar.style.width = percent + '%';
   },
@@ -61,7 +66,11 @@ const Renderer = {
     const container = document.getElementById('lesson-container');
 
     // Lektionsdaten aus den Content-Arrays suchen
-    const lessonData = LessonsC1.find(l => l.id === id)
+    const lessonData = (typeof LessonsA1 !== 'undefined' && LessonsA1.find(l => l.id === id))
+      || (typeof LessonsA2 !== 'undefined' && LessonsA2.find(l => l.id === id))
+      || (typeof LessonsA3 !== 'undefined' && LessonsA3.find(l => l.id === id))
+      || (typeof LessonsA4 !== 'undefined' && LessonsA4.find(l => l.id === id))
+      || LessonsC1.find(l => l.id === id)
       || LessonsC2.find(l => l.id === id)
       || LessonsC5.find(l => l.id === id)
       || LessonsC6.find(l => l.id === id);
