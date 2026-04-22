@@ -34,6 +34,9 @@ const LessonsA4 = [
         + '<p><strong>Partielle Korrektheit:</strong> "Wenn der Algorithmus anhält, ist das Ergebnis richtig."</p>'
         + '<p><strong>Terminierung:</strong> "Der Algorithmus hält an." (keine Endlosschleife)</p>'
         + '<p><strong>Totale Korrektheit = beides.</strong></p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Diese Begriffe sind das <em>Vokabular der Informatik</em>. Wer später über Algorithmen diskutiert – in Algorithmen und Datenstrukturen, Softwareengineering, Compilerbau – nutzt genau diese Wörter. In der Klausur kommen sie als Multiple-Choice: Begriff zur Eigenschaft zuordnen oder Gegenteil erkennen. Wenn du die 6–8 Begriffe einmal sauber drauf hast, sind das sehr leicht verdiente Punkte.'
+        + '</div>'
     },
     example: {
       title: 'Ist das ein Algorithmus?',
@@ -131,6 +134,9 @@ const LessonsA4 = [
         + '<h3>3. Flussdiagramm – klassisch</h3>'
         + '<p>Symbole nach Norm (DIN 66001): Oval für Start/Stop, Raute für Verzweigung, Rechteck für Operation, Parallelogramm für Ein-/Ausgabe. Mit Pfeilen verbunden.</p>'
         + '<p>→ Gut für einfache Abläufe, bei komplexen unübersichtlich.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Als Lehrer wirst du alle drei Darstellungen im Unterricht einsetzen – <em>Struktogramme</em> sind fester Bestandteil der Informatik in Baden-Württemberg. In der Klausur gibt es typischerweise eine Aufgabe wie "Führe das folgende Struktogramm aus und gib die Zwischenstände an" (siehe Lektion 40, Sieb des Eratosthenes). Wer die Symbole und die Leserichtung sicher beherrscht, macht hier keine Fehler. Außerdem: Struktogramme zwingen zu strukturiertem Denken – kein "Spaghetti-Code" möglich.'
+        + '</div>'
     },
     example: {
       title: 'Beispiel: Kleinstes Element finden – alle drei Arten',
@@ -267,6 +273,9 @@ const LessonsA4 = [
         + '<tr><td style="padding:6px;border:1px solid #ccc;">Zyklisch rotieren</td><td style="padding:6px;border:1px solid #ccc;"><b>Ringliste</b></td></tr>'
         + '<tr><td style="padding:6px;border:1px solid #ccc;">Schnell suchen</td><td style="padding:6px;border:1px solid #ccc;"><b>Hashtabelle / BST</b></td></tr>'
         + '</table>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Fast jede Programmieraufgabe beginnt mit der Frage "Welche Datenstruktur passt?". Die falsche Wahl kann ein Programm 100× langsamer machen. Google, Facebook, Spotify – alle laufen nur deshalb flüssig, weil die richtigen Datenstrukturen gewählt wurden. In der Klausur ist das eine typische Zuordnungsaufgabe: "Anwendung X – welche Struktur?". Das ist quasi die <em>Zusammenfassung</em> von A3 + A4 – eine Lieblingsaufgabe der Prüfer.'
+        + '</div>'
     },
     example: {
       title: 'Beispiel: Passende Datenstruktur wählen',
@@ -363,7 +372,10 @@ const LessonsA4 = [
         + '<strong>Warum nur bis √n?</strong> Jede zusammengesetzte Zahl n = a · b hat einen Teiler ≤ √n. Wenn man alles bis √n gestrichen hat, sind alle Nicht-Primzahlen erfasst.'
         + '</div>'
         + '<h3>Das Struktogramm</h3>'
-        + '<p>In der Klausur bekommst du dieses Struktogramm – deine Aufgabe ist, es auszuführen:</p>',
+        + '<p>In der Klausur bekommst du dieses Struktogramm – deine Aufgabe ist, es auszuführen:</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Ein klassischer Algorithmus zum <em>Trainieren der Struktogramm-Ausführung</em>. In der Klausur fast garantiert: du bekommst das Struktogramm vorgelegt und musst Zwischenstände der Variablen/Array-Inhalte notieren (3 Punkte in der typischen Übung). Dazu kommt: Primzahlen sind <em>fundamental für die Kryptographie</em> – ohne effiziente Primzahl-Suche gäbe es keine sichere Online-Banking-Verschlüsselung.'
+        + '</div>',
       visuals: [
         {
           type: 'struktogramm',
@@ -513,6 +525,9 @@ const LessonsA4 = [
         + '<li>Summe der bekannten Produkte ausrechnen</li>'
         + '<li>Fehlende Ziffer × ihr Gewicht muss die Gesamtsumme auf ein Vielfaches von 10 bringen</li>'
         + '</ul>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Prüfziffern begegnen dir überall: ISBN (Bücher), EAN (Barcode auf Produkten), IBAN (Kontonummer), Personalausweis, Kreditkarten (da mit dem Luhn-Algorithmus). Überall dort, wo Menschen lange Zahlen eintippen, verhindert die Prüfziffer, dass ein einzelner Tipp-Fehler übersehen wird. In der Klausur ist das eine typische 4,5-Punkte-Aufgabe – mit dem Gewichte-Schema (1,3,1,3,…) und einer einfachen Summe leicht machbar.'
+        + '</div>'
     },
     example: {
       title: 'Beispiel: Fehlende Ziffer finden',

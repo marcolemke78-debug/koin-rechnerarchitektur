@@ -27,7 +27,10 @@ const LessonsA3 = [
         + '<strong>Analogie – Wörterbuch:</strong> Beim Wort-Suchen im Wörterbuch schlägst du in der Mitte auf. Dein Wort steht <em>links</em> oder <em>rechts</em> davon. Du schlägst die Mitte der richtigen Hälfte auf – wieder links oder rechts. Nach ~20 Schritten hast du dein Wort, auch bei 1 Million Einträgen. Der BST macht genau das: jedes Mal halbiert sich der Suchraum.'
         + '</div>'
         + '<h3>Die wichtigsten Begriffe</h3>'
-        + '<p>Schau dir den Baum unten an – er begleitet uns durch die Lektion:</p>',
+        + '<p>Schau dir den Baum unten an – er begleitet uns durch die Lektion:</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Bäume sind eine der am häufigsten eingesetzten Datenstrukturen überhaupt. Sie stecken in Mengen und sortierten Maps (TreeMap in Java), in Datenbank-Indizes, in Dateisystemen, in Entscheidungsbäumen der KI. Wer BST versteht, versteht, warum sortiertes Speichern so schnell sein kann. In der Klausur wird fast immer verlangt: "Führe diese Operationen aus und zeichne den Baum." – mit dem hier gelernten Muster sichere Punkte.'
+        + '</div>',
       visuals: [
         { type: 'bst-viz', tree: A3_BEISPIELBAUM, label: 'Unser Beispielbaum mit 9 Knoten' }
       ]
@@ -155,7 +158,10 @@ const LessonsA3 = [
         + '</ol>'
         + '</div>'
         + '<h3>Probier es selbst!</h3>'
-        + '<p>Leerer Baum unten. Gib eine Zahl ein, drück <em>Insert</em>, und beobachte, wie der Baum wächst. Der neu eingefügte Knoten wird grün hervorgehoben.</p>',
+        + '<p>Leerer Baum unten. Gib eine Zahl ein, drück <em>Insert</em>, und beobachte, wie der Baum wächst. Der neu eingefügte Knoten wird grün hervorgehoben.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Einfügen + Suchen sind die beiden Grundoperationen, die du auf einem BST fast immer brauchst. In jedem Programm, das Daten "nach Wert sortiert" speichert, läuft im Hintergrund genau dieser Einfüge-Algorithmus ab. In der Klausur fast garantiert: "Führe folgende insert-Operationen aus und zeichne den entstehenden Baum." Wer das sicher zeichnet, sammelt zuverlässig Punkte – und macht keine Folge-Fehler im Löschen-Teil.'
+        + '</div>',
       visuals: [
         { type: 'bst-interactive', mode: 'insert-only', initial: [], label: 'Interaktiv: Baum aufbauen' }
       ]
@@ -299,7 +305,10 @@ const LessonsA3 = [
         + '<strong>Klausur-Tipp:</strong> Bei Fall 3 IMMER <em>beide</em> Möglichkeiten zeichnen, wenn die Aufgabe es verlangt!'
         + '</div>'
         + '<h3>Probier es selbst!</h3>'
-        + '<p>Der Baum unten ist vorgeladen. Gib eine Zahl ein und drück <em>Löschen</em>. Alle drei Fälle kommen vor!</p>',
+        + '<p>Der Baum unten ist vorgeladen. Gib eine Zahl ein und drück <em>Löschen</em>. Alle drei Fälle kommen vor!</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Löschen ist der Unterschied zwischen "BST verstanden" und "BST angewendet". In der Klausur kommen häufig remove-Aufgaben mit 2 Kindern – genau der Fall, der die meisten Punkte bringt, weil er die meisten Teilschritte hat. Und ganz wichtig: Wenn in einer Aufgabe "alle Möglichkeiten" verlangt sind, <em>musst</em> du bei Fall 3 beide Varianten (linkester rechts, rechtester links) zeichnen. Das ist ein Standard-Fallstrick.'
+        + '</div>',
       visuals: [
         { type: 'bst-interactive', initial: [24, 20, 28, 18, 22, 25, 120, 12, 19, 13], label: 'Interaktiv: probier Löschen in allen 3 Fällen' }
       ]
@@ -454,7 +463,10 @@ const LessonsA3 = [
         + 'h(43) = 43 mod 7 = 1   ← gleicher Platz!</pre>'
         + '<p>Was tun? → Siehe nächste Lektion (Verkettung).</p>'
         + '<h3>Probier es selbst!</h3>'
-        + '<p>Gib unten Zahlen ein und beobachte, wo sie landen. Die Formel steht dabei.</p>',
+        + '<p>Gib unten Zahlen ein und beobachte, wo sie landen. Die Formel steht dabei.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Hashing steckt in fast jedem Programm: Python-Dictionaries, Java HashMap, Datenbank-Indizes, Passwort-Speicherung, Git-Commit-IDs, Blockchain. Wenn du jemals einen Namen in einer großen Liste "sofort" finden willst, ist Hashing die Antwort – viel schneller als BST. In der Klausur sind 4 Punkte zuverlässig drin: Hashtabelle füllen mit h(k)=k mod m. Wenn du die Rest-Rechnung kannst, ist der Rest einfaches Hinschreiben.'
+        + '</div>',
       visuals: [
         {
           type: 'hashtable-interactive',
@@ -564,7 +576,10 @@ const LessonsA3 = [
         + '<li>Suchen: h(k) ausrechnen → Liste an dem Platz durchgehen</li>'
         + '</ul>'
         + '<h3>Probier es mit vielen Kollisionen!</h3>'
-        + '<p>Unten läuft die Hashtabelle m=7. Gib viele verschiedene Zahlen ein – mit etwas Glück (oder gezielter Auswahl) siehst du Kollisionen:</p>',
+        + '<p>Unten läuft die Hashtabelle m=7. Gib viele verschiedene Zahlen ein – mit etwas Glück (oder gezielter Auswahl) siehst du Kollisionen:</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Verkettung ist die einfachste und gebräuchlichste Strategie zur Kollisions-Behandlung – so war die Java HashMap lange Zeit aufgebaut. Wer das Prinzip verstanden hat, weiß: Hashing ist nicht "magisch schnell", sondern nur dann schnell, wenn die Hashfunktion die Schlüssel gut verteilt. In der Klausur ist das genau das Standard-Schema: "Fülle diese Tabelle mit folgenden Schlüsseln, Kollisionen durch Verkettung." Ein Rezept, das verlässlich Punkte bringt.'
+        + '</div>',
       visuals: [
         {
           type: 'hashtable-interactive',

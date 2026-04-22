@@ -31,6 +31,9 @@ const LessonsA2 = [
         + '<div class="warning-box">'
         + '<strong>Überlauf:</strong> Bei fester Bit-Breite (z.B. 8 Bit) fällt der letzte Übertrag raus. Das ist kein Fehler – das führt zum Thema Zweierkomplement in der nächsten Lektion.'
         + '</div>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> In jedem Prozessor sitzt ein <em>Addierwerk</em> – eine Schaltung aus Halb- und Volladdierern (siehe C2), die genau diese Regeln in Hardware umsetzt. Jede Rechnung im Computer läuft letztlich so ab. Und noch wichtiger für dich: Das <strong>Zweierkomplement</strong> in der nächsten Lektion ist nichts anderes als eine verkappte binäre Addition. Wer hier die Grundregeln drauf hat, bekommt ZK fast geschenkt.'
+        + '</div>'
     },
     example: {
       title: 'Beispiel: 7 + 10 = ? (in Binär)',
@@ -115,7 +118,10 @@ const LessonsA2 = [
         + '</ul>'
         + '<p>Das führende Bit sagt dir dann das Vorzeichen:</p>'
         + '<ul><li>0 = positiv</li><li>1 = negativ</li></ul>'
-        + '<p>Unten: +37 und -37 im Vergleich.</p>',
+        + '<p>Unten: +37 und -37 im Vergleich.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> In der Praxis wird das Einerkomplement <em>nicht</em> verwendet – wegen dem Problem mit der doppelten Null. Warum lernen wir es trotzdem? Weil es die <strong>logische Vorstufe</strong> zum Zweierkomplement (nächste Lektion) ist. In der Klausur werden EK und ZK fast immer gemeinsam abgefragt. Wer EK verstanden hat, versteht automatisch, warum beim ZK "noch +1" dazu kommt – nämlich um die Doppel-Null loszuwerden.'
+        + '</div>',
       visuals: [
         {
           type: 'bit-layout',
@@ -215,7 +221,10 @@ const LessonsA2 = [
         + '<li><strong>+1</strong> addieren</li>'
         + '</ol>'
         + '</div>'
-        + '<p>Beispiel -37:</p>',
+        + '<p>Beispiel -37:</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Wenn du in Java <code>int x = -5;</code> schreibst, liegt <em>genau diese</em> Bit-Folge im Speicher – ein ZK. Wenn ein Messwert überläuft und plötzlich negativ wird, ist das ZK-Verhalten. Wer ZK nicht versteht, versteht eine ganze Klasse von Bugs nicht. In der Klausur ist es eine sichere 3-Punkte-Aufgabe mit klarem Schema: positive Zahl → invertieren → +1. Fertig.'
+        + '</div>',
       visuals: [
         {
           type: 'bit-layout',
@@ -329,7 +338,15 @@ const LessonsA2 = [
         + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>E</b> (Exponent)</td><td style="padding:6px;border:1px solid #ccc;">8</td><td style="padding:6px;border:1px solid #ccc;">Exponent + 127 (Bias-Trick)</td></tr>'
         + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>M</b> (Mantisse)</td><td style="padding:6px;border:1px solid #ccc;">23</td><td style="padding:6px;border:1px solid #ccc;">Die Stellen nach dem Komma</td></tr>'
         + '</table>'
-        + '<p>So sind die 32 Bits farblich getrennt angeordnet (hier: +1,0):</p>',
+        + '<p>So sind die 32 Bits farblich getrennt angeordnet (hier: +1,0):</p>'
+        + '<h3>Die Formel</h3>'
+        + '<div class="info-card" style="padding:12px;text-align:center;font-size:1.2em;background:#eff6ff;">'
+        + 'Zahl = (-1)<sup>V</sup> · 1,M · 2<sup>(E - 127)</sup>'
+        + '</div>'
+        + '<p>Klingt kompliziert? Gar nicht: Du schreibst die Zahl als "1 Komma irgendwas mal 2 hoch irgendwas", und der Computer speichert nur das Vorzeichen, den Exponenten und die Nachkommastellen. Die führende 1 <em>ganz vorne</em> ist so fest eingeplant, dass sie nicht mal abgespeichert wird – sie ist immer da.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Jeder <code>float</code> in Java, C, Python oder JavaScript ist IEEE 754. Wenn du mal hörst, dass <code>0.1 + 0.2 != 0.3</code> ergibt (berühmter Klassiker!), ist IEEE 754 dran schuld – 0,1 lässt sich nicht exakt in Binär darstellen. In der Klausur ist IEEE 754 die "große" Rechenaufgabe für 2,5 Punkte. Mit klarem Schema (Vorzeichen → Binär → normalisieren → Exponent +127 → Mantisse auffüllen) gut lösbar.'
+        + '</div>',
       visuals: [
         {
           type: 'bit-layout',
@@ -463,6 +480,9 @@ const LessonsA2 = [
         + '</div>'
         + '<h3>Grenzen von ASCII</h3>'
         + '<p>ASCII kann keine Umlaute (ä, ö, ü, ß), keine Emojis, kein Chinesisch. Nachfolger ist <strong>UTF-8</strong> – aber die ersten 128 Zeichen sind dort identisch mit ASCII.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Jeder Text-String in einer Programmiersprache, jede Textdatei, jede Netzwerk-Nachricht: alles sind Bytes, die nach ASCII/UTF-8 interpretiert werden. Wenn beim Öffnen einer Datei "Zeichensalat" erscheint, ist die Codierung falsch gesetzt. In der Klausur ist ASCII oft eine 2-Punkte-Aufgabe: "Codiere das Wort X in Hex." – schnelle Punkte, wenn du die Tabelle lesen kannst.'
+        + '</div>'
     },
     example: {
       title: 'Beispiel: "BodenSee" in ASCII',

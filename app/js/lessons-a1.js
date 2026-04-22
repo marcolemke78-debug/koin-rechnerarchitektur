@@ -23,7 +23,10 @@ const LessonsA1 = [
         + '<strong>Wichtig:</strong> Damit klar ist, welches System gemeint ist, schreibt man die Basis als kleinen Index: <code>101<sub>2</sub></code> ist Binär, <code>101<sub>10</sub></code> ist Dezimal. Das ist was ganz anderes!'
         + '</div>'
         + '<h3>Probier es aus</h3>'
-        + '<p>Klick die Bits unten an. Jede <strong>1</strong> zählt ihren Wert zur Summe dazu – jede <strong>0</strong> zählt nichts. So funktioniert das Binärsystem.</p>',
+        + '<p>Klick die Bits unten an. Jede <strong>1</strong> zählt ihren Wert zur Summe dazu – jede <strong>0</strong> zählt nichts. So funktioniert das Binärsystem.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Das Stellenwertprinzip ist die <em>Grundlage von allem</em>, was Computer tun. Ein Rechner speichert intern <em>nur</em> 0en und 1en – Strom an oder aus. Jede Farbe, jeder Buchstabe, jede Zahl, jedes Bild wird in Binärzahlen verwandelt und zurück. Wenn du dieses eine Prinzip verstehst, verstehst du automatisch die nächsten 10 Lektionen besser. Und in der Klausur sind 6 Punkte aus A1 fast garantiert, wenn du es drauf hast.'
+        + '</div>',
       visuals: [
         {
           type: 'binary-interactive',
@@ -121,7 +124,11 @@ const LessonsA1 = [
         + '<strong>Analogie – Wechselstube:</strong> Eine Dezimalzahl in Binär zu wandeln ist wie Geld in kleine Münzen zu wechseln. Du gibst immer die größte passende Münze und rechnest den Rest weiter. Die "Münzen" sind hier aber keine 1€/2€/5€, sondern 1, 2, 4, 8, 16, 32, 64, 128 – Zweierpotenzen.'
         + '</div>'
         + '<h3>Richtung 1: Binär → Dezimal (einfach!)</h3>'
-        + '<p>Stellenwerte aufschreiben, bei jeder 1 addieren. Fertig.</p>',
+        + '<p>Stellenwerte aufschreiben, bei jeder 1 addieren. Fertig.</p>'
+        + '<p>Probier es direkt unten aus:</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Jede Zahl, die auf dem Bildschirm landet, lag vorher als Binärzahl im Speicher. Und umgekehrt: Alles, was du als Dezimalzahl eingibst (Passwort, Preis, Alter), muss in Binär umgerechnet werden, bevor es der Computer speichern kann. In der Klausur ist das <em>die</em> Standard-Aufgabe in Themenbereich A – oft für 6 Punkte. Wenn du die beiden Verfahren sicher beherrschst, sind das verlässliche Punkte.'
+        + '</div>',
       visuals: [
         {
           type: 'binary-interactive',
@@ -241,6 +248,9 @@ const LessonsA1 = [
         + '<div class="warning-box">'
         + '<strong>Achtung:</strong> Gruppiere immer vom Komma aus! Vorkomma nach links, Nachkomma nach rechts. Fehlende Stellen mit 0 auffüllen.'
         + '</div>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Oktal wird heute weniger genutzt als früher, aber du begegnest ihm immer noch: bei Dateirechten unter Linux (<code>chmod 755</code>) oder bei Speicheradressen in alten Systemen. Wichtiger für dich: Der <em>Gruppierungs-Trick</em> ist identisch bei Hexadezimal (nächste Lektion) – nur mit 4 statt 3 Bits pro Gruppe. Wer Oktal beherrscht, bekommt Hex fast geschenkt. In der Klausur: meist 3 Punkte.'
+        + '</div>'
     },
     example: {
       title: 'Beispiel: Beide Richtungen',
@@ -349,7 +359,10 @@ const LessonsA1 = [
         + '<div style="background:#FFFF00;color:black;padding:8px 14px;border-radius:4px;">#FFFF00 Gelb</div>'
         + '<div style="background:#FFFFFF;color:black;padding:8px 14px;border-radius:4px;border:1px solid #ccc;">#FFFFFF Weiß</div>'
         + '</div>'
-        + '<p>FF = 255 (Maximum), 00 = 0 (Minimum).</p>'
+        + '<p>FF = 255 (Maximum), 00 = 0 (Minimum). Jede Farbe hat 3 Werte von 0–255 → 256³ ≈ 16,7 Millionen Farben sind möglich.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Hex ist <em>überall</em>: Web-Farben (<code>#2563EB</code>), MAC-Adressen (<code>AA:BB:CC:DD:EE:FF</code>), Speicher-Adressen, Git-Commit-IDs, Fehler-Codes (<code>0x80070005</code>). Wenn du irgendwann mal eine Webseite gestaltest oder eine Fehlermeldung liest, brauchst du Hex. Und in der Klausur ist Hex zuverlässig für 4 Punkte drin – mit der Tabelle im Kopf rechnest du in Sekunden.'
+        + '</div>'
     },
     example: {
       title: 'Beispiel: Beide Richtungen',
@@ -460,6 +473,9 @@ const LessonsA1 = [
         + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">'
         + '<div class="tip-box"><strong>+</strong> Jede Dezimalziffer exakt dargestellt. Keine Rundungsfehler. Einfache Anzeige.</div>'
         + '<div class="warning-box"><strong>–</strong> Speicherverschwendung: Die 4-Bit-Codes 1010–1111 (das wären 10–15) sind ungenutzt.</div>'
+        + '</div>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> BCD wird überall dort genutzt, wo Ziffern <em>einzeln sichtbar</em> sein müssen: Digital-Anzeigen (Waagen, Uhren, Taschenrechner) oder wo <em>exakte Dezimaldarstellung</em> zählt – zum Beispiel in der Finanzbranche. 0,10 € muss exakt 0,10 € bleiben, keine Rundungsfehler wie bei Gleitkomma! In der Klausur meist eine kurze 1-Punkt-Aufgabe: schnell erledigt, wenn du das Prinzip verstehst.'
         + '</div>'
     },
     example: {
