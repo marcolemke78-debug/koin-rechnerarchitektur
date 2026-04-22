@@ -187,6 +187,33 @@ const CIRCUITS = {
       },
       outputs: { L: { x: 1, y: 0.4 } }
     }
+  },
+
+  'c1-l6-xor-construction': {
+    name: 'XOR aus AND/OR/NOT',
+    inputs: ['a', 'b'],
+    outputs: ['z'],
+    gates: [
+      { id: 'not1', type: 'not', inputs: ['a'] },
+      { id: 'not2', type: 'not', inputs: ['b'] },
+      { id: 'and1', type: 'and', inputs: ['a', 'not2'], label: 'a \u2227 \u00acb' },
+      { id: 'and2', type: 'and', inputs: ['not1', 'b'], label: '\u00aca \u2227 b' },
+      { id: 'or1',  type: 'or',  inputs: ['and1', 'and2'], label: 'z = a \u2295 b' }
+    ],
+    connections: [
+      { from: 'or1', to: 'z' }
+    ],
+    layout: {
+      inputs:  { a: { x: 0, y: 0.2 }, b: { x: 0, y: 0.8 } },
+      gates:   {
+        not1: { x: 0.22, y: 0.4 },
+        not2: { x: 0.22, y: 0.6 },
+        and1: { x: 0.55, y: 0.2 },
+        and2: { x: 0.55, y: 0.8 },
+        or1:  { x: 0.82, y: 0.5 }
+      },
+      outputs: { z: { x: 1, y: 0.5 } }
+    }
   }
 };
 

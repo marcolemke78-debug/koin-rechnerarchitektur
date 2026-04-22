@@ -128,30 +128,46 @@ const LessonsC1 = [
     explanation: {
       html:
         '<h2>Logische Operatoren</h2>'
-        + '<p>Logische Operatoren verkn&uuml;pfen Wahrheitswerte (0 oder 1). Hier sind die 7 wichtigsten:</p>'
+        + '<p>Logische Operatoren verkn\u00FCpfen Wahrheitswerte (0 oder 1). Hier lernst du die <strong>vier Kern-Operatoren</strong> (AND, OR, NOT, XOR) sowie die drei h\u00E4ufig auftretenden Varianten NAND, NOR, XNOR.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Analogie aus dem Alltag:</strong> Jeder Operator beschreibt eine Regel, wie du aus zwei Ja/Nein-Aussagen eine neue Ja/Nein-Aussage ableitest.'
+        + '<ul style="margin:6px 0 0 0;padding-left:22px">'
+        + '<li><strong>AND:</strong> \u201EIch gehe nur spazieren, wenn es <em>trocken</em> UND <em>hell</em> ist.\u201C \u2013 beide Bedingungen m\u00FCssen wahr sein.</li>'
+        + '<li><strong>OR:</strong> \u201EIch nehme den Regenschirm mit, wenn es <em>regnet</em> ODER <em>windig</em> ist.\u201C \u2013 einer reicht.</li>'
+        + '<li><strong>NOT:</strong> \u201EIch gehe <em>nicht</em> raus.\u201C \u2013 kehrt eine Aussage um.</li>'
+        + '<li><strong>XOR:</strong> \u201EEntweder Tee <em>oder</em> Kaffee, aber <em>nicht beides</em>.\u201C \u2013 genau einer.</li>'
+        + '</ul>'
+        + '</div>'
+        + '<h3>Die 7 wichtigsten Operatoren:</h3>'
         + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
         + '<tr style="background:#f0f0f0">'
         + '<th style="border:1px solid #ccc;padding:6px">Symbol</th>'
         + '<th style="border:1px solid #ccc;padding:6px">Name</th>'
         + '<th style="border:1px solid #ccc;padding:6px">Bedeutung</th>'
         + '<th style="border:1px solid #ccc;padding:6px">Merkhilfe</th></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><code>&#8743;</code></td><td style="border:1px solid #ccc;padding:6px">AND</td><td style="border:1px solid #ccc;padding:6px">1 nur wenn beide 1</td><td style="border:1px solid #ccc;padding:6px">Beide T&uuml;ren auf</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><code>&#8744;</code></td><td style="border:1px solid #ccc;padding:6px">OR</td><td style="border:1px solid #ccc;padding:6px">1 wenn mind. einer 1</td><td style="border:1px solid #ccc;padding:6px">Eine T&uuml;r reicht</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><code>&#172;</code></td><td style="border:1px solid #ccc;padding:6px">NOT</td><td style="border:1px solid #ccc;padding:6px">Kehrt Wert um</td><td style="border:1px solid #ccc;padding:6px">Lichtschalter umdrehen</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><code>&#8853;</code></td><td style="border:1px solid #ccc;padding:6px">XOR</td><td style="border:1px solid #ccc;padding:6px">1 nur wenn genau einer 1</td><td style="border:1px solid #ccc;padding:6px">Entweder-oder (aber nicht beides)</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><code>&#8593;</code> oder NAND</td><td style="border:1px solid #ccc;padding:6px">NAND</td><td style="border:1px solid #ccc;padding:6px">Gegenteil von AND</td><td style="border:1px solid #ccc;padding:6px">NOT(a &#8743; b)</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><code>&#8595;</code> oder NOR</td><td style="border:1px solid #ccc;padding:6px">NOR</td><td style="border:1px solid #ccc;padding:6px">Gegenteil von OR</td><td style="border:1px solid #ccc;padding:6px">NOT(a &#8744; b)</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px"><code>\u2227</code></td><td style="border:1px solid #ccc;padding:6px">AND</td><td style="border:1px solid #ccc;padding:6px">1 nur wenn beide 1</td><td style="border:1px solid #ccc;padding:6px">Beide T\u00FCren auf</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px"><code>\u2228</code></td><td style="border:1px solid #ccc;padding:6px">OR</td><td style="border:1px solid #ccc;padding:6px">1 wenn mind. einer 1</td><td style="border:1px solid #ccc;padding:6px">Eine T\u00FCr reicht</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px"><code>\u00AC</code></td><td style="border:1px solid #ccc;padding:6px">NOT</td><td style="border:1px solid #ccc;padding:6px">Kehrt Wert um</td><td style="border:1px solid #ccc;padding:6px">Lichtschalter umdrehen</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px"><code>\u2295</code></td><td style="border:1px solid #ccc;padding:6px">XOR</td><td style="border:1px solid #ccc;padding:6px">1 nur wenn genau einer 1</td><td style="border:1px solid #ccc;padding:6px">Entweder-oder (aber nicht beides)</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">NAND</td><td style="border:1px solid #ccc;padding:6px">NAND</td><td style="border:1px solid #ccc;padding:6px">Gegenteil von AND</td><td style="border:1px solid #ccc;padding:6px">\u00AC(a \u2227 b)</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">NOR</td><td style="border:1px solid #ccc;padding:6px">NOR</td><td style="border:1px solid #ccc;padding:6px">Gegenteil von OR</td><td style="border:1px solid #ccc;padding:6px">\u00AC(a \u2228 b)</td></tr>'
         + '<tr><td style="border:1px solid #ccc;padding:6px">XNOR</td><td style="border:1px solid #ccc;padding:6px">XNOR</td><td style="border:1px solid #ccc;padding:6px">Gegenteil von XOR</td><td style="border:1px solid #ccc;padding:6px">1 wenn beide gleich</td></tr>'
         + '</table>'
-        + '<h3>Operatorrangfolge (wichtig f&uuml;r die Klausur!)</h3>'
-        + '<p><strong>NOT bindet am st&auml;rksten</strong>, dann AND, dann OR. Wie Punkt-vor-Strich in der Mathematik:</p>'
-        + '<p><code>&#172;a &#8743; b &#8744; c</code> wird gelesen als <code>((&#172;a) &#8743; b) &#8744; c</code></p>'
-        + '<p>Klammern &uuml;berschreiben die Rangfolge &ndash; genauso wie in der Arithmetik.</p>',
+        + '<div class="why-context">'
+        + '<strong>Warum sieben Operatoren?</strong> Theoretisch gen\u00FCgen AND, OR, NOT \u2013 alles andere l\u00E4sst sich daraus bauen. XOR, NAND, NOR, XNOR sind aber in der Hardware <em>effizienter umsetzbar</em>. Deshalb lernst du sie als eigene Bausteine mit eigenen Gatter-Symbolen.'
+        + '</div>'
+        + '<h3>Operatorrangfolge (klausurrelevant!)</h3>'
+        + '<p>Wie Punkt-vor-Strich in der Mathematik gibt es eine feste Reihenfolge:</p>'
+        + '<p><strong>NOT</strong> (st\u00E4rkste Bindung) \u2192 <strong>AND</strong> \u2192 <strong>OR</strong> (schw\u00E4chste)</p>'
+        + '<p>Beispiel: <code>\u00ACa \u2227 b \u2228 c</code> wird gelesen als <code>((\u00ACa) \u2227 b) \u2228 c</code>. Klammern \u00FCberschreiben die Rangfolge.</p>'
+        + '<div class="reading-guide">'
+        + '<strong>Probier\u2019s selbst:</strong> Unten findest du alle vier Kern-Gatter als interaktive Simulationen. Klicke die Eing\u00E4nge und pr\u00FCfe, ob das Verhalten zu deiner Alltagsintuition passt. Besonders interessant: Vergleiche OR und XOR bei Eingabe 1,1 \u2013 OR gibt 1, XOR gibt 0.'
+        + '</div>',
       visuals: [
-        { type: 'gate-sim', gate: 'and', label: 'AND-Gatter interaktiv' },
-        { type: 'gate-sim', gate: 'or', label: 'OR-Gatter interaktiv' },
-        { type: 'gate-sim', gate: 'not', label: 'NOT-Gatter interaktiv' },
-        { type: 'gate-sim', gate: 'xor', label: 'XOR-Gatter interaktiv' }
+        { type: 'gate-sim', gate: 'and', label: 'AND \u2013 beide Eing\u00E4nge m\u00FCssen 1 sein' },
+        { type: 'gate-sim', gate: 'or', label: 'OR \u2013 mindestens ein Eingang muss 1 sein' },
+        { type: 'gate-sim', gate: 'not', label: 'NOT \u2013 kehrt den Eingang um' },
+        { type: 'gate-sim', gate: 'xor', label: 'XOR \u2013 genau ein Eingang muss 1 sein (1\u22951=0, das ist der Clou!)' }
       ]
     },
     example: {
@@ -233,15 +249,25 @@ const LessonsC1 = [
     explanation: {
       html:
         '<h2>Wahrheitstabelle aus Ausdruck erstellen</h2>'
-        + '<p>Eine Wahrheitstabelle zeigt f&uuml;r <strong>alle m&ouml;glichen Eingaben</strong>, was der Ausdruck ergibt. '
-        + 'So geht\'s Schritt f&uuml;r Schritt:</p>'
+        + '<p>Eine Wahrheitstabelle zeigt f\u00FCr <strong>alle m\u00F6glichen Eingaben</strong>, was der Ausdruck ergibt. Sie ist das wichtigste Werkzeug der Logik-Klausur.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Analogie \u2013 Kochrezept:</strong> Ein komplexer logischer Ausdruck ist wie ein Kochrezept mit mehreren Zwischenschritten. Du kannst nicht in einem Schritt \u201EPfannkuchen\u201C aus Mehl/Milch/Eiern zaubern \u2013 du mischst erst den Teig (Hilfsspalte 1), backst ihn dann an (Hilfsspalte 2), servierst ihn mit Belag (Ergebnis). Genauso rechnest du jede Wahrheitstabelle: von innen nach au\u00DFen, mit Zwischenergebnissen als Hilfsspalten.'
+        + '</div>'
+        + '<h3>Vorgehen in 4 Schritten:</h3>'
         + '<ol>'
-        + '<li><strong>Variablen z&auml;hlen:</strong> n Variablen &rarr; 2<sup>n</sup> Zeilen. (2 Var. = 4 Zeilen, 3 Var. = 8 Zeilen)</li>'
-        + '<li><strong>Spalten anlegen:</strong> Eine Spalte pro Variable, dann eine f&uuml;r jeden Teilausdruck, dann das Ergebnis.</li>'
-        + '<li><strong>Bin&auml;r aufsteigend z&auml;hlen:</strong> Erste Zeile: alle 0. Letzte Zeile: alle 1. Linkste Variable wechselt am seltensten.</li>'
-        + '<li><strong>Teilausdr&uuml;cke berechnen:</strong> Von innen nach au&szlig;en, Klammern zuerst, dann NOT, dann AND, dann OR.</li>'
+        + '<li><strong>Variablen z\u00E4hlen:</strong> n Variablen \u2192 2<sup>n</sup> Zeilen. (2 Var. = 4 Zeilen, 3 Var. = 8 Zeilen, 4 Var. = 16 Zeilen)</li>'
+        + '<li><strong>Spalten anlegen:</strong> Eine Spalte pro Variable, dann eine pro Hilfsausdruck, zuletzt das Ergebnis.</li>'
+        + '<li><strong>Bin\u00E4r aufsteigend z\u00E4hlen:</strong> Erste Zeile: alle 0. Letzte Zeile: alle 1. Die <em>linkste</em> Variable wechselt am <em>seltensten</em>.</li>'
+        + '<li><strong>Teilausdr\u00FCcke berechnen:</strong> Von innen nach au\u00DFen \u2013 <em>Klammern zuerst</em>, dann NOT, dann AND, dann OR.</li>'
         + '</ol>'
-        + '<p><strong>Tipp f&uuml;r die Klausur:</strong> Schreibe Hilfsspalten auf! Lieber mehr Spalten als Rechenfehler.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum Hilfsspalten?</strong> Ohne Hilfsspalten machst du jede Rechnung im Kopf \u2013 und in der Klausur vergisst du unter Stress die Rangfolge oder eine Klammer. Mit Hilfsspalten baust du die WTT in kleinen, kontrollierbaren Bausteinen. In Pr\u00FCfungen ist es genau <em>ein Fehler weniger pro Zeile</em>, wenn du 5 Spalten statt 3 hast. Die paar Sekunden mehr zum Zeichnen lohnen sich.'
+        + '</div>'
+        + '<h3>Ausdruck als Baum visualisiert:</h3>'
+        + '<p>Unten siehst du den Ausdruck aus dem Beispiel als <strong>Baumdiagramm</strong>. Die Baumstruktur zeigt dir die Rangfolge visuell: Die <em>unteren</em> Knoten werden zuerst berechnet, die <em>oberen</em> zuletzt. Eine gute Hilfe, um die Hilfsspalten in der richtigen Reihenfolge anzulegen.</p>',
+      visuals: [
+        { type: 'expression-tree', expression: '((a \u2228 b) \u2227 \u00acb) \u2227 (b \u2228 (a \u2227 \u00acb))', label: 'Beispiel-Ausdruck als Baum \u2013 unten rechnen, oben fertig' }
+      ]
     },
     example: {
       title: 'Klausur-Beispiel: ((a \u2228 b) \u2227 \u00acb) \u2227 (b \u2228 (a \u2227 \u00acb))',
@@ -311,19 +337,25 @@ const LessonsC1 = [
     explanation: {
       html:
         '<h2>Disjunktive Normalform (DNF) ableiten</h2>'
-        + '<p>Die DNF ist eine standardisierte Form eines logischen Ausdrucks. '
-        + 'Sie besteht aus <strong>ODER-verkn&uuml;pften AND-Termen</strong>.</p>'
-        + '<h3>Was ist ein Minterm?</h3>'
-        + '<p>F&uuml;r jede Zeile in der Wahrheitstabelle, wo das Ergebnis <strong>1</strong> ist, schreibe einen AND-Term:</p>'
+        + '<p>Die DNF ist eine <strong>standardisierte Form</strong> eines logischen Ausdrucks: Sie besteht aus <strong>OR-verkn\u00FCpften AND-Termen</strong> (sogenannten <em>Mintermen</em>).</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Puzzle-Analogie:</strong> Stell dir vor, du beschreibst alle Situationen, in denen die Lampe an ist. Jede Zeile der Wahrheitstabelle mit Ergebnis=1 ist ein Puzzleteil. Ein Minterm sagt: \u201EIn dieser <em>exakten</em> Kombination leuchtet die Lampe.\u201C Die DNF setzt alle Puzzleteile mit ODER zusammen: \u201ELampe leuchtet, wenn Situation A ODER Situation B ODER Situation C vorliegt.\u201C'
+        + '</div>'
+        + '<h3>Minterm-Regel:</h3>'
+        + '<p>F\u00FCr jede Zeile in der Wahrheitstabelle, wo das Ergebnis <strong>1</strong> ist, schreibst du einen Minterm:</p>'
         + '<ul>'
-        + '<li>Variable mit Wert 1 &rarr; direkt &uuml;bernehmen (z.B. <code>a</code>)</li>'
-        + '<li>Variable mit Wert 0 &rarr; negieren (z.B. <code>&#172;b</code>)</li>'
+        + '<li>Variable mit Wert <strong>1</strong> in der Zeile \u2192 Variable <em>direkt</em> \u00FCbernehmen (z.B. <code>a</code>)</li>'
+        + '<li>Variable mit Wert <strong>0</strong> in der Zeile \u2192 Variable <em>negieren</em> (z.B. <code>\u00ACb</code>)</li>'
+        + '<li>Die Variablen mit AND (\u2227) verkn\u00FCpfen \u2192 fertiger Minterm</li>'
         + '</ul>'
-        + '<p>Dann alle diese AND-Terme mit OR verkn&uuml;pfen &rarr; fertige DNF!</p>'
-        + '<h3>Analogie:</h3>'
-        + '<p>Stell dir vor, du beschreibst alle Situationen, in denen die Lampe an ist. '
-        + 'Jede Situation ist ein AND-Term (exakt diese Kombination), '
-        + 'und du listest ALLE auf mit ODER dazwischen.</p>'
+        + '<p>Dann <strong>alle Minterme mit OR verbinden</strong> \u2192 fertige DNF!</p>'
+        + '<div class="why-context">'
+        + '<strong>Wozu die DNF?</strong> Die DNF ist eine \u201EStandardform\u201C, auf die man jeden logischen Ausdruck bringen kann. Sobald zwei Ausdr\u00FCcke in DNF sind, lassen sie sich leicht vergleichen. Au\u00DFerdem ist die DNF 1:1 in Gatter-Hardware umsetzbar: so viele AND-Gatter wie Minterme, dahinter ein gro\u00DFes OR-Gatter. Das ist einer der Gr\u00FCnde, warum Schaltwerke oft zun\u00E4chst als DNF formuliert werden.'
+        + '</div>'
+        + '<p>Unten siehst du die Beispiel-Wahrheitstabelle mit <strong>farbig markierten 1-Zeilen</strong> und der dazugeh\u00F6rigen DNF darunter. Jede farbige Zeile entspricht einem Minterm in der Formel.</p>',
+      visuals: [
+        { type: 'dnf-highlighter', variables: ['a', 'b', 'c'], results: [0, 1, 0, 0, 1, 0, 0, 0], label: 'WTT mit 2 Einsen \u2192 DNF mit 2 Mintermen' }
+      ]
     },
     example: {
       title: 'Beispiel: DNF aus Wahrheitstabelle ableiten',
@@ -403,17 +435,22 @@ const LessonsC1 = [
     title: '\u00c4quivalenz mit Wahrheitstabellen beweisen',
     explanation: {
       html:
-        '<h2>\u00c4quivalenz mit Wahrheitstabellen beweisen</h2>'
-        + '<p>Zwei logische Ausdr&uuml;cke sind <strong>&auml;quivalent</strong>, '
-        + 'wenn sie f&uuml;r alle m&ouml;glichen Eingaben <strong>dasselbe Ergebnis</strong> liefern.</p>'
+        '<h2>\u00C4quivalenz mit Wahrheitstabellen beweisen</h2>'
+        + '<p>Zwei logische Ausdr\u00FCcke sind <strong>\u00E4quivalent</strong>, wenn sie f\u00FCr <em>alle m\u00F6glichen Eingaben</em> <strong>dasselbe Ergebnis</strong> liefern. Das ist eines der wichtigsten Konzepte der Schaltalgebra \u2013 und gleichzeitig eine typische Klausur-Aufgabe.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Analogie \u2013 zwei Wege zum gleichen Ziel:</strong> Zwei Ausdr\u00FCcke k\u00F6nnen syntaktisch <em>v\u00F6llig verschieden aussehen</em>, aber trotzdem genau dasselbe Verhalten haben. Wie zwei verschiedene Rezepte, die denselben Pfannkuchen ergeben. Um zu beweisen, dass sie \u00E4quivalent sind, zeigst du, dass sie unter jeder Bedingung dasselbe liefern \u2013 dazu nimmst du die Wahrheitstabelle.'
+        + '</div>'
         + '<h3>Vorgehen:</h3>'
         + '<ol>'
-        + '<li>Erstelle eine gemeinsame Wahrheitstabelle mit <strong>zwei Ergebnisspalten</strong> &ndash; eine f&uuml;r jeden Ausdruck.</li>'
-        + '<li>F&uuml;lle beide Spalten vollst&auml;ndig aus.</li>'
-        + '<li>Vergleiche die Spalten: Sind sie <strong>zeilenweise identisch</strong>? &rarr; &Auml;quivalent!</li>'
+        + '<li>Erstelle eine <strong>gemeinsame Wahrheitstabelle</strong> mit zwei Ergebnisspalten \u2013 eine pro Ausdruck.</li>'
+        + '<li>F\u00FClle beide Spalten vollst\u00E4ndig aus (Hilfsspalten sind erlaubt!).</li>'
+        + '<li>Vergleiche die Spalten: Sind sie <strong>zeilenweise identisch</strong>? \u2192 \u00C4quivalent!</li>'
+        + '<li>Unterscheiden sie sich an <em>auch nur einer</em> Zeile? \u2192 <strong>Nicht</strong> \u00E4quivalent. Diese eine Zeile ist dann das Gegenbeispiel.</li>'
         + '</ol>'
-        + '<p><strong>Wichtig:</strong> In der Klausur reicht es nicht, zu sagen &#8222;sehen gleich aus&#8220;. '
-        + 'Du musst die vollst&auml;ndige Wahrheitstabelle aufschreiben!</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum lernen wir das?</strong> \u00C4quivalenz-Beweise sind die Basis f\u00FCr <em>Schaltungsvereinfachung</em>. In der Praxis will man eine Schaltung mit weniger Gattern bauen \u2013 wenn der einfachere Ausdruck \u00E4quivalent zum komplizierten ist, darf man ihn verwenden. Das spart Chip-Fl\u00E4che und Stromverbrauch. De-Morgansches Gesetz, Distributivgesetz usw. sind alle \u00C4quivalenzen, die du mit WTT beweisen kannst.'
+        + '</div>'
+        + '<p><strong>Klausur-Merke:</strong> Es reicht <em>nicht</em>, zu sagen \u201Esehen gleich aus\u201C. Du musst die vollst\u00E4ndige Wahrheitstabelle aufschreiben und explizit sagen: \u201EBeide Spalten stimmen zeilenweise \u00FCberein \u2192 \u00E4quivalent.\u201C Das kostet 2 Minuten und gibt volle Punkte.</p>'
     },
     example: {
       title: 'Klausur-Beispiel: (a \u2228 b) \u2227 c = (a \u2227 c) \u2228 (b \u2227 c) ?',
@@ -488,27 +525,50 @@ const LessonsC1 = [
     explanation: {
       html:
         '<h2>Gatterschaltungen zeichnen & lesen</h2>'
-        + '<p>Gatter sind die Hardware-Umsetzung logischer Operatoren. '
-        + 'In Deutschland verwenden wir die <strong>IEC 60617-12 Norm</strong>:</p>'
+        + '<p>Gatter sind die <strong>Hardware-Umsetzung</strong> logischer Operatoren. Auf einem Computer-Chip gibt es Millionen davon. In Deutschland und f\u00FCr diese Klausur verwenden wir die <strong>IEC 60617-12 Norm</strong> \u2013 rechteckige K\u00E4sten mit einem Symbol drin.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Analogie \u2013 Lego-Bausteine:</strong> Jedes Gatter ist ein fester Baustein mit klar definierter Funktion. Du kannst sie zu beliebig gro\u00DFen Schaltungen zusammenstecken, solange du die Leserichtung einh\u00E4ltst (Eing\u00E4nge links, Ausgang rechts). Ein Chip ist \u201Enur\u201C eine riesige Lego-Burg aus solchen Bausteinen.'
+        + '</div>'
+        + '<h3>IEC 60617-12-Symbole:</h3>'
         + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
         + '<tr style="background:#f0f0f0">'
         + '<th style="border:1px solid #ccc;padding:6px">Gatter</th>'
-        + '<th style="border:1px solid #ccc;padding:6px">Symbol</th>'
+        + '<th style="border:1px solid #ccc;padding:6px">Symbol im Kasten</th>'
         + '<th style="border:1px solid #ccc;padding:6px">Bedeutung</th></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px">AND</td><td style="border:1px solid #ccc;padding:6px"><code>&amp;</code></td><td style="border:1px solid #ccc;padding:6px">Alle Eing&auml;nge m&uuml;ssen 1 sein</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px">OR</td><td style="border:1px solid #ccc;padding:6px"><code>&#8805;1</code></td><td style="border:1px solid #ccc;padding:6px">Mindestens ein Eingang muss 1 sein</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px">NOT</td><td style="border:1px solid #ccc;padding:6px">Dreieck mit Kreis</td><td style="border:1px solid #ccc;padding:6px">Negiert den Eingang</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px">XOR</td><td style="border:1px solid #ccc;padding:6px"><code>=1</code></td><td style="border:1px solid #ccc;padding:6px">Genau ein Eingang muss 1 sein</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px">NAND</td><td style="border:1px solid #ccc;padding:6px"><code>&amp;</code> mit Kreis</td><td style="border:1px solid #ccc;padding:6px">AND negiert</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px">NOR</td><td style="border:1px solid #ccc;padding:6px"><code>&#8805;1</code> mit Kreis</td><td style="border:1px solid #ccc;padding:6px">OR negiert</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">AND</td><td style="border:1px solid #ccc;padding:6px"><code>&</code></td><td style="border:1px solid #ccc;padding:6px">Alle Eing\u00E4nge m\u00FCssen 1 sein</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">OR</td><td style="border:1px solid #ccc;padding:6px"><code>\u22651</code></td><td style="border:1px solid #ccc;padding:6px">Mindestens ein Eingang muss 1 sein</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">NOT</td><td style="border:1px solid #ccc;padding:6px"><code>1</code> mit Kringel am Ausgang</td><td style="border:1px solid #ccc;padding:6px">Negiert (0\u21921, 1\u21920)</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">XOR</td><td style="border:1px solid #ccc;padding:6px"><code>=1</code></td><td style="border:1px solid #ccc;padding:6px">Genau einer muss 1 sein</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">NAND</td><td style="border:1px solid #ccc;padding:6px"><code>&</code> mit Kringel</td><td style="border:1px solid #ccc;padding:6px">AND negiert</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px">NOR</td><td style="border:1px solid #ccc;padding:6px"><code>\u22651</code> mit Kringel</td><td style="border:1px solid #ccc;padding:6px">OR negiert</td></tr>'
         + '</table>'
-        + '<p><strong>Leserichtung:</strong> Eing&auml;nge immer <strong>links</strong>, Ausgang immer <strong>rechts</strong>.</p>'
+        + '<p><strong>Merkregel: Kringel am Ausgang = Negation.</strong> Das funktioniert universell: jedes Gatter kann \u201Enegiert\u201C werden, indem du einen Kringel anh\u00E4ngst.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum IEC-Symbole (und nicht die geschwungenen US-Symbole)?</strong> In Deutschland standardisiert; kompakter; auf Karopapier gut zeichenbar; und eindeutig. Die US-Symbole (D-f\u00F6rmiges AND, nach-innen-gew\u00F6lbtes OR) wirken intuitiver, sind aber in deiner Klausur <em>falsch</em>. Nutze immer die Rechteck-Variante.'
+        + '</div>'
         + '<h3>Drei Klausur-Skills:</h3>'
         + '<ol>'
-        + '<li><strong>Ausdruck &rarr; Gatter:</strong> Klammern von innen nach au&szlig;en als Gatter aufbauen</li>'
-        + '<li><strong>Gatter &rarr; Ausdruck:</strong> Von rechts nach links lesen</li>'
-        + '<li><strong>XOR aus AND/OR/NOT bauen:</strong> a&#8853;b = (a&#8743;&#172;b)&#8744;(&#172;a&#8743;b)</li>'
+        + '<li><strong>Ausdruck \u2192 Gatter zeichnen:</strong> Klammern von innen nach au\u00DFen als Gatter aufbauen. Beispiel <code>(a \u2228 b) \u2227 c</code>: zuerst OR-Gatter f\u00FCr (a\u2228b), dann AND-Gatter, das den OR-Ausgang und c verbindet.</li>'
+        + '<li><strong>Gatter \u2192 Ausdruck lesen:</strong> Von rechts (Ausgang) nach links arbeiten. Letztes Gatter liefert den Haupt-Operator, dessen Eing\u00E4nge werden zu den Teil-Ausdr\u00FCcken.</li>'
+        + '<li><strong>XOR aus AND/OR/NOT bauen:</strong> <code>a \u2295 b = (a \u2227 \u00acb) \u2228 (\u00aca \u2227 b)</code> \u2013 siehst du unten als interaktive Schaltung!</li>'
         + '</ol>'
+        + '<div class="reading-guide">'
+        + '<strong>So liest du die XOR-Konstruktion unten:</strong>'
+        + '<ul style="margin:6px 0 0 0;padding-left:20px">'
+        + '<li>Oberer Pfad: <code>a</code> direkt + <code>b</code> durch NOT \u2192 AND-Gatter \u2192 liefert <code>a \u2227 \u00acb</code></li>'
+        + '<li>Unterer Pfad: <code>a</code> durch NOT + <code>b</code> direkt \u2192 AND-Gatter \u2192 liefert <code>\u00aca \u2227 b</code></li>'
+        + '<li>OR-Gatter rechts kombiniert beide \u2192 <code>z = a \u2295 b</code></li>'
+        + '<li>Klicke a und b durch alle 4 Kombinationen und pr\u00FCfe die XOR-Wahrheitstabelle.</li>'
+        + '</ul>'
+        + '</div>'
+        + '<div class="circuit-legend">'
+        + '<span class="legend-item"><span class="legend-symbol">&</span>AND</span>'
+        + '<span class="legend-item"><span class="legend-symbol">\u22651</span>OR</span>'
+        + '<span class="legend-item"><span class="legend-symbol">1\u00B0</span>NOT</span>'
+        + '</div>',
+      visuals: [
+        { type: 'circuit', circuit: 'c1-l6-xor-construction', label: 'XOR aus AND/OR/NOT gebaut \u2013 klicke a und b' }
+      ]
     },
     example: {
       title: 'Klausur-Beispiel: Gatterschaltungen',
