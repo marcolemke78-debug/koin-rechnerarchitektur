@@ -166,6 +166,27 @@ const CIRCUITS = {
       },
       outputs: { D: { x: 1, y: 0.12 }, Bout: { x: 1, y: 0.6 } }
     }
+  },
+
+  'c1-l1-example': {
+    name: 'S1 \u2227 (S2 \u2228 S3)',
+    inputs: ['S1', 'S2', 'S3'],
+    outputs: ['L'],
+    gates: [
+      { id: 'or1',  type: 'or',  inputs: ['S2', 'S3'], label: 'S2 \u2228 S3' },
+      { id: 'and1', type: 'and', inputs: ['S1', 'or1'], label: 'L' }
+    ],
+    connections: [
+      { from: 'and1', to: 'L' }
+    ],
+    layout: {
+      inputs:  { S1: { x: 0, y: 0.15 }, S2: { x: 0, y: 0.55 }, S3: { x: 0, y: 0.85 } },
+      gates:   {
+        or1:  { x: 0.35, y: 0.7 },
+        and1: { x: 0.7, y: 0.4 }
+      },
+      outputs: { L: { x: 1, y: 0.4 } }
+    }
   }
 };
 

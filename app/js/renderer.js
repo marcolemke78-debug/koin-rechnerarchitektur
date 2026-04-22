@@ -138,6 +138,11 @@ const Renderer = {
         content.innerHTML = step.html;
         details.appendChild(content);
 
+        // Visuals pro Schritt rendern (z.B. eine Circuit-Simulation, die zu diesem Step passt)
+        if (step.visuals) {
+          Renderer.renderVisuals(step.visuals, content);
+        }
+
         exampleSection.appendChild(details);
       });
 

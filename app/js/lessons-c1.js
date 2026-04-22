@@ -7,54 +7,82 @@ const LessonsC1 = [
     explanation: {
       html:
         '<h2>Schaltkreise lesen & umwandeln</h2>'
-        + '<p>Stell dir einen <strong>Lichtschalter</strong> vor: Entweder flie&szlig;t Strom (1) oder nicht (0). '
-        + 'Schaltkreise aus dem Alltag lassen sich in logische Ausdr&uuml;cke und Gatterschaltungen &uuml;bersetzen.</p>'
-        + '<h3>Serienschaltung &rarr; AND (&#8743;)</h3>'
-        + '<p>Die Schalter liegen <strong>hintereinander</strong> &ndash; wie zwei T&uuml;ren, durch die man nacheinander muss. '
-        + 'Die Lampe leuchtet nur, wenn <strong>beide</strong> Schalter geschlossen sind.</p>'
-        + '<h3>Parallelschaltung &rarr; OR (&#8744;)</h3>'
-        + '<p>Die Schalter liegen <strong>nebeneinander</strong> &ndash; wie zwei Wege zum Ziel. '
-        + 'Die Lampe leuchtet, wenn <strong>mindestens einer</strong> der Schalter geschlossen ist.</p>'
+        + '<p>In dieser Lektion lernst du, wie ein <strong>physischer Stromkreis</strong> (mit Schaltern und einer Lampe) in einen <strong>logischen Ausdruck</strong> \u00FCbersetzt wird \u2013 und von dort in eine <strong>Gatterschaltung</strong>.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Grund-Idee:</strong> Ein Lichtschalter kennt nur zwei Zust\u00E4nde: <strong>geschlossen (1)</strong> oder <strong>offen (0)</strong> \u2013 entweder flie\u00DFt Strom oder nicht. Und die Lampe leuchtet (1) oder nicht (0). Damit hast du alles, was du brauchst, um jeden Schaltkreis mit 0 und 1 zu beschreiben. Es gibt genau zwei Arten, mehrere Schalter zu kombinieren:'
+        + '</div>'
+        + '<h3>Serienschaltung \u2192 AND (\u2227)</h3>'
+        + '<p>Die Schalter liegen <strong>hintereinander</strong>. <em>Bild:</em> Zwei T\u00FCren, durch die man nacheinander hindurch muss. Wenn eine T\u00FCr zu ist, bleibt der Weg versperrt. Die Lampe leuchtet <strong>nur, wenn beide Schalter geschlossen sind</strong>.</p>'
+        + '<p>Logische \u00DCbersetzung: <code>L = S1 \u2227 S2</code> (S1 und S2 m\u00FCssen 1 sein)</p>'
+        + '<h3>Parallelschaltung \u2192 OR (\u2228)</h3>'
+        + '<p>Die Schalter liegen <strong>nebeneinander</strong>. <em>Bild:</em> Zwei getrennte Wege zum Ziel. Wenn einer frei ist, kommt der Strom durch. Die Lampe leuchtet, <strong>wenn mindestens einer der Schalter geschlossen ist</strong>.</p>'
+        + '<p>Logische \u00DCbersetzung: <code>L = S1 \u2228 S2</code> (S1 oder S2 (oder beide) m\u00FCssen 1 sein)</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum lernen wir das?</strong> Das ist der <em>Einstiegsschritt</em> der gesamten Schaltalgebra. Alle sp\u00E4teren Lektionen (Wahrheitstabellen, Normalformen, komplexe Gatterschaltungen) bauen auf dieser Grund-\u00DCbersetzung auf: physisch \u2192 logisch \u2192 Gatter. Wer diese drei Sichten flie\u00DFend ineinander umschalten kann, beherrscht den Kern der Logik-Klausur.'
+        + '</div>'
         + '<h3>Klausur-Vorgehen (3 Schritte):</h3>'
         + '<ol>'
-        + '<li><strong>Schaltkreis lesen</strong> &rarr; logischen Ausdruck aufschreiben</li>'
-        + '<li><strong>Wahrheitstabelle erstellen</strong> &rarr; alle 2<sup>n</sup> Kombinationen, bin&auml;r aufsteigend</li>'
-        + '<li><strong>Gatterschaltung zeichnen</strong> &rarr; IEC-Symbole verwenden</li>'
+        + '<li><strong>Schaltkreis lesen</strong> \u2192 logischen Ausdruck aufschreiben (Serie=\u2227, Parallel=\u2228, verschachteln mit Klammern)</li>'
+        + '<li><strong>Wahrheitstabelle erstellen</strong> \u2192 alle 2<sup>n</sup> Kombinationen, bin\u00E4r aufsteigend</li>'
+        + '<li><strong>Gatterschaltung zeichnen</strong> \u2192 IEC-60617-12-Symbole (<code>&</code> f\u00FCr AND, <code>\u22651</code> f\u00FCr OR, <code>1\u00B0</code> f\u00FCr NOT)</li>'
         + '</ol>'
+        + '<div class="reading-guide">'
+        + '<strong>Probier\u2019s selbst:</strong> Unten siehst du die beiden Grund-Gatter als interaktive Simulation. Klicke die Eing\u00E4nge und beobachte den Ausgang. Halt dir dabei die \u00DCbersetzung vor Augen: AND verh\u00E4lt sich wie zwei T\u00FCren in Serie, OR wie zwei Wege parallel.'
+        + '</div>'
+        + '<div class="circuit-legend">'
+        + '<span class="legend-item"><span class="legend-symbol">&</span>AND = Serie (\u2227)</span>'
+        + '<span class="legend-item"><span class="legend-symbol">\u22651</span>OR = Parallel (\u2228)</span>'
+        + '</div>',
+      visuals: [
+        { type: 'gate-sim', gate: 'and', label: 'AND-Gatter \u2013 Serienschaltung: beide Eing\u00E4nge m\u00FCssen 1 sein' },
+        { type: 'gate-sim', gate: 'or',  label: 'OR-Gatter \u2013 Parallelschaltung: mindestens ein Eingang muss 1 sein' }
+      ]
     },
     example: {
-      title: 'Klausur-Beispiel: Schaltkreis S1, S2, S3',
+      title: 'Klausur-Beispiel: Schaltkreis mit S1, S2, S3',
       steps: [
         {
-          label: 'Schaltkreis lesen',
+          label: 'Schritt 1 \u2013 Schaltkreis lesen',
           html:
-            '<p>S2 und S3 sind parallel &rarr; <code>S2 &#8744; S3</code>. '
-            + 'Dieser Block liegt in Serie mit S1 &rarr; <code>S1 &#8743; (S2 &#8744; S3)</code>.</p>'
+            '<p>Gegebener Schaltkreis: <strong>S1 in Serie mit (S2 parallel S3)</strong>.</p>'
+            + '<p>Wir lesen von innen nach au\u00DFen:</p>'
+            + '<ul>'
+            + '<li>S2 und S3 sind <strong>parallel</strong> \u2192 <code>S2 \u2228 S3</code>.</li>'
+            + '<li>Dieser Parallel-Block liegt in <strong>Serie</strong> mit S1 \u2192 <code>L = S1 \u2227 (S2 \u2228 S3)</code>.</li>'
+            + '</ul>'
+            + '<p><em>Klammern nicht vergessen!</em> Ohne Klammern w\u00FCrde die Rangfolge (\u2227 vor \u2228) die Struktur verf\u00E4lschen.</p>'
         },
         {
-          label: 'Wahrheitstabelle (8 Zeilen, 3 Variablen)',
+          label: 'Schritt 2 \u2013 Gatterschaltung zeichnen',
           html:
-            '<table style="border-collapse:collapse;margin:8px 0">'
-            + '<tr><th style="border:1px solid #ccc;padding:4px">S1</th>'
-            + '<th style="border:1px solid #ccc;padding:4px">S2</th>'
-            + '<th style="border:1px solid #ccc;padding:4px">S3</th>'
-            + '<th style="border:1px solid #ccc;padding:4px">L</th></tr>'
-            + '<tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td></tr>'
-            + '<tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td></tr>'
-            + '<tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td></tr>'
-            + '<tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td></tr>'
-            + '<tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td></tr>'
-            + '<tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td></tr>'
-            + '<tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td></tr>'
-            + '<tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td></tr>'
+            '<p>Unten siehst du genau diese Schaltung als interaktive Gatterschaltung. Klicke S1, S2, S3 durch und vergleiche den Ausgang <strong>L</strong> mit deiner Intuition (\u201Eleuchtet die Lampe?\u201C).</p>'
+            + '<p>Zeichenregel: <strong>OR-Gatter zuerst</strong> (f\u00FCr S2\u2228S3), dann <strong>AND-Gatter</strong> (verbindet S1 mit dem OR-Ausgang).</p>',
+          visuals: [
+            { type: 'circuit', circuit: 'c1-l1-example', label: 'L = S1 \u2227 (S2 \u2228 S3) \u2013 klicke die Schalter' }
+          ]
+        },
+        {
+          label: 'Schritt 3 \u2013 Wahrheitstabelle (8 Zeilen, 3 Variablen)',
+          html:
+            '<p>Drei Variablen \u2192 2\u00B3 = 8 Kombinationen. Bin\u00E4r aufsteigend:</p>'
+            + '<table style="border-collapse:collapse;margin:8px 0">'
+            + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">S1</th><th style="border:1px solid #ccc;padding:6px 10px">S2</th><th style="border:1px solid #ccc;padding:6px 10px">S3</th><th style="border:1px solid #ccc;padding:6px 10px">S2 \u2228 S3</th><th style="border:1px solid #ccc;padding:6px 10px">L = S1 \u2227 (S2 \u2228 S3)</th></tr>'
+            + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+            + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+            + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+            + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+            + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+            + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td></tr>'
+            + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td></tr>'
+            + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td></tr>'
             + '</table>'
+            + '<p>Die Hilfsspalte <code>S2 \u2228 S3</code> ist Gold wert: Sie macht die letzte Spalte einfacher, weil du dann nur noch <code>S1 \u2227 (Hilfsspalte)</code> rechnest.</p>'
         },
         {
-          label: 'Gatterschaltung',
+          label: 'Beobachtung \u2013 wann leuchtet die Lampe?',
           html:
-            '<p>Zwei Eing&auml;nge (S2, S3) in ein <strong>OR-Gatter</strong> (Symbol: &#8805;1). '
-            + 'Der Ausgang des OR-Gatters und S1 gehen in ein <strong>AND-Gatter</strong> (Symbol: &amp;). '
-            + 'Ausgang des AND-Gatters = L.</p>'
+            '<p>Die Lampe leuchtet (L=1) genau dann, wenn <strong>S1=1 UND mindestens einer von S2 oder S3</strong> geschlossen ist. Das sind 3 von 8 F\u00E4llen.</p>'
+            + '<p>Vergleiche das mit der interaktiven Schaltung oben \u2013 dort siehst du dasselbe durch Klicken.</p>'
         }
       ]
     },
