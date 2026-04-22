@@ -1845,6 +1845,94 @@ Visuals.NETWORK_PRESETS = {
       ['modem', 'tablet'],
       ['modem', 'laptop']
     ]
+  },
+
+  'topology-star': {
+    width: 400, height: 300,
+    nodes: [
+      { id: 'hub', type: 'switch', x: 200, y: 150, label: 'Switch' },
+      { id: 'n1', type: 'host', x: 200, y: 40, label: 'PC 1' },
+      { id: 'n2', type: 'host', x: 340, y: 100, label: 'PC 2' },
+      { id: 'n3', type: 'host', x: 340, y: 200, label: 'PC 3' },
+      { id: 'n4', type: 'host', x: 200, y: 260, label: 'PC 4' },
+      { id: 'n5', type: 'host', x: 60, y: 200, label: 'PC 5' },
+      { id: 'n6', type: 'host', x: 60, y: 100, label: 'PC 6' }
+    ],
+    edges: [
+      ['hub', 'n1'], ['hub', 'n2'], ['hub', 'n3'],
+      ['hub', 'n4'], ['hub', 'n5'], ['hub', 'n6']
+    ]
+  },
+
+  'topology-ring': {
+    width: 400, height: 300,
+    nodes: [
+      { id: 'n1', type: 'host', x: 200, y: 40, label: 'PC 1' },
+      { id: 'n2', type: 'host', x: 340, y: 100, label: 'PC 2' },
+      { id: 'n3', type: 'host', x: 340, y: 200, label: 'PC 3' },
+      { id: 'n4', type: 'host', x: 200, y: 260, label: 'PC 4' },
+      { id: 'n5', type: 'host', x: 60, y: 200, label: 'PC 5' },
+      { id: 'n6', type: 'host', x: 60, y: 100, label: 'PC 6' }
+    ],
+    edges: [
+      ['n1', 'n2'], ['n2', 'n3'], ['n3', 'n4'],
+      ['n4', 'n5'], ['n5', 'n6'], ['n6', 'n1']
+    ]
+  },
+
+  'topology-bus': {
+    width: 500, height: 220,
+    nodes: [
+      { id: 'bus1', type: 'switch', x: 60, y: 120, label: '' },
+      { id: 'bus2', type: 'switch', x: 440, y: 120, label: '' },
+      { id: 'n1', type: 'host', x: 120, y: 40, label: 'PC 1' },
+      { id: 'n2', type: 'host', x: 220, y: 40, label: 'PC 2' },
+      { id: 'n3', type: 'host', x: 320, y: 40, label: 'PC 3' },
+      { id: 'n4', type: 'host', x: 170, y: 200, label: 'PC 4' },
+      { id: 'n5', type: 'host', x: 270, y: 200, label: 'PC 5' },
+      { id: 'n6', type: 'host', x: 370, y: 200, label: 'PC 6' }
+    ],
+    edges: [
+      ['bus1', 'bus2'],
+      ['bus1', 'n1'], ['bus1', 'n4'],
+      ['bus2', 'n3'], ['bus2', 'n6'],
+      ['n2', 'bus1'], ['n5', 'bus1'],
+      ['n2', 'bus2'], ['n5', 'bus2']
+    ]
+  },
+
+  'topology-tree': {
+    width: 500, height: 300,
+    nodes: [
+      { id: 'root', type: 'router', x: 250, y: 40, label: 'Haupt-Switch' },
+      { id: 'sw1', type: 'switch', x: 120, y: 140, label: 'Switch A' },
+      { id: 'sw2', type: 'switch', x: 380, y: 140, label: 'Switch B' },
+      { id: 'n1', type: 'host', x: 50, y: 250, label: 'PC 1' },
+      { id: 'n2', type: 'host', x: 130, y: 250, label: 'PC 2' },
+      { id: 'n3', type: 'host', x: 210, y: 250, label: 'PC 3' },
+      { id: 'n4', type: 'host', x: 320, y: 250, label: 'PC 4' },
+      { id: 'n5', type: 'host', x: 400, y: 250, label: 'PC 5' },
+      { id: 'n6', type: 'host', x: 480, y: 250, label: 'PC 6' }
+    ],
+    edges: [
+      ['root', 'sw1'], ['root', 'sw2'],
+      ['sw1', 'n1'], ['sw1', 'n2'], ['sw1', 'n3'],
+      ['sw2', 'n4'], ['sw2', 'n5'], ['sw2', 'n6']
+    ]
+  },
+
+  'topology-line': {
+    width: 500, height: 160,
+    nodes: [
+      { id: 'n1', type: 'host', x: 50, y: 80, label: 'PC 1' },
+      { id: 'n2', type: 'host', x: 140, y: 80, label: 'PC 2' },
+      { id: 'n3', type: 'host', x: 230, y: 80, label: 'PC 3' },
+      { id: 'n4', type: 'host', x: 320, y: 80, label: 'PC 4' },
+      { id: 'n5', type: 'host', x: 410, y: 80, label: 'PC 5' }
+    ],
+    edges: [
+      ['n1', 'n2'], ['n2', 'n3'], ['n3', 'n4'], ['n4', 'n5']
+    ]
   }
 };
 
@@ -1863,6 +1951,14 @@ Visuals.renderNetworkDiagram = function(config, container) {
 
   const wrapper = document.createElement('div');
   wrapper.className = 'visual-container network-diagram';
+
+  // Optional: Caption unter dem Diagramm (für pädagogische Beschreibung)
+  if (config.label) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'visual-label';
+    labelEl.textContent = config.label;
+    wrapper.appendChild(labelEl);
+  }
 
   const svgNS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(svgNS, 'svg');

@@ -7,20 +7,30 @@ const LessonsC6 = [
     explanation: {
       html:
         '<h2>DNS & IP im Internet finden</h2>'
-        + '<p>Das <strong>Domain Name System (DNS)</strong> ist das Telefonbuch des Internets: '
-        + 'Es \u00fcbersetzt menschenlesbare Adressen (wie <em>www.uni-konstanz.de</em>) in IP-Adressen.</p>'
-        + '<h3>DNS-Ablauf (Schritt f\u00fcr Schritt):</h3>'
+        + '<p>Das <strong>Domain Name System (DNS)</strong> ist eine Art Telefonbuch des Internets: Es \u00FCbersetzt menschenlesbare Adressen (wie <em>www.uni-konstanz.de</em>) in IP-Adressen (wie <em>134.34.3.1</em>), die der Computer zum Routen braucht.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Telefonbuch-Analogie:</strong> Du merkst dir Namen leichter als Nummern. Wenn du jemanden anrufen willst, schl\u00E4gst du seinen Namen im Telefonbuch nach und bekommst die Nummer. Genauso bei DNS: Du tippst einen Namen (Domain) ein, und hinter den Kulissen fragt dein Computer bei verschiedenen DNS-Servern nach der zugeh\u00F6rigen IP-Adresse.'
+        + '</div>'
+        + '<h3>DNS-Ablauf (Schritt f\u00FCr Schritt):</h3>'
         + '<ol>'
-        + '<li><strong>Browser</strong> fragt den lokalen DNS-Resolver (meist vom Router)</li>'
-        + '<li><strong>Lokaler Resolver</strong> fragt einen Root-Nameserver</li>'
-        + '<li><strong>Root-Nameserver</strong> verweist an TLD-Nameserver (z.B. f\u00fcr .de)</li>'
-        + '<li><strong>TLD-Nameserver</strong> verweist an Authoritative Nameserver der Domain</li>'
-        + '<li><strong>Authoritative Nameserver</strong> antwortet mit der IP-Adresse</li>'
+        + '<li><strong>Browser</strong> fragt den lokalen DNS-Resolver (meist im Router des Heimnetzwerks).</li>'
+        + '<li><strong>Lokaler Resolver</strong> fragt einen <em>Root-Nameserver</em> (\u201Ewer ist f\u00FCr .de zust\u00E4ndig?\u201C).</li>'
+        + '<li><strong>Root-NS</strong> verweist an den <em>TLD-Nameserver</em> (f\u00FCr .de).</li>'
+        + '<li><strong>TLD-NS</strong> verweist an den <em>Authoritative Nameserver</em> der konkreten Domain (z.B. uni-konstanz.de).</li>'
+        + '<li><strong>Authoritative NS</strong> antwortet endlich mit der IP-Adresse.</li>'
         + '</ol>'
+        + '<div class="why-context">'
+        + '<strong>Warum so kompliziert?</strong> Kein einzelner Server k\u00F6nnte die Milliarden Domain-Namen speichern. Die Aufteilung in Root/TLD/Authoritative verteilt die Arbeit und macht das System <em>skalierbar</em> und <em>ausfallsicher</em>. F\u00E4llt ein .de-Server aus, springt ein anderer ein. Zus\u00E4tzlich gibt es <em>Caching</em>: oft gefragte Namen merkt sich der Router, damit nicht bei jedem Aufruf die ganze Kette durchlaufen wird.</p><p style="margin:6px 0 0 0">Unten siehst du den grunds\u00E4tzlichen Weg, den ein Datenpaket durchs Internet nimmt (Sender \u2192 Router \u2192 Internet \u2192 Router \u2192 Empf\u00E4nger). DNS ist eine Vorabfrage, damit der Router \u00FCberhaupt wei\u00DF, wohin das Paket soll.'
+        + '</div>'
         + '<h3>IP-Adresse in Dotted-Binary-Notation:</h3>'
-        + '<p>Jedes der 4 Oktette wird einzeln in 8-Bit-Bin\u00e4r umgerechnet:</p>'
+        + '<p>Wenn du eine IP-Adresse von Dezimal in Bin\u00E4r umrechnest, schreibst du jedes der 4 Oktette einzeln als 8-Bit-Bin\u00E4rzahl, getrennt durch Punkte:</p>'
         + '<p><code>192.168.1.1</code> \u2192 <code>11000000.10101000.00000001.00000001</code></p>'
-        + '<p><strong>Umrechnung 192\u2081\u2080 \u2192 11000000\u2082:</strong> 128+64 = 192 \u2192 11000000</p>'
+        + '<p>Umrechnung 192\u2081\u2080 \u2192 Bin\u00E4r: 128+64 = 192, also <code>11000000</code>.</p>'
+        + '<p>Der IP-Konverter unten macht genau das f\u00FCr dich \u2013 interaktiv.</p>',
+      visuals: [
+        { type: 'network-diagram', preset: 'internet-overview', label: 'Paket-Weg durchs Internet: Sender \u2192 Router \u2192 Internet \u2192 Router \u2192 Empf\u00E4nger' },
+        { type: 'ip-converter', label: 'IP-Konverter \u2013 Dezimal \u2194 Dotted-Binary live' }
+      ]
     },
     example: {
       title: 'Beispiel: IP-Adresse in bin\u00e4re Punktnotation',
@@ -91,31 +101,41 @@ const LessonsC6 = [
     explanation: {
       html:
         '<h2>Netzwerkstruktur & Wahr/Falsch-Aussagen</h2>'
-        + '<p>In der Klausur musst du Aussagen \u00fcber Netzwerkkomponenten als wahr oder falsch bewerten:</p>'
+        + '<p>In der Klausur musst du oft Aussagen \u00FCber Netzwerkkomponenten (Hub, Switch, Router, Access Point) als wahr oder falsch bewerten. Daf\u00FCr musst du ihre <strong>Funktionen</strong> und die <strong>Schicht</strong>, auf der sie arbeiten, kennen.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Postamt-Analogie:</strong>'
+        + '<ul style="margin:6px 0 0 0;padding-left:22px">'
+        + '<li><strong>Hub</strong> = wie der <em>Gemeinde-Aushang</em>: jede Nachricht h\u00E4ngt f\u00FCr alle sichtbar aus, alle sehen alles.</li>'
+        + '<li><strong>Switch</strong> = wie der <em>Briefkasten pro Haushalt</em>: jede Nachricht landet nur beim richtigen Empf\u00E4nger.</li>'
+        + '<li><strong>Router</strong> = wie das <em>Hauptpostamt</em>: vermittelt Briefe zwischen verschiedenen St\u00E4dten (= verschiedenen Netzen).</li>'
+        + '</ul>'
+        + '</div>'
+        + '<h3>Die wichtigsten Ger\u00E4te:</h3>'
         + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
         + '<tr style="background:#f0f0f0">'
-        + '<th style="border:1px solid #ccc;padding:6px">Ger\u00e4t</th>'
-        + '<th style="border:1px solid #ccc;padding:6px">Funktion</th>'
-        + '<th style="border:1px solid #ccc;padding:6px">Arbeitet auf Basis</th>'
-        + '</tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>Hub</strong></td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Verteilt Pakete an ALLE Ports</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">keine Intelligenz</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>Switch</strong></td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Leitet Pakete gezielt weiter</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">MAC-Adresse (Schicht 2)</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>Router</strong></td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Verbindet verschiedene Netze</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">IP-Adresse (Schicht 3)</td></tr>'
+        + '<th style="border:1px solid #ccc;padding:6px 10px">Ger\u00E4t</th>'
+        + '<th style="border:1px solid #ccc;padding:6px 10px">Funktion</th>'
+        + '<th style="border:1px solid #ccc;padding:6px 10px">Arbeitet auf Basis</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Hub</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Verteilt Pakete an ALLE Ports</td><td style="border:1px solid #ccc;padding:6px 10px">keine Intelligenz</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Switch</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Leitet Pakete gezielt weiter</td><td style="border:1px solid #ccc;padding:6px 10px">MAC-Adresse (Schicht 2)</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Router</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Verbindet verschiedene Netze</td><td style="border:1px solid #ccc;padding:6px 10px">IP-Adresse (Schicht 3)</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Access Point</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Br\u00FCcke WLAN \u2194 Kabel</td><td style="border:1px solid #ccc;padding:6px 10px">MAC-Adresse (Schicht 2)</td></tr>'
         + '</table>'
-        + '<h3>Wichtige Fakten:</h3>'
+        + '<div class="why-context">'
+        + '<strong>Warum lernen wir das Ger\u00E4te-Inventar?</strong> Eine Klausur-Aufgabe kann sein: \u201ESkizziere ein Schulnetz mit Internet-Zugang\u201C. Ohne die Funktionen zu kennen, zeichnest du entweder das falsche Ger\u00E4t oder vergisst die Router-Ebene. In der Realit\u00E4t bestimmt die richtige Ger\u00E4tewahl, ob dein Netzwerk funktioniert \u2013 und in der Klausur entscheidet sie dar\u00FCber, ob du die Aufgabe richtig l\u00F6st.'
+        + '</div>'
+        + '<h3>Wichtige Fakten (klausurrelevant):</h3>'
         + '<ul>'
-        + '<li>Ein Switch leitet Pakete nur an den Empf\u00e4nger weiter (nicht broadcast wie ein Hub)</li>'
-        + '<li>Ein Router trennt Broadcast-Dom\u00e4nen</li>'
-        + '<li>Im selben Subnetz k\u00f6nnen Ger\u00e4te direkt kommunizieren (ohne Router)</li>'
-        + '<li>Ger\u00e4te in verschiedenen Subnetzen brauchen einen Router</li>'
-        + '<li>Eine MAC-Adresse identifiziert eine Netzwerkkarte weltweit eindeutig (48 Bit)</li>'
+        + '<li>Ein <strong>Switch</strong> leitet Pakete nur an den Empf\u00E4nger weiter (<em>nicht</em> broadcast wie ein Hub).</li>'
+        + '<li>Ein <strong>Router</strong> trennt Broadcast-Dom\u00E4nen.</li>'
+        + '<li>Im selben Subnetz k\u00F6nnen Ger\u00E4te direkt kommunizieren (ohne Router).</li>'
+        + '<li>Ger\u00E4te in verschiedenen Subnetzen brauchen einen Router zur Vermittlung.</li>'
+        + '<li>Eine <strong>MAC-Adresse</strong> ist 48 Bit lang und identifiziert eine Netzwerkkarte weltweit eindeutig.</li>'
         + '</ul>'
+        + '<p><strong>Beispiel-Netzwerk:</strong> Unten siehst du eine typische Schul-Netzwerk-Struktur mit Internet, Modem, Router, Switch und Access Point. Beobachte, welche Ger\u00E4te auf welcher Ebene sitzen.</p>',
+      visuals: [
+        { type: 'network-diagram', preset: 'school-network', label: 'Typische Schul-Netzwerk-Struktur' }
+      ]
     },
     example: {
       title: 'Beispiel: Typische Klausur-Aussagen bewerten',
@@ -197,20 +217,27 @@ const LessonsC6 = [
     title: 'IP-Adressen im Netz pr\u00fcfen',
     explanation: {
       html:
-        '<h2>IP-Adressen im Netz pr\u00fcfen</h2>'
-        + '<p>Um zu pr\u00fcfen ob eine IP-Adresse zu einem bestimmten Netz geh\u00f6rt:</p>'
-        + '<p><strong>IP AND Maske = Netz-ID?</strong></p>'
-        + '<p>Wenn ja \u2192 IP liegt im Netz. Wenn nein \u2192 IP liegt in einem anderen Netz.</p>'
-        + '<h3>Direkte Kommunikation pr\u00fcfen:</h3>'
-        + '<p>Zwei Hosts k\u00f6nnen <strong>direkt kommunizieren</strong> (ohne Router), '
-        + 'wenn sie dieselbe Netz-ID haben (bei gleicher Subnetzmaske):</p>'
-        + '<p><code>IP_A AND Maske = IP_B AND Maske?</code> \u2192 Falls ja: direkte Kommunikation m\u00f6glich</p>'
-        + '<h3>Vorgehen:</h3>'
+        '<h2>IP-Adressen im Netz pr\u00FCfen</h2>'
+        + '<p>Um zu pr\u00FCfen, ob eine IP-Adresse zu einem bestimmten Netz geh\u00F6rt, rechnest du:</p>'
+        + '<p style="text-align:center;font-size:1.1em;padding:10px;background:#f3f4f6;border-radius:4px;margin:12px 0"><strong>Netz-ID = IP \u2227 Maske</strong></p>'
+        + '<p>Ist das Ergebnis gleich der Soll-Netz-ID \u2192 IP geh\u00F6rt ins Netz. Sonst \u2192 IP geh\u00F6rt in ein anderes Netz.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>T\u00FCrsteher-Analogie:</strong> Stell dir den Router als T\u00FCrsteher vor. Jede ankommende IP-Adresse wird \u201Edurch die Schablone\u201C (Subnetzmaske) angeschaut. Wenn die Netz-ID passt, darf das Paket ins Netz. Wenn nicht, wird es an einen anderen Router weitergereicht. Die Maskenanwendung ist der <em>Zugangstest</em>.'
+        + '</div>'
+        + '<h3>Direkte Kommunikation pr\u00FCfen:</h3>'
+        + '<p>Zwei Ger\u00E4te A und B k\u00F6nnen direkt (ohne Router) kommunizieren, wenn sie im <strong>gleichen Subnetz</strong> liegen:</p>'
         + '<ol>'
-        + '<li>IP-Adresse bin\u00e4r schreiben (nur relevantes Oktett)</li>'
-        + '<li>Bitweises AND mit Subnetzmaske</li>'
-        + '<li>Ergebnis mit bekannter Netz-ID vergleichen</li>'
+        + '<li>Berechne Netz-ID von A (IP_A AND Maske).</li>'
+        + '<li>Berechne Netz-ID von B (IP_B AND Maske).</li>'
+        + '<li>Gleich? \u2192 direkte Kommunikation m\u00F6glich. Unterschiedlich? \u2192 Router n\u00F6tig.</li>'
         + '</ol>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> In der Praxis (und in der Klausur) musst du oft entscheiden: \u201EK\u00F6nnen diese zwei Ger\u00E4te direkt miteinander sprechen, oder muss ein Router dazwischen?\u201C Falsche Antwort bedeutet: das Netzwerk funktioniert nicht \u2013 oder du baust unn\u00F6tig Router ein, die die Performance drosseln. Die Subnetz-Rechnung ist das diagnostische Werkzeug daf\u00FCr.'
+        + '</div>'
+        + '<p>Der <strong>Subnet-Rechner</strong> unten liefert dir IP AND Maske direkt \u2013 ideal, um Aufgaben aus dem \u00DCbungsblatt zu pr\u00FCfen.</p>',
+      visuals: [
+        { type: 'subnet-calculator', label: 'Subnet-Rechner \u2013 pr\u00FCfe IP AND Maske = Netz-ID' }
+      ]
     },
     example: {
       title: 'Beispiel: Liegt 192.168.10.130 im Netz 192.168.10.128/27?',
@@ -283,30 +310,32 @@ const LessonsC6 = [
     title: 'Routing-Tabellen ausf\u00fcllen',
     explanation: {
       html:
-        '<h2>Routing-Tabellen ausf\u00fcllen</h2>'
-        + '<p>Ein Router hat eine <strong>Routing-Tabelle</strong>: Sie gibt an, wohin er Pakete f\u00fcr bestimmte Zielnetze weiterleiten soll.</p>'
-        + '<h3>Wichtige Berechnungen:</h3>'
-        + '<ul>'
-        + '<li><strong>Netzwerkziel (ND):</strong> Ziel-IP AND Subnetzmaske = Netzwerkziel</li>'
-        + '<li><strong>Subnetzmaske aus CIDR:</strong> /24 = 255.255.255.0, /27 = 255.255.255.224</li>'
-        + '<li><strong>IP geh\u00f6rt zum Netz wenn:</strong> IP AND Maske = Netz-ID</li>'
-        + '<li><strong>Router-Interface-IP:</strong> Erste nutzbare Adresse = Netz-ID + 1</li>'
-        + '</ul>'
-        + '<h3>Routing-Tabellen-Spalten:</h3>'
+        '<h2>Routing-Tabellen ausf\u00FCllen</h2>'
+        + '<p>Ein Router hat eine <strong>Routing-Tabelle</strong>: eine Liste, die f\u00FCr jedes Ziel-Netz angibt, wohin er das Paket weiterleiten soll. Ohne Routing-Tabelle w\u00E4re ein Router blind \u2013 er w\u00FCsste nicht, welcher Nachbar n\u00E4her am Ziel ist.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Wegweiser-Analogie:</strong> Stell dir eine Autobahn-Kreuzung vor. Der Router steht als gro\u00DFer Wegweiser: \u201Ef\u00FCr K\u00F6ln \u2192 rechts abbiegen, f\u00FCr M\u00FCnchen \u2192 geradeaus, f\u00FCr Berlin \u2192 links\u201C. Die Routing-Tabelle ist genau dieser Wegweiser: Pro Ziel-Netz eine Zeile mit der Richtung (Gateway) und dem Ausgang (Interface).'
+        + '</div>'
+        + '<h3>Die 4 Spalten einer Routing-Tabelle:</h3>'
         + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
-        + '<tr style="background:#f0f0f0">'
-        + '<th style="border:1px solid #ccc;padding:4px">Spalte</th>'
-        + '<th style="border:1px solid #ccc;padding:4px">Bedeutung</th>'
-        + '</tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">Ziel-Netz</td>'
-        + '<td style="border:1px solid #ccc;padding:4px">Welches Netz ist das Ziel?</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">Subnetzmaske</td>'
-        + '<td style="border:1px solid #ccc;padding:4px">Maske des Zielnetzes</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">Gateway</td>'
-        + '<td style="border:1px solid #ccc;padding:4px">IP des n\u00e4chsten Routers (n\u00e4chster Hop)</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">Interface</td>'
-        + '<td style="border:1px solid #ccc;padding:4px">Welches Netzwerk-Interface des Routers?</td></tr>'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">Spalte</th><th style="border:1px solid #ccc;padding:6px 10px">Bedeutung</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Ziel-Netz (ND)</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Welches Netzwerk soll erreicht werden? (berechnet via IP \u2227 Maske)</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Subnetzmaske</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Maske des Ziel-Netzes (z.B. /24 = 255.255.255.0)</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Gateway</strong></td><td style="border:1px solid #ccc;padding:6px 10px">IP des n\u00E4chsten Routers (der \u201En\u00E4chste Hop\u201C). \u201E-\u201C oder \u201Edirekt\u201C wenn Netz lokal.</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Interface</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Welches Interface am Router (z.B. eth0, eth1)?</td></tr>'
         + '</table>'
+        + '<h3>Wichtige Berechnungen (die du f\u00FCr jede Zeile beherrschen musst):</h3>'
+        + '<ul>'
+        + '<li><strong>Netzwerkziel (ND):</strong> Ziel-IP AND Subnetzmaske \u2192 Netzwerkziel</li>'
+        + '<li><strong>Subnetzmaske aus CIDR:</strong> /24 = 255.255.255.0, /27 = 255.255.255.224, /30 = 255.255.255.252</li>'
+        + '<li><strong>Router-Interface-IP:</strong> meist die <em>erste nutzbare Adresse</em> des Netzes (Netz-ID + 1)</li>'
+        + '</ul>'
+        + '<div class="why-context">'
+        + '<strong>Warum steht oft \u201Edirekt\u201C beim Gateway?</strong> Wenn der Router das Ziel-Netz <em>selbst direkt angeschlossen</em> hat (\u00FCber eines seiner Interfaces), muss er nicht an einen anderen Router weiterreichen. Er kann das Paket direkt ins lokale Netz legen. Deshalb steht dort \u201Edirekt\u201C oder \u201E-\u201C statt einer Gateway-IP.'
+        + '</div>'
+        + '<p>Weil Routing-Tabellen <em>reine Rechenaufgaben</em> sind (IP AND Maske, Netz-ID+1), lohnt sich f\u00FCr die Berechnung der Subnet-Rechner unten. Damit pr\u00FCfst du jede Zeile schnell selbst.</p>',
+      visuals: [
+        { type: 'subnet-calculator', label: 'Subnet-Rechner \u2013 ND und Interface-IP berechnen' }
+      ]
     },
     example: {
       title: 'Klausur-Beispiel: Routing-Tabelle ausf\u00fcllen',
@@ -373,37 +402,31 @@ const LessonsC6 = [
     explanation: {
       html:
         '<h2>Netzwerktopologien</h2>'
-        + '<p>Die Topologie beschreibt die <strong>physische oder logische Anordnung</strong> der Netzwerkkomponenten.</p>'
+        + '<p>Die <strong>Topologie</strong> beschreibt die physische oder logische Anordnung der Ger\u00E4te und Kabel in einem Netzwerk. In der Klausur solltest du die 5 klassischen Topologien erkennen, zeichnen und ihre Vor-/Nachteile kennen.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Verkehrs-Analogie:</strong> Topologien sind wie unterschiedliche Stra\u00DFennetze. Ein <em>Stern</em> ist wie eine Kreuzung, wo alle Stra\u00DFen auf einem Kreisverkehr zusammenlaufen \u2013 robust, aber ohne Kreisverkehr l\u00E4uft nichts. Ein <em>Ring</em> ist wie eine Ringstra\u00DFe \u2013 Umwege m\u00F6glich, aber ein einzelner Bruch kann viel blockieren. Ein <em>Baum</em> ist wie eine Hauptstra\u00DFe mit Seitenstra\u00DFen und Sackgassen. Ein <em>Bus</em> ist wie eine Landstra\u00DFe, an der alle H\u00F6fe angeschlossen sind. Eine <em>Linie</em> ist wie eine Kette von D\u00F6rfern.'
+        + '</div>'
+        + '<h3>Die 5 klassischen Topologien im \u00DCberblick:</h3>'
         + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
-        + '<tr style="background:#f0f0f0">'
-        + '<th style="border:1px solid #ccc;padding:6px">Topologie</th>'
-        + '<th style="border:1px solid #ccc;padding:6px">Aufbau</th>'
-        + '<th style="border:1px solid #ccc;padding:6px">Kabelausfall</th>'
-        + '<th style="border:1px solid #ccc;padding:6px">Typisch f\u00fcr</th>'
-        + '</tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>Stern</strong></td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Alle Ger\u00e4te am zentralen Switch/Hub</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Nur dieses Ger\u00e4t betroffen</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">B\u00fcro, Heimnetz</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>Ring</strong></td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Ger\u00e4te kreisf\u00f6rmig verbunden</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Ring unterbrochen \u2192 Ausfall m\u00f6glich</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">\u00c4ltere Token-Ring-Netze</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>Baum</strong></td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Hierarchisch (Switches in Ebenen)</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Ausfall eines Knotens \u2192 alle darunter betroffen</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Schulnetz, Firmennetz</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>Linie/Bus</strong></td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Alle an einem Kabel</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Ein Bruch trennt alles</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">\u00c4ltere Ethernet-Netze</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>Gemischt</strong></td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Kombination der obigen</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Je nach Bereich</td>'
-        + '<td style="border:1px solid #ccc;padding:6px">Gro\u00dfe Unternehmensnetze</td></tr>'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">Topologie</th><th style="border:1px solid #ccc;padding:6px 10px">Aufbau</th><th style="border:1px solid #ccc;padding:6px 10px">Kabelausfall</th><th style="border:1px solid #ccc;padding:6px 10px">Typisch f\u00FCr</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Stern</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Alle Ger\u00E4te an zentralem Switch/Hub</td><td style="border:1px solid #ccc;padding:6px 10px">Nur das eine Ger\u00E4t betroffen</td><td style="border:1px solid #ccc;padding:6px 10px">B\u00FCro, Heimnetz</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Ring</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Ger\u00E4te kreisf\u00F6rmig verbunden</td><td style="border:1px solid #ccc;padding:6px 10px">Ring unterbrochen \u2192 Ausfall m\u00F6glich</td><td style="border:1px solid #ccc;padding:6px 10px">Alte Token-Ring-Netze</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Bus</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Alle an gemeinsamem Kabel</td><td style="border:1px solid #ccc;padding:6px 10px">Ein Bruch trennt alles</td><td style="border:1px solid #ccc;padding:6px 10px">Alte Ethernet-Netze</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Baum</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Hierarchisch (Switches in Ebenen)</td><td style="border:1px solid #ccc;padding:6px 10px">Ausfall eines Knotens \u2192 alle darunter betroffen</td><td style="border:1px solid #ccc;padding:6px 10px">Schulnetz, Firmennetz</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Linie</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Ger\u00E4te in Reihe, jeweils benachbart verbunden</td><td style="border:1px solid #ccc;padding:6px 10px">Ein Bruch trennt die Kette</td><td style="border:1px solid #ccc;padding:6px 10px">Selten, f\u00FCr spezielle Zwecke</td></tr>'
         + '</table>'
-        + '<p><strong>Stern ist am ausfall-sichersten</strong> bei einzelnem Kabelbruch: '
-        + 'F\u00e4llt ein Kabel aus, ist nur das betreffende Ger\u00e4t offline.</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum sind manche Topologien \u201Everaltet\u201C?</strong> Bus und Ring waren in den 80ern/90ern Standard, weil Switches teuer waren. Heute sind Switches billig und beherrschen <em>Stern</em>-Topologien m\u00FChelos. Deshalb bestehen moderne Netzwerke fast immer aus Stern- oder Baum-Strukturen. Du solltest die alten Topologien trotzdem kennen, weil sie klausurrelevant sind und manchmal in speziellen Industriesteuerungen noch vorkommen.'
+        + '</div>'
+        + '<h3>Die 5 Topologien als Diagramme:</h3>'
+        + '<p>Unten siehst du jede Topologie einzeln. <em>Unter jedem Diagramm steht die wichtigste Aussage nochmal konkret</em> \u2013 die ausf\u00FChrlichen Vor- und Nachteile findest du in der Tabelle oben. Vergleiche beim Scrollen: Wo ist der Ausfall-kritische Punkt jeder Topologie?</p>',
+      visuals: [
+        { type: 'network-diagram', preset: 'topology-star', label: 'STERN \u2013 alle Ger\u00E4te am zentralen Switch. Vorteil: Ausfall eines Kabels trifft nur EIN Ger\u00E4t. Nachteil: F\u00E4llt der Switch aus, ist alles weg.' },
+        { type: 'network-diagram', preset: 'topology-ring', label: 'RING \u2013 jedes Ger\u00E4t hat genau zwei Nachbarn, Signal wandert im Kreis. Nachteil: Ein Kabelbruch kann den Ring unterbrechen.' },
+        { type: 'network-diagram', preset: 'topology-bus', label: 'BUS \u2013 alle Ger\u00E4te h\u00E4ngen an einer gemeinsamen Hauptleitung (dem \u201EBus\u201C). Nachteil: Ein Bruch der Hauptleitung trennt das ganze Netz.' },
+        { type: 'network-diagram', preset: 'topology-tree', label: 'BAUM \u2013 Hierarchisch: Haupt-Switch \u00FCber Ebenen-Switches zu den Endger\u00E4ten. Typisch f\u00FCr Schul- und Firmennetze.' },
+        { type: 'network-diagram', preset: 'topology-line', label: 'LINIE \u2013 Ger\u00E4te in Reihe hintereinander verkettet. Unterschied zum Bus: keine gemeinsame Backbone-Leitung, jede Verbindung einzeln. Selten in Netzwerken, eher im Industrie-Bussystem.' }
+      ]
     },
     example: {
       title: 'Beispiel: Topologie nach Anforderung w\u00e4hlen',
