@@ -6,33 +6,53 @@ const LessonsC2 = [
     title: 'Binärsystem & Subtraktion',
     explanation: {
       html:
-        '<h2>Binärsystem & Subtraktion</h2>'
-        + '<p>Im Binärsystem gibt es nur zwei Ziffern: <strong>0</strong> und <strong>1</strong>. Jede Stelle ist eine Zweierpotenz.</p>'
+        '<h2>Bin\u00E4rsystem & Subtraktion</h2>'
+        + '<p>Im Bin\u00E4rsystem gibt es nur zwei Ziffern: <strong>0</strong> und <strong>1</strong>. Jede Stelle hat einen festen Wert \u2013 eine Zweierpotenz.</p>'
         + '<table style="border-collapse:collapse;margin:8px 0">'
-        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:4px">Stelle</th><th style="border:1px solid #ccc;padding:4px">2\u00B3</th><th style="border:1px solid #ccc;padding:4px">2\u00B2</th><th style="border:1px solid #ccc;padding:4px">2\u00B9</th><th style="border:1px solid #ccc;padding:4px">2\u2070</th></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">Wert</td><td style="border:1px solid #ccc;padding:4px">8</td><td style="border:1px solid #ccc;padding:4px">4</td><td style="border:1px solid #ccc;padding:4px">2</td><td style="border:1px solid #ccc;padding:4px">1</td></tr>'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">Stelle</th><th style="border:1px solid #ccc;padding:6px 10px">2\u00B3</th><th style="border:1px solid #ccc;padding:6px 10px">2\u00B2</th><th style="border:1px solid #ccc;padding:6px 10px">2\u00B9</th><th style="border:1px solid #ccc;padding:6px 10px">2\u2070</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">Wert</td><td style="border:1px solid #ccc;padding:6px 10px">8</td><td style="border:1px solid #ccc;padding:6px 10px">4</td><td style="border:1px solid #ccc;padding:6px 10px">2</td><td style="border:1px solid #ccc;padding:6px 10px">1</td></tr>'
         + '</table>'
         + '<p>Beispiel: <code>1011\u2082 = 8+0+2+1 = 11\u2081\u2080</code></p>'
+        + '<div class="analogy-box">'
+        + '<strong>Analogie \u2013 Zahlenschloss:</strong> Stell dir ein Zahlenschloss vor, bei dem jede Rolle nur zwei Zust\u00E4nde haben kann: 0 oder 1. Mit 4 Rollen hast du 2\u2074 = 16 m\u00F6gliche Kombinationen. Jede weitere Rolle verdoppelt die M\u00F6glichkeiten. Genau so funktioniert das Bin\u00E4rsystem: jede Stelle ist eine Rolle, jede Rolle ist eine Zweierpotenz.'
+        + '</div>'
+        + '<div class="why-context">'
+        + '<strong>Warum \u00FCberhaupt bin\u00E4r?</strong> Computer kennen physikalisch nur zwei Zust\u00E4nde: Strom flie\u00DFt (1) oder flie\u00DFt nicht (0). Deshalb muss alles, was ein Computer verarbeitet \u2013 Zahlen, Buchstaben, Bilder, Musik \u2013 in diese zweiwertige Sprache \u00FCbersetzt werden. Das Bin\u00E4rsystem ist keine abstrakte Spielerei, sondern die einzige Sprache, die Hardware direkt versteht.'
+        + '</div>'
         + '<h3>Bin\u00E4re Subtraktion</h3>'
         + '<p>Genauso wie beim Dezimalsystem \u2013 mit <strong>Borgen</strong> (Borrow) statt \u00DCbertrag:</p>'
         + '<ul>'
-        + '<li><code>0 - 0 = 0</code></li>'
-        + '<li><code>1 - 0 = 1</code></li>'
-        + '<li><code>1 - 1 = 0</code></li>'
-        + '<li><code>0 - 1 = 1</code> mit Borgen (wie beim Dezimalsystem: 10\u2082 - 1 = 1)</li>'
+        + '<li><code>0 \u2212 0 = 0</code></li>'
+        + '<li><code>1 \u2212 0 = 1</code></li>'
+        + '<li><code>1 \u2212 1 = 0</code></li>'
+        + '<li><code>0 \u2212 1 = 1</code> mit Borgen (wie beim Dezimalsystem: 10\u2082 \u2212 1 = 1)</li>'
         + '</ul>'
-        + '<p><strong>Analogie Borgen:</strong> Wie beim Dezimalsystem \u2013 wenn du 3-7 rechnest, borgst du dir eine 10 von der n\u00E4chsten Stelle. Im Bin\u00E4rsystem borgst du eine 2.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Analogie \u2013 Borgen aus der Grundschule:</strong> Wenn du schriftlich 43 \u2212 17 rechnest, kannst du an der Einerstelle nicht einfach \u201E3 \u2212 7\u201C rechnen. Du borgst dir eine 10 vom Nachbarn und rechnest stattdessen 13 \u2212 7 = 6. Die Zehnerstelle wird um 1 kleiner. Im Bin\u00E4rsystem ist es genau dieselbe Idee \u2013 nur dass du eine <strong>2</strong> borgst (nicht eine 10), weil es die Basis des Zahlensystems ist.'
+        + '</div>'
+        + '<p>Unten siehst du eine interaktive Animation. Dr\u00FCcke <em>\u201EN\u00E4chster Schritt\u201C</em> und die Subtraktion <code>1100\u2082 \u2212 0101\u2082</code> wird Stelle f\u00FCr Stelle vor deinen Augen ausgef\u00FChrt \u2013 inklusive Borgen-Schritten, die visuell markiert werden.</p>',
+      visuals: [
+        { type: 'binary-animation', operandA: '1100', operandB: '0101', mode: 'subtract', label: '1100\u2082 \u2212 0101\u2082 = 0111\u2082 (12 \u2212 5 = 7)' }
+      ]
     },
     example: {
-      title: 'Beispiel: Bin\u00E4re Subtraktion',
+      title: 'Beispiel: 1100\u2082 \u2212 0101\u2082 = 0111\u2082 (12 \u2212 5 = 7) \u2013 Stelle f\u00FCr Stelle',
       steps: [
         {
-          label: '5 - 3 = 2 im Bin\u00E4rsystem',
-          html: '<p><code>101\u2082 - 011\u2082</code><br>Stelle 0: 1-1=0<br>Stelle 1: 0-1 \u2192 borgen: 10\u2082-1=1, Borgen=1<br>Stelle 2: 1-0-1(Borgen)=0<br>Ergebnis: <strong>010\u2082 = 2\u2081\u2080</strong> \u2713</p>'
+          label: 'Stelle 0 (ganz rechts): 0 \u2212 1 \u2192 Borgen!',
+          html: '<p>Ganz rechts rechnen wir 0 \u2212 1 \u2013 das geht nicht ohne Hilfe. Wir <strong>borgen</strong> eine 2 von der n\u00E4chsten Stelle und rechnen: <code>10\u2082 \u2212 1 = 1</code>.</p><p>Ergebnis-Bit: <strong>1</strong>, Borgen an die n\u00E4chste Stelle: <strong>1</strong>.</p>'
         },
         {
-          label: 'Wann brauche ich Borgen?',
-          html: '<p>Immer wenn die obere Ziffer <strong>kleiner</strong> ist als die untere: <code>0 - 1</code> geht nicht ohne Borgen. Ich borge eine 2 von der n\u00E4chst-h\u00F6herwertigen Stelle. Aus <code>0 - 1</code> wird <code>10\u2082 - 1 = 1</code>, aber die Geberstelle wird um 1 kleiner.</p>'
+          label: 'Stelle 1: 0 \u2212 0 \u2212 1 (Borgen) \u2192 wieder Borgen!',
+          html: '<p>Eigentlich m\u00FCssten wir 0 \u2212 0 rechnen (das w\u00E4re 0). Aber die Stelle rechts hat sich ja eine 2 geborgt \u2013 diese \u201ESchuld\u201C m\u00FCssen wir hier abziehen. Also: <code>0 \u2212 0 \u2212 1 = \u22121</code>, und wieder borgen: <code>10\u2082 \u2212 0 \u2212 1 = 1</code>.</p><p>Ergebnis-Bit: <strong>1</strong>, Borgen an die n\u00E4chste Stelle: <strong>1</strong>.</p>'
+        },
+        {
+          label: 'Stelle 2: 1 \u2212 1 \u2212 1 (Borgen) \u2192 erneut Borgen!',
+          html: '<p>Hier haben wir 1 \u2212 1 = 0, aber wieder zieht das Borgen von rechts: <code>0 \u2212 1 = \u22121</code>. Wir borgen erneut eine 2: <code>10\u2082 \u2212 1 = 1</code>.</p><p>Ergebnis-Bit: <strong>1</strong>, Borgen an die n\u00E4chste Stelle: <strong>1</strong>.</p>'
+        },
+        {
+          label: 'Stelle 3 (ganz links): 1 \u2212 0 \u2212 1 (Borgen) \u2192 fertig!',
+          html: '<p>Jetzt rechnen wir 1 \u2212 0 = 1, aber das Borgen von rechts zieht eine 1 ab: <code>1 \u2212 0 \u2212 1 = 0</code>. Kein weiteres Borgen n\u00F6tig.</p><p>Ergebnis-Bit: <strong>0</strong>. Gesamtergebnis: <strong>0111\u2082 = 7\u2081\u2080</strong> \u2713</p><p><em>Probe: 12 \u2212 5 = 7. Alles konsistent.</em></p>'
         }
       ]
     },
