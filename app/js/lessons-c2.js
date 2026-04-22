@@ -30,7 +30,29 @@ const LessonsC2 = [
         + '<div class="analogy-box">'
         + '<strong>Analogie \u2013 Borgen aus der Grundschule:</strong> Wenn du schriftlich 43 \u2212 17 rechnest, kannst du an der Einerstelle nicht einfach \u201E3 \u2212 7\u201C rechnen. Du borgst dir eine 10 vom Nachbarn und rechnest stattdessen 13 \u2212 7 = 6. Die Zehnerstelle wird um 1 kleiner. Im Bin\u00E4rsystem ist es genau dieselbe Idee \u2013 nur dass du eine <strong>2</strong> borgst (nicht eine 10), weil es die Basis des Zahlensystems ist.'
         + '</div>'
-        + '<p>Unten siehst du eine interaktive Animation. Dr\u00FCcke <em>\u201EN\u00E4chster Schritt\u201C</em> und die Subtraktion <code>1100\u2082 \u2212 0101\u2082</code> wird Stelle f\u00FCr Stelle vor deinen Augen ausgef\u00FChrt \u2013 inklusive Borgen-Schritten, die visuell markiert werden.</p>',
+        + '<div class="reading-guide">'
+        + '<strong>Die Rechenregel f\u00FCr jede Stelle:</strong>'
+        + '<ol style="margin:6px 0 0 0;padding-left:22px">'
+        + '<li>Rechne <code>(obere Ziffer) \u2212 (untere Ziffer) \u2212 (Borgen von rechts)</code>.</li>'
+        + '<li>Ist das Ergebnis <strong>negativ</strong>? \u2192 Wir borgen eine <strong>2</strong>: Ergebnis-Bit = (Rechnung) + 2, Borgen-an-n\u00E4chste-Stelle = <strong>1</strong>.</li>'
+        + '<li>Ist das Ergebnis <strong>\u2265 0</strong>? \u2192 Ergebnis-Bit = (Rechnung), Borgen = <strong>0</strong>.</li>'
+        + '<li>Wiederhole von rechts nach links, bis alle Stellen durch sind.</li>'
+        + '</ol>'
+        + '</div>'
+        + '<h3>Durchgerechnetes Beispiel: 1100\u2082 \u2212 0101\u2082 = ?</h3>'
+        + '<p>Dezimal: 12 \u2212 5 = 7. Schauen wir, ob die Bin\u00E4rrechnung dasselbe liefert:</p>'
+        + '<table style="border-collapse:collapse;margin:8px 0;width:100%;max-width:640px">'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">Stelle</th><th style="border:1px solid #ccc;padding:6px 10px">Oben</th><th style="border:1px solid #ccc;padding:6px 10px">Unten</th><th style="border:1px solid #ccc;padding:6px 10px">Borgen von rechts</th><th style="border:1px solid #ccc;padding:6px 10px">Rechnung</th><th style="border:1px solid #ccc;padding:6px 10px">Ergebnis-Bit</th><th style="border:1px solid #ccc;padding:6px 10px">Borgen an n\u00E4chste</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>0</strong> (rechts)</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0\u22121\u22120 = \u22121 \u2192 borgen</td><td style="border:1px solid #ccc;padding:6px 10px"><strong>1</strong></td><td style="border:1px solid #ccc;padding:6px 10px"><strong>1</strong></td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>1</strong></td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0\u22120\u22121 = \u22121 \u2192 borgen</td><td style="border:1px solid #ccc;padding:6px 10px"><strong>1</strong></td><td style="border:1px solid #ccc;padding:6px 10px"><strong>1</strong></td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>2</strong></td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1\u22121\u22121 = \u22121 \u2192 borgen</td><td style="border:1px solid #ccc;padding:6px 10px"><strong>1</strong></td><td style="border:1px solid #ccc;padding:6px 10px"><strong>1</strong></td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>3</strong> (links)</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1\u22120\u22121 = 0 \u2192 kein Borgen</td><td style="border:1px solid #ccc;padding:6px 10px"><strong>0</strong></td><td style="border:1px solid #ccc;padding:6px 10px"><strong>0</strong></td></tr>'
+        + '</table>'
+        + '<p>Zusammengelesen von links nach rechts: <strong>0111\u2082</strong> = 0\u00B78 + 1\u00B74 + 1\u00B72 + 1\u00B71 = <strong>7\u2081\u2080</strong> \u2713</p>'
+        + '<div class="analogy-box" style="background:#f0fdf4;border-left-color:#16a34a">'
+        + '<strong>Der \u201ETrick\u201C bei diesem Beispiel:</strong> Das Borgen <em>wandert</em> durch drei Stellen hintereinander. Weil die oberen Ziffern an Stelle 0, 1 und 2 jeweils zu klein sind, reicht der Borgen-Impuls weiter. Erst an Stelle 3 (links) ist oben gen\u00FCgend da, um das Borgen \u201Eaufzufangen\u201C.</p><p style="margin:4px 0 0 0">Das ist exakt das gleiche Prinzip wie bei Dezimal-Rechnungen mit Borgen-Kette, z.B. <code>1000 \u2212 1 = 999</code> (3 Nullen werden zu 9ern durch wanderndes Borgen).'
+        + '</div>'
+        + '<p>Probier die Rechnung jetzt selbst nach: Unten siehst du eine <em>interaktive Animation</em>. Dr\u00FCcke <em>\u201EN\u00E4chster Schritt\u201C</em> und beobachte, wie Borgen-Ziffern erscheinen und das Ergebnis Stelle f\u00FCr Stelle berechnet wird. Gleiche die Zwischenergebnisse mit der Tabelle oben ab.</p>',
       visuals: [
         { type: 'binary-animation', operandA: '1100', operandB: '0101', mode: 'subtract', label: '1100\u2082 \u2212 0101\u2082 = 0111\u2082 (12 \u2212 5 = 7)' }
       ]
