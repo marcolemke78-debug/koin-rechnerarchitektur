@@ -73,31 +73,65 @@ const LessonsC2 = [
     explanation: {
       html:
         '<h2>Halbsubtrahierer</h2>'
-        + '<p>Der Halbsubtrahierer subtrahiert <strong>2 Bits</strong> (A und B) und liefert zwei Ausg\u00E4nge:</p>'
+        + '<p>Der Halbsubtrahierer ist eine Schaltung, die <strong>2 Bits subtrahiert</strong> (A minus B) und zwei Ausg\u00E4nge liefert:</p>'
         + '<ul>'
-        + '<li><strong>D (Differenz):</strong> Das Ergebnis von A - B</li>'
-        + '<li><strong>B_out (Borgen-Ausgang):</strong> Wurde von der n\u00E4chsten Stelle geborgt?</li>'
+        + '<li><strong>D (Differenz):</strong> Das Ergebnis von A \u2212 B</li>'
+        + '<li><strong>B_out (Borgen-Ausgang):</strong> Musste von der n\u00E4chsten Stelle geborgt werden?</li>'
         + '</ul>'
+        + '<div class="analogy-box">'
+        + '<strong>Stell dir eine Mini-Maschine vor:</strong> Zwei Kn\u00F6pfe (A und B) und zwei L\u00E4mpchen (D und B_out). Du dr\u00FCckst die Kn\u00F6pfe in einer Kombination \u2013 etwa A=0, B=1 \u2013 und liest an den L\u00E4mpchen ab, was herauskommt. Genau so funktioniert der Halbsubtrahierer: nur eben als elektronische Schaltung aus Gattern.'
+        + '</div>'
         + '<h3>Formeln:</h3>'
-        + '<p><code>D = A \u2295 B</code> (XOR \u2013 Differenz ohne Borgen)</p>'
-        + '<p><code>B_out = \u00ACA \u2227 B</code> (Borgen n\u00F6tig wenn A=0 und B=1)</p>'
-        + '<h3>Gatterschaltung:</h3>'
-        + '<ul>'
-        + '<li>XOR-Gatter f\u00FCr D</li>'
-        + '<li>NOT-Gatter f\u00FCr \u00ACA, dann AND-Gatter (\u00ACA, B) f\u00FCr B_out</li>'
+        + '<p><code>D = A \u2295 B</code> (XOR \u2013 die Differenz ohne Borgen-Ber\u00FCcksichtigung)</p>'
+        + '<p><code>B_out = \u00ACA \u2227 B</code> (Borgen ist nur n\u00F6tig, wenn A=0 und B=1)</p>'
+        + '<h3>Wahrheitstabelle:</h3>'
+        + '<table style="border-collapse:collapse;margin:8px 0">'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">A</th><th style="border:1px solid #ccc;padding:6px 10px">B</th><th style="border:1px solid #ccc;padding:6px 10px">D</th><th style="border:1px solid #ccc;padding:6px 10px">B_out</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+        + '</table>'
+        + '<div class="why-context">'
+        + '<strong>Warum lernen wir das?</strong> Der Halbsubtrahierer ist der kleinste Baustein, aus dem wir gleich den Vollsubtrahierer bauen \u2013 und aus mehreren Vollsubtrahierern sp\u00E4ter ein komplettes Subtraktionswerk, das mehrstellige Bin\u00E4rzahlen verarbeitet. Wie beim Lego-Prinzip: erst der einzelne Stein, dann das Modul, dann die ganze Maschine.'
+        + '</div>'
+        + '<div class="reading-guide">'
+        + '<strong>So liest du die Schaltung unten:</strong>'
+        + '<ul style="margin:6px 0 0 0;padding-left:20px">'
+        + '<li>Links kommen die <strong>Eingangssignale</strong> rein: <strong>A</strong> (oben) und <strong>B</strong> (unten). Klick auf die Kreise schaltet zwischen 0 und 1.</li>'
+        + '<li><strong>Obere Spur:</strong> A und B gehen in das <strong>XOR-Gatter</strong> (<code>=1</code>). Dessen Ausgang ist <strong>D</strong> (die Differenz).</li>'
+        + '<li><strong>Untere Spur:</strong> A geht zuerst durchs <strong>NOT-Gatter</strong> (<code>1</code> mit Kringel am Ausgang \u2013 das invertiert A zu \u00ACA). Dann gehen \u00ACA und B ins <strong>AND-Gatter</strong> (<code>&</code>). Dessen Ausgang ist <strong>B_out</strong> (Borgen).</li>'
+        + '<li>Wenn ein Signal auf 1 ist, leuchtet die Leitung <strong>farbig</strong>; bei 0 bleibt sie gedeckt. So siehst du, wo gerade \u201EStrom flie\u00DFt\u201C.</li>'
         + '</ul>'
-        + '<p><strong>Analogie:</strong> \u00C4hnlich wie der Halbaddierer, aber \u201Er\u00FCckw\u00E4rts\u201C \u2013 statt \u00DCbertrag gibt es Borgen.</p>'
+        + '</div>'
+        + '<div class="circuit-legend">'
+        + '<span class="legend-item"><span class="legend-symbol">=1</span>XOR</span>'
+        + '<span class="legend-item"><span class="legend-symbol">&</span>AND</span>'
+        + '<span class="legend-item"><span class="legend-symbol">1\u00B0</span>NOT (Kringel = Invertierung)</span>'
+        + '<span class="legend-item"><span class="legend-symbol">\u22651</span>OR</span>'
+        + '</div>',
+      visuals: [
+        { type: 'circuit', circuit: 'half-subtractor', label: 'Halbsubtrahierer \u2013 klicke A und B' }
+      ]
     },
     example: {
-      title: 'Beispiel: Halbsubtrahierer Wahrheitstabelle',
+      title: 'Beispiel: Alle 4 Eingangs-Kombinationen',
       steps: [
         {
-          label: 'Vollst\u00E4ndige Wahrheitstabelle',
-          html: '<table style="border-collapse:collapse;margin:8px 0"><tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:4px">A</th><th style="border:1px solid #ccc;padding:4px">B</th><th style="border:1px solid #ccc;padding:4px">D=A\u2295B</th><th style="border:1px solid #ccc;padding:4px">B_out=\u00ACA\u2227B</th></tr><tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td></tr><tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td></tr></table>'
+          label: 'A=0, B=0 \u2192 D=0, B_out=0',
+          html: '<p>Beide Eing\u00E4nge sind 0. Es gibt nichts zu subtrahieren, kein Borgen n\u00F6tig. <code>XOR(0,0)=0</code>, <code>\u00AC0 \u2227 0 = 1 \u2227 0 = 0</code>.</p><p><em>Tipp: Pr\u00FCfe das oben in der Schaltung \u2013 beide Eing\u00E4nge auf 0 lassen, beide Ausg\u00E4nge bleiben dunkel.</em></p>'
         },
         {
-          label: 'Warum B_out = \u00ACA \u2227 B?',
-          html: '<p>Borgen ist n\u00F6tig wenn <strong>A=0 und B=1</strong>: 0-1 geht nicht ohne Borgen. Das ist genau die Bedingung \u00ACA\u2227B. In allen anderen F\u00E4llen (A=B oder A>B) kein Borgen n\u00F6tig.</p>'
+          label: 'A=0, B=1 \u2192 D=1, B_out=1 (der kritische Fall: Borgen!)',
+          html: '<p>Hier zeigt sich, was das Borgen eigentlich ist: 0 minus 1 geht nicht ohne Hilfe. Wir borgen eine 2 von der n\u00E4chsten Stelle, sodass aus 0\u22121 die Rechnung 10\u2082\u22121=1 wird. Also <strong>D=1</strong>. Gleichzeitig muss B_out=1 signalisieren, dass wir geborgt haben.</p><p><code>XOR(0,1)=1</code>, <code>\u00AC0 \u2227 1 = 1 \u2227 1 = 1</code>.</p><p><em>Im Visual oben: Klicke B auf 1 \u2013 beide Ausg\u00E4nge leuchten auf.</em></p>'
+        },
+        {
+          label: 'A=1, B=0 \u2192 D=1, B_out=0',
+          html: '<p>Der einfachste Fall: 1 minus 0 = 1. Kein Borgen n\u00F6tig. <code>XOR(1,0)=1</code>, <code>\u00AC1 \u2227 0 = 0 \u2227 0 = 0</code>.</p>'
+        },
+        {
+          label: 'A=1, B=1 \u2192 D=0, B_out=0',
+          html: '<p>1 minus 1 = 0. Kein Borgen n\u00F6tig, denn A ist mindestens so gro\u00DF wie B. <code>XOR(1,1)=0</code>, <code>\u00AC1 \u2227 1 = 0 \u2227 1 = 0</code>.</p>'
         }
       ]
     },

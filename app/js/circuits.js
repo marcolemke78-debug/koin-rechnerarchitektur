@@ -78,13 +78,13 @@ const CIRCUITS = {
       { from: 'and1', to: 'Bout' }
     ],
     layout: {
-      inputs:  { A: { x: 0, y: 0.25 }, B: { x: 0, y: 0.75 } },
+      inputs:  { A: { x: 0, y: 0.2 }, B: { x: 0, y: 0.8 } },
       gates:   {
-        xor1: { x: 0.45, y: 0.2 },
-        not1: { x: 0.25, y: 0.55 },
-        and1: { x: 0.55, y: 0.7 }
+        xor1: { x: 0.6, y: 0.15 },
+        not1: { x: 0.25, y: 0.5 },
+        and1: { x: 0.6, y: 0.8 }
       },
-      outputs: { D: { x: 1, y: 0.25 }, Bout: { x: 1, y: 0.75 } }
+      outputs: { D: { x: 1, y: 0.2 }, Bout: { x: 1, y: 0.8 } }
     }
   },
 
