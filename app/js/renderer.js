@@ -377,6 +377,15 @@ Renderer.renderVisuals = function(visuals, container) {
       case 'flussdiagramm':
         Visuals.renderFlussdiagramm(vis, container);
         break;
+      case 'binary-interactive':
+        Visuals.renderBinaryInteractive(vis, container);
+        break;
+      case 'bst-interactive':
+        Visuals.renderBstInteractive(vis, container);
+        break;
+      case 'hashtable-interactive':
+        Visuals.renderHashtableInteractive(vis, container);
+        break;
       default:
         console.warn('Unbekannter Visual-Typ:', vis.type);
     }

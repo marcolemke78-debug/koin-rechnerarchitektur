@@ -2531,3 +2531,359 @@ Visuals.renderFlussdiagramm = function(config, container) {
   wrapper.appendChild(box);
   container.appendChild(wrapper);
 };
+
+// ============================================================================
+//  Interaktiver Binär-Umrechner (A1)
+// ============================================================================
+//
+// config: {
+//   type: 'binary-interactive',
+//   bits: 8,                     // Anzahl Bits (Standard 8)
+//   initial: '00001011',         // optional Startwert
+//   label: 'Klick die Bits!'
+// }
+Visuals.renderBinaryInteractive = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  if (config.label) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'visual-label';
+    labelEl.textContent = config.label;
+    wrapper.appendChild(labelEl);
+  }
+
+  const n = config.bits || 8;
+  let bits = (config.initial || '0'.repeat(n)).padStart(n, '0').slice(-n).split('');
+
+  const table = document.createElement('div');
+  table.style.cssText = 'display:grid; grid-template-columns:repeat(' + n + ', 1fr); gap:4px; max-width:' + (n*50) + 'px; margin:12px auto; font-family:monospace;';
+
+  // Zeile 1: Stellenwerte
+  const powerRow = [];
+  const bitRow = [];
+  const valueRow = [];
+  for (let i = 0; i < n; i++) {
+    const power = n - 1 - i;
+    const pCell = document.createElement('div');
+    pCell.style.cssText = 'text-align:center; font-size:0.75em; color:#6B7280;';
+    pCell.innerHTML = '2<sup>' + power + '</sup>';
+    powerRow.push(pCell);
+    table.appendChild(pCell);
+  }
+  // Zeile 2: Bit-Buttons
+  for (let i = 0; i < n; i++) {
+    const power = n - 1 - i;
+    const btn = document.createElement('button');
+    btn.dataset.idx = i;
+    btn.dataset.power = power;
+    btn.style.cssText = 'height:44px; width:44px; font-size:1.4em; font-weight:bold; cursor:pointer; border:2px solid #374151; border-radius:4px; font-family:monospace;';
+    bitRow.push(btn);
+    table.appendChild(btn);
+  }
+  // Zeile 3: Werte (2^power)
+  for (let i = 0; i < n; i++) {
+    const power = n - 1 - i;
+    const vCell = document.createElement('div');
+    vCell.style.cssText = 'text-align:center; font-size:0.85em; color:#2563EB; font-weight:bold;';
+    vCell.textContent = Math.pow(2, power);
+    valueRow.push(vCell);
+    table.appendChild(vCell);
+  }
+
+  wrapper.appendChild(table);
+
+  // Summe + Rechnung
+  const result = document.createElement('div');
+  result.style.cssText = 'text-align:center; margin-top:14px; padding:12px; background:#EFF6FF; border:1px solid #2563EB; border-radius:6px; font-family:monospace; font-size:1.05em;';
+  wrapper.appendChild(result);
+
+  function update() {
+    bits.forEach((b, i) => {
+      const btn = bitRow[i];
+      btn.textContent = b;
+      if (b === '1') {
+        btn.style.background = '#DBEAFE';
+        btn.style.color = '#1E40AF';
+        btn.style.borderColor = '#2563EB';
+        valueRow[i].style.opacity = '1';
+      } else {
+        btn.style.background = '#F9FAFB';
+        btn.style.color = '#9CA3AF';
+        btn.style.borderColor = '#D1D5DB';
+        valueRow[i].style.opacity = '0.3';
+      }
+    });
+
+    const contribs = [];
+    let sum = 0;
+    bits.forEach((b, i) => {
+      const power = n - 1 - i;
+      if (b === '1') {
+        const v = Math.pow(2, power);
+        contribs.push(v);
+        sum += v;
+      }
+    });
+
+    const binStr = bits.join('');
+    if (contribs.length === 0) {
+      result.innerHTML = '<strong>' + binStr + '</strong><sub>2</sub> = 0<sub>10</sub>';
+    } else {
+      result.innerHTML = '<strong>' + binStr + '</strong><sub>2</sub> = ' + contribs.join(' + ') + ' = <span style="color:#2563EB;font-size:1.2em;font-weight:bold;">' + sum + '</span><sub>10</sub>';
+    }
+  }
+
+  bitRow.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      bits[i] = bits[i] === '0' ? '1' : '0';
+      update();
+    });
+  });
+
+  update();
+  container.appendChild(wrapper);
+};
+
+
+// ============================================================================
+//  Interaktiver BST (A3)
+// ============================================================================
+//
+// config: {
+//   type: 'bst-interactive',
+//   initial: [24, 20, 28, 18, 22],     // optional Start-Werte
+//   mode: 'full',                       // 'full' (insert+remove+search) oder 'insert-only'
+//   label: '...'
+// }
+Visuals.renderBstInteractive = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  if (config.label) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'visual-label';
+    labelEl.textContent = config.label;
+    wrapper.appendChild(labelEl);
+  }
+
+  let root = null;
+  let lastSearchPath = [];
+  let lastNewNode = null;
+
+  function insert(val) {
+    lastSearchPath = [];
+    lastNewNode = val;
+    root = insertRec(root, val);
+  }
+  function insertRec(node, val) {
+    if (!node) return { value: val };
+    lastSearchPath.push(node.value);
+    if (val < node.value) node.left = insertRec(node.left, val);
+    else if (val > node.value) node.right = insertRec(node.right, val);
+    // bei Duplikat: nichts tun
+    return node;
+  }
+  function search(val) {
+    lastSearchPath = [];
+    lastNewNode = null;
+    let n = root, found = false;
+    while (n) {
+      lastSearchPath.push(n.value);
+      if (val === n.value) { found = true; break; }
+      n = val < n.value ? n.left : n.right;
+    }
+    return found;
+  }
+  function findMin(node) {
+    while (node.left) node = node.left;
+    return node;
+  }
+  function removeRec(node, val) {
+    if (!node) return null;
+    if (val < node.value) node.left = removeRec(node.left, val);
+    else if (val > node.value) node.right = removeRec(node.right, val);
+    else {
+      // Match gefunden
+      if (!node.left) return node.right;
+      if (!node.right) return node.left;
+      const minR = findMin(node.right);
+      node.value = minR.value;
+      node.right = removeRec(node.right, minR.value);
+    }
+    return node;
+  }
+
+  // --- Controls ---
+  const controls = document.createElement('div');
+  controls.style.cssText = 'display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center; margin:10px 0;';
+
+  const input = document.createElement('input');
+  input.type = 'number';
+  input.placeholder = 'Zahl';
+  input.style.cssText = 'width:80px; padding:6px 8px; font-size:1em; border:1px solid #D1D5DB; border-radius:4px;';
+
+  function mkBtn(label, color, fn) {
+    const b = document.createElement('button');
+    b.textContent = label;
+    b.style.cssText = 'padding:8px 14px; background:' + color + '; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; min-height:38px;';
+    b.addEventListener('click', fn);
+    return b;
+  }
+
+  const insertBtn = mkBtn('Insert', '#059669', () => {
+    const v = parseInt(input.value, 10);
+    if (isNaN(v)) return;
+    insert(v);
+    input.value = '';
+    redraw('insert ' + v + ' → eingefügt');
+  });
+  const searchBtn = mkBtn('Suchen', '#2563EB', () => {
+    const v = parseInt(input.value, 10);
+    if (isNaN(v)) return;
+    const found = search(v);
+    input.value = '';
+    redraw('Suche ' + v + ': ' + (found ? 'gefunden!' : 'nicht enthalten'));
+  });
+  const removeBtn = mkBtn('Löschen', '#DC2626', () => {
+    const v = parseInt(input.value, 10);
+    if (isNaN(v)) return;
+    lastSearchPath = [];
+    lastNewNode = null;
+    root = removeRec(root, v);
+    input.value = '';
+    redraw('remove ' + v);
+  });
+  const clearBtn = mkBtn('Reset', '#6B7280', () => {
+    root = null;
+    lastSearchPath = [];
+    lastNewNode = null;
+    redraw('Baum geleert');
+  });
+
+  controls.appendChild(input);
+  controls.appendChild(insertBtn);
+  if ((config.mode || 'full') === 'full') {
+    controls.appendChild(searchBtn);
+    controls.appendChild(removeBtn);
+  }
+  controls.appendChild(clearBtn);
+  wrapper.appendChild(controls);
+
+  const info = document.createElement('div');
+  info.style.cssText = 'text-align:center; min-height:22px; color:#374151; font-size:0.9em; margin:4px 0;';
+  wrapper.appendChild(info);
+
+  const treeBox = document.createElement('div');
+  wrapper.appendChild(treeBox);
+
+  function redraw(msg) {
+    info.textContent = msg || '';
+    treeBox.innerHTML = '';
+    if (!root) {
+      const empty = document.createElement('div');
+      empty.style.cssText = 'text-align:center; color:#9CA3AF; font-style:italic; padding:20px;';
+      empty.textContent = '(leerer Baum)';
+      treeBox.appendChild(empty);
+      return;
+    }
+    Visuals.renderBstViz({
+      tree: root,
+      highlightPath: lastSearchPath,
+      newNode: lastNewNode
+    }, treeBox);
+  }
+
+  // Initialwerte einfügen (ohne Highlight)
+  if (config.initial) {
+    config.initial.forEach(v => {
+      root = insertRec(root, v);
+    });
+    lastSearchPath = [];
+    lastNewNode = null;
+  }
+
+  redraw('Gib eine Zahl ein und klick einen Button.');
+  container.appendChild(wrapper);
+};
+
+
+// ============================================================================
+//  Interaktive Hashtabelle (A3)
+// ============================================================================
+//
+// config: {
+//   type: 'hashtable-interactive',
+//   size: 7,
+//   initial: [],
+//   label: 'h(k) = k mod 7'
+// }
+Visuals.renderHashtableInteractive = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  if (config.label) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'visual-label';
+    labelEl.textContent = config.label;
+    wrapper.appendChild(labelEl);
+  }
+
+  const m = config.size || 7;
+  let entries = (config.initial || []).slice();
+
+  const controls = document.createElement('div');
+  controls.style.cssText = 'display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:center; margin:10px 0;';
+
+  const input = document.createElement('input');
+  input.type = 'number';
+  input.placeholder = 'Zahl';
+  input.style.cssText = 'width:80px; padding:6px 8px; font-size:1em; border:1px solid #D1D5DB; border-radius:4px;';
+  controls.appendChild(input);
+
+  function mkBtn(label, color, fn) {
+    const b = document.createElement('button');
+    b.textContent = label;
+    b.style.cssText = 'padding:8px 14px; background:' + color + '; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold; min-height:38px;';
+    b.addEventListener('click', fn);
+    return b;
+  }
+
+  let lastAdded = null;
+
+  controls.appendChild(mkBtn('Einfügen', '#059669', () => {
+    const v = parseInt(input.value, 10);
+    if (isNaN(v)) return;
+    entries.push(v);
+    lastAdded = v;
+    input.value = '';
+    redraw('h(' + v + ') = ' + v + ' mod ' + m + ' = ' + (((v % m) + m) % m));
+  }));
+  controls.appendChild(mkBtn('Reset', '#6B7280', () => {
+    entries = [];
+    lastAdded = null;
+    redraw('Tabelle geleert');
+  }));
+
+  wrapper.appendChild(controls);
+
+  const info = document.createElement('div');
+  info.style.cssText = 'text-align:center; min-height:22px; color:#374151; font-size:0.95em; margin:4px 0; font-family:monospace;';
+  wrapper.appendChild(info);
+
+  const tableBox = document.createElement('div');
+  wrapper.appendChild(tableBox);
+
+  function redraw(msg) {
+    info.textContent = msg || '';
+    tableBox.innerHTML = '';
+    Visuals.renderHashtableViz({
+      size: m,
+      entries: entries,
+      highlight: lastAdded
+    }, tableBox);
+  }
+
+  redraw('Zahl eingeben und „Einfügen" drücken.');
+  container.appendChild(wrapper);
+};

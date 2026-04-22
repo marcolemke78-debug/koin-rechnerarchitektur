@@ -7,103 +7,100 @@ const LessonsA4 = [
     explanation: {
       html:
         '<h2>Was macht einen Algorithmus aus?</h2>'
-        + '<p>Ein Algorithmus ist mehr als nur eine "Anleitung" – er muss bestimmte <strong>formale Eigenschaften</strong> erfüllen. Diese Eigenschaften sind Pflichtstoff für die Klausur (oft als Multiple-Choice-Aufgaben zum Abhaken).</p>'
+        + '<p>Ein Algorithmus ist eine <strong>Anleitung</strong> zur Lösung eines Problems. Aber nicht jede Anleitung ist ein Algorithmus – es gibt <strong>formale Regeln</strong>, die erfüllt sein müssen. Diese Regeln kommen in der Klausur vor.</p>'
         + '<div class="analogy-box">'
-        + '<strong>Analogie aus dem Alltag:</strong> Ein Kochrezept ist fast ein Algorithmus, aber eben nur "fast". Wenn da steht "Gewürze nach Geschmack hinzufügen", ist das zu ungenau (kein Determinismus). Wenn nicht klar ist, was bei "solange rühren, bis der Teig schön glatt ist" genau zu tun ist (nicht endlich definiert), fehlt die Finitheit. Ein echter Algorithmus muss jeden Schritt so eindeutig definieren, dass ein Computer ihn ohne Nachfrage ausführen kann.'
+        + '<strong>Analogie – Kochrezept:</strong> Ein Kochrezept ist fast ein Algorithmus. Aber "Gewürze nach Geschmack" ist zu unscharf – das passt nicht. Ein echter Algorithmus muss jeden Schritt so eindeutig beschreiben, dass ein Computer ihn ohne Nachfrage ausführen kann.'
         + '</div>'
-        + '<h3>Die 8 Charakteristika</h3>'
+        + '<h3>Die wichtigsten Eigenschaften</h3>'
         + '<table class="icon-table" style="border-collapse:collapse;margin:8px 0;width:100%;">'
         + '<tr style="background:#eff6ff"><th style="padding:6px;border:1px solid #ccc;">Eigenschaft</th><th style="padding:6px;border:1px solid #ccc;">Bedeutung</th></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Ein-/Ausgabespezifikation</b></td><td style="padding:6px;border:1px solid #ccc;">Klar definiert, WAS rein- und rausgeht.</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Parametrisierbarkeit</b></td><td style="padding:6px;border:1px solid #ccc;">Für verschiedene Eingaben nutzbar (nicht nur einen Einzelfall).</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Finitheit</b></td><td style="padding:6px;border:1px solid #ccc;">Endliche Beschreibung mit endlich vielen Anweisungen.</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Diskretheit</b></td><td style="padding:6px;border:1px solid #ccc;">Besteht aus einzelnen, klar abgegrenzten Schritten.</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Determinismus</b></td><td style="padding:6px;border:1px solid #ccc;">Gleicher Ablauf bei gleicher Eingabe.</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Determiniertheit</b></td><td style="padding:6px;border:1px solid #ccc;">Gleiche Ausgabe bei gleicher Eingabe.</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Korrektheit</b></td><td style="padding:6px;border:1px solid #ccc;">Liefert das richtige Ergebnis (partielle Korrektheit) und terminiert (hält an).</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Komplexität</b></td><td style="padding:6px;border:1px solid #ccc;">Zeitbedarf (Schritte) und Speicherbedarf.</td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Ein-/Ausgabespezifikation</b></td><td style="padding:6px;border:1px solid #ccc;">Klar: Was kommt rein, was kommt raus?</td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Parametrisierbarkeit</b></td><td style="padding:6px;border:1px solid #ccc;">Für verschiedene Eingaben nutzbar (nicht nur einen Fall).</td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Finitheit</b></td><td style="padding:6px;border:1px solid #ccc;">Endlich viele Anweisungen.</td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Diskretheit</b></td><td style="padding:6px;border:1px solid #ccc;">Einzelne, klar abgegrenzte Schritte.</td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Determinismus</b></td><td style="padding:6px;border:1px solid #ccc;">Gleicher <em>Weg</em> bei gleicher Eingabe.</td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Determiniertheit</b></td><td style="padding:6px;border:1px solid #ccc;">Gleiches <em>Ergebnis</em> bei gleicher Eingabe.</td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Korrektheit</b></td><td style="padding:6px;border:1px solid #ccc;">Richtiges Ergebnis + hält an.</td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Komplexität</b></td><td style="padding:6px;border:1px solid #ccc;">Wie viele Schritte? Wie viel Speicher?</td></tr>'
         + '</table>'
-        + '<h3>Determinismus vs. Determiniertheit – der feine Unterschied</h3>'
         + '<div class="warning-box">'
-        + '<strong>Achtung Verwechslungsgefahr:</strong>'
+        + '<strong>Verwechslungsgefahr – Determinismus vs. Determiniertheit:</strong>'
         + '<ul>'
-        + '<li><strong>Determinismus</strong> = gleicher <em>Weg</em> bei gleicher Eingabe (Zwischenschritte)</li>'
-        + '<li><strong>Determiniertheit</strong> = gleiches <em>Ergebnis</em> bei gleicher Eingabe</li>'
+        + '<li><strong>Determinismus</strong> = gleicher <em>Weg</em> (Zwischenschritte)</li>'
+        + '<li><strong>Determiniertheit</strong> = gleiches <em>Ergebnis</em></li>'
         + '</ul>'
-        + 'Ein Algorithmus kann determiniert (immer 42 als Antwort), aber nicht-deterministisch (auf verschiedenen Wegen dahin) sein. Umgekehrt eher theoretisch.'
         + '</div>'
-        + '<h3>Partielle Korrektheit vs. Terminieren</h3>'
-        + '<p><strong>Partielle Korrektheit:</strong> Falls der Algorithmus anhält, ist das Ergebnis richtig.</p>'
-        + '<p><strong>Terminierung:</strong> Der Algorithmus hält bei korrekter Eingabe an (keine Endlosschleife).</p>'
-        + '<p>Beides zusammen = <strong>totale Korrektheit</strong>.</p>'
-        + '<div class="why-context">'
-        + '<strong>Warum lernen wir das?</strong> Diese Begriffe sind das gemeinsame Vokabular der Informatik. Wer in AlgoDat, Softwareengineering oder Compilerbau über Algorithmen spricht, nutzt genau diese Wörter. In der Klausur: typische Multiple-Choice-Aufgabe – Begriff zuordnen, Eigenschaften zuordnen.'
-        + '</div>'
+        + '<h3>Korrektheit genau</h3>'
+        + '<p><strong>Partielle Korrektheit:</strong> "Wenn der Algorithmus anhält, ist das Ergebnis richtig."</p>'
+        + '<p><strong>Terminierung:</strong> "Der Algorithmus hält an." (keine Endlosschleife)</p>'
+        + '<p><strong>Totale Korrektheit = beides.</strong></p>'
     },
     example: {
-      title: 'Beispiel: Ist das ein Algorithmus?',
+      title: 'Ist das ein Algorithmus?',
       steps: [
         {
-          label: 'Beispiel 1 – Kochrezept',
+          label: 'Beispiel 1 – Kochrezept "Pfannkuchen"',
           html:
-            '<p>"Nimm 200g Mehl, verrühre mit 2 Eiern, backe bei 180°C für 30 Minuten."</p>'
-            + '<p><strong>Finitheit</strong>: ✓ (4 Anweisungen)</p>'
-            + '<p><strong>Diskretheit</strong>: ✓ (einzelne Schritte)</p>'
-            + '<p><strong>Determinismus</strong>: ✓ (eindeutige Reihenfolge)</p>'
-            + '<p><strong>Determiniertheit</strong>: ? – das Backergebnis könnte abweichen (Eiergröße, Ofenabweichung). Formal problematisch.</p>'
+            '<p>"200g Mehl, 2 Eier, verrühren, 5 Min backen bei 180°C"</p>'
+            + '<ul>'
+            + '<li>Finitheit ✓ (4 Anweisungen)</li>'
+            + '<li>Diskretheit ✓ (einzelne Schritte)</li>'
+            + '<li>Determiniertheit <em>eher nicht</em> – Ergebnis hängt von Eigrößen, Ofen etc. ab</li>'
+            + '</ul>'
         },
         {
-          label: 'Beispiel 2 – "Würfle eine Zahl zwischen 1 und 10"',
+          label: 'Beispiel 2 – "Würfle 1–6"',
           html:
-            '<p><strong>Finitheit</strong>: ✓</p>'
-            + '<p><strong>Determinismus</strong>: ✗ – der Würfelwurf ist zufällig!</p>'
-            + '<p>→ Kein klassischer Algorithmus, sondern ein <em>randomisierter</em> (den gibt es auch, ist aber eine Sonderform).</p>'
+            '<ul>'
+            + '<li>Determinismus ✗ – Würfel ist zufällig!</li>'
+            + '</ul>'
+            + '<p>Kein klassischer Algorithmus, sondern ein <em>randomisierter</em>.</p>'
         },
         {
-          label: 'Beispiel 3 – Primzahlensieb des Eratosthenes',
+          label: 'Beispiel 3 – Sieb des Eratosthenes',
           html:
-            '<p>Ein klassischer Algorithmus (siehe Lektion 40) – erfüllt alle Eigenschaften perfekt: endlich definiert, diskret, deterministisch, determiniert, korrekt und terminiert.</p>'
+            '<p>Klassischer Algorithmus (siehe Lektion 40). Erfüllt alles perfekt: endlich, diskret, deterministisch, determiniert, korrekt, terminiert.</p>'
         }
       ]
     },
     exercises: [
       {
         type: 'multiple-choice',
-        question: 'Welche Eigenschaft beschreibt, dass ein Algorithmus für gleiche Eingaben immer das gleiche Ergebnis liefert?',
+        question: 'Gleiches Ergebnis bei gleicher Eingabe – welche Eigenschaft?',
         options: ['Determinismus', 'Determiniertheit', 'Finitheit', 'Diskretheit'],
         correct: 1,
-        explanation: 'Determiniertheit = gleiche AUSGABE bei gleicher Eingabe. Determinismus hingegen betrifft den WEG (die Zwischenschritte).'
+        explanation: 'Determiniertheit = gleiches AUSGABE. Determinismus wäre gleicher WEG.'
       },
       {
         type: 'multiple-choice',
-        question: 'Was ist der Unterschied zwischen partieller und totaler Korrektheit?',
+        question: 'Unterschied partielle vs. totale Korrektheit?',
         options: [
-          'Partiell = teilweise richtig; total = komplett richtig',
-          'Partiell = nur bei kleinen Eingaben; total = bei allen',
-          'Partiell = richtige Ausgabe falls der Algorithmus anhält; total = zusätzlich, dass er wirklich anhält',
-          'Partiell = nur für Schleifen; total = für jeden Code'
+          'Teilweise vs. ganz richtig.',
+          'Kleine vs. große Eingaben.',
+          'Partiell = richtig FALLS er anhält; total = zusätzlich terminiert.',
+          'Für Schleifen vs. allgemein.'
         ],
         correct: 2,
-        explanation: 'Partielle Korrektheit garantiert: "Wenn der Algorithmus terminiert, ist das Ergebnis richtig." Totale Korrektheit fordert zusätzlich die Terminierung (kein unendliches Laufen).'
+        explanation: 'Partielle Korrektheit allein reicht nicht – er muss auch anhalten.'
       },
       {
         type: 'multiple-choice',
-        question: 'Was bedeutet Finitheit eines Algorithmus?',
+        question: 'Was bedeutet Finitheit?',
         options: [
-          'Er verarbeitet nur endlich viele Zahlen.',
-          'Seine Beschreibung besteht aus endlich vielen Anweisungen.',
-          'Er läuft endlich lange.',
-          'Er nutzt endlich viel Speicher.'
+          'Nur endlich viele Zahlen.',
+          'Endlich viele Anweisungen in der Beschreibung.',
+          'Läuft endlich lange.',
+          'Endlich viel Speicher.'
         ],
         correct: 1,
-        explanation: 'Finitheit bezieht sich auf die BESCHREIBUNG: endlich viele Anweisungen. Dass er endlich lange läuft, ist Terminierung – eine andere Eigenschaft.'
+        explanation: 'Finitheit bezieht sich auf die Beschreibung. "Endlich lange laufen" ist Terminierung.'
       },
       {
         type: 'multiple-choice',
-        question: 'Welche Eigenschaft sorgt dafür, dass ein Algorithmus für unterschiedliche Eingaben einsetzbar ist?',
+        question: 'Welche Eigenschaft sorgt dafür, dass der Algorithmus mit verschiedenen Eingaben funktioniert?',
         options: ['Finitheit', 'Parametrisierbarkeit', 'Determiniertheit', 'Komplexität'],
         correct: 1,
-        explanation: 'Parametrisierbarkeit (auch "Übertragbarkeit") = derselbe Algorithmus funktioniert für verschiedene Instanzen des Problems (nicht nur einen fest vorgegebenen Fall).'
+        explanation: 'Parametrisierbarkeit = verschiedene Instanzen eines Problems.'
       }
     ]
   },
@@ -114,67 +111,36 @@ const LessonsA4 = [
     title: 'Pseudocode, Struktogramm, Flussdiagramm',
     explanation: {
       html:
-        '<h2>Drei Wege, einen Algorithmus darzustellen</h2>'
-        + '<p>Algorithmen werden in der Informatik auf verschiedene Arten aufgeschrieben – je nachdem, wer die Zielgruppe ist.</p>'
+        '<h2>Drei Arten, Algorithmen aufzuschreiben</h2>'
+        + '<p>Derselbe Algorithmus kann auf <strong>drei Arten</strong> dargestellt werden – welche du wählst, hängt von der Situation ab.</p>'
         + '<div class="analogy-box">'
-        + '<strong>Analogie aus dem Alltag:</strong> Dieselbe Wegbeschreibung kannst du als Text ("Fahre geradeaus, dann links, dann …"), als Google-Maps-Route (grafisch mit Pfeilen) oder als Navi-Ansage (Schritt für Schritt) darstellen. Alle drei meinen denselben Weg – nur die Form ist anders. Genauso mit Algorithmen.'
+        + '<strong>Analogie – Wegbeschreibung:</strong> Dieselbe Route kannst du als Text beschreiben ("200m geradeaus, dann links"), als Karte zeichnen oder als Navi-Ansage ausgeben. Alle drei meinen den gleichen Weg.'
         + '</div>'
-        + '<h3>1. Pseudocode</h3>'
-        + '<p>Mischung aus natürlicher Sprache und Programmiersprache. Nicht direkt ausführbar, aber eindeutig lesbar:</p>'
+        + '<h3>1. Pseudocode – textnah</h3>'
+        + '<p>Wie Programmcode, aber nicht ausführbar. Mischung aus Programmiersprache und deutschem Text:</p>'
         + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
-        + 'Input: Array M, Zahl k\n'
-        + 'Output: Kleinstes Element in M\n'
-        + '\n'
-        + '1  m := M[1]\n'
-        + '2  for i := 2 to n do\n'
-        + '3    if M[i] < m then\n'
-        + '4      m := M[i]\n'
-        + '5  print m</pre>'
-        + '<p>→ Gut für <strong>komplexe Algorithmen</strong>, nahe an Programmiersprache.</p>'
-        + '<h3>2. Struktogramm (Nassi-Shneiderman-Diagramm)</h3>'
-        + '<p>Grafische Darstellung mit geschachtelten Blöcken. Strukturen werden durch Einrahmen verdeutlicht:</p>'
-        + '<ul>'
-        + '<li>Rechtecke = Anweisungen</li>'
-        + '<li>Trapez = while-Schleife (Bedingung oben)</li>'
-        + '<li>Umgekehrtes Trapez = do-while (Bedingung unten)</li>'
-        + '<li>Dreieck = Verzweigung (Ja/Nein)</li>'
-        + '</ul>'
-        + '<p>→ Gut für <strong>Schulen und Didaktik</strong>, zwingt zu strukturiertem Aufbau (keine "goto"-Sprünge möglich!).</p>'
-        + '<h3>3. Flussdiagramm (Programmablaufplan)</h3>'
-        + '<p>Symbole nach DIN 66001, verbunden mit Pfeilen:</p>'
-        + '<ul>'
-        + '<li>Oval = Start / Stop</li>'
-        + '<li>Parallelogramm = Ein-/Ausgabe</li>'
-        + '<li>Rechteck = Operation</li>'
-        + '<li>Raute = Verzweigung (Ja/Nein)</li>'
-        + '<li>Pfeile = Ablauf</li>'
-        + '</ul>'
-        + '<p>→ Gut für <strong>einfache Abläufe</strong>; bei komplexen Verfahren schnell unübersichtlich.</p>'
-        + '<h3>Wann was?</h3>'
-        + '<table class="icon-table" style="border-collapse:collapse;margin:8px 0;">'
-        + '<tr style="background:#eff6ff"><th style="padding:6px;border:1px solid #ccc;">Darstellung</th><th style="padding:6px;border:1px solid #ccc;">Stärke</th><th style="padding:6px;border:1px solid #ccc;">Schwäche</th></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;">Pseudocode</td><td style="padding:6px;border:1px solid #ccc;">Präzise, auch bei komplexen Algorithmen</td><td style="padding:6px;border:1px solid #ccc;">Nicht visuell</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;">Struktogramm</td><td style="padding:6px;border:1px solid #ccc;">Visuell + strukturiert</td><td style="padding:6px;border:1px solid #ccc;">Wird bei Schachtelung eng</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;">Flussdiagramm</td><td style="padding:6px;border:1px solid #ccc;">Intuitiv für einfache Abläufe</td><td style="padding:6px;border:1px solid #ccc;">Bei komplexen Pfaden chaotisch</td></tr>'
-        + '</table>'
-        + '<div class="why-context">'
-        + '<strong>Warum lernen wir das?</strong> Als Lehrer wirst du diese Darstellungen im Unterricht einsetzen – Struktogramme sind fester Bestandteil der Informatik in Baden-Württemberg. In der Klausur werden oft Aufgaben gestellt wie "Führe das folgende Struktogramm aus" (siehe Lektion 40, Sieb des Eratosthenes).'
-        + '</div>'
+        + 'min := M[1]\n'
+        + 'for i := 2 to n do\n'
+        + '  if M[i] < min then\n'
+        + '    min := M[i]\n'
+        + 'print min</pre>'
+        + '<p>→ Für komplexe Algorithmen.</p>'
+        + '<h3>2. Struktogramm – grafisch, strukturiert</h3>'
+        + '<p>Geschachtelte Rechtecke. Schleifen, Verzweigungen sind eingerahmt. Auch <em>Nassi-Shneiderman-Diagramm</em> genannt.</p>'
+        + '<p>→ Häufig in Schule und Didaktik.</p>'
+        + '<h3>3. Flussdiagramm – klassisch</h3>'
+        + '<p>Symbole nach Norm (DIN 66001): Oval für Start/Stop, Raute für Verzweigung, Rechteck für Operation, Parallelogramm für Ein-/Ausgabe. Mit Pfeilen verbunden.</p>'
+        + '<p>→ Gut für einfache Abläufe, bei komplexen unübersichtlich.</p>'
     },
     example: {
-      title: 'Beispiel: Kleinstes Element finden – in allen drei Formen',
+      title: 'Beispiel: Kleinstes Element finden – alle drei Arten',
       steps: [
         {
-          label: 'Aufgabenstellung',
-          html:
-            '<p>Gegeben: Array M mit n Zahlen. Gesucht: kleinste Zahl.</p>'
-        },
-        {
-          label: 'Als Pseudocode',
+          label: 'Pseudocode',
           html:
             '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
-            + 'Input: Array M of size n\n'
-            + 'Output: min\n'
+            + 'Input: Array M der Länge n\n'
+            + 'Output: min (kleinstes Element)\n'
             + '\n'
             + 'min := M[1]\n'
             + 'for i := 2 to n do\n'
@@ -183,9 +149,9 @@ const LessonsA4 = [
             + 'print min</pre>'
         },
         {
-          label: 'Als Struktogramm (Nassi-Shneiderman)',
+          label: 'Struktogramm',
           html:
-            '<p>Die Schleife steht im blauen Block, die if-Verzweigung gliedert sich in ja/nein-Spalten:</p>',
+            '<p>Schleife blau, Verzweigung gelb. Alles ineinander verschachtelt:</p>',
           visuals: [
             {
               type: 'struktogramm',
@@ -202,9 +168,9 @@ const LessonsA4 = [
           ]
         },
         {
-          label: 'Als Flussdiagramm',
+          label: 'Flussdiagramm',
           html:
-            '<p>Rauten = Verzweigungen, Rechtecke = Operationen, Ovale = Start/Stop:</p>',
+            '<p>Symbole nach DIN 66001. Rauten = Entscheidungen, Rechtecke = Operationen:</p>',
           visuals: [
             {
               type: 'flussdiagramm',
@@ -226,36 +192,36 @@ const LessonsA4 = [
     exercises: [
       {
         type: 'multiple-choice',
-        question: 'Welche Darstellungsform besteht aus geschachtelten Rechtecken, Trapezen und Dreiecken?',
-        options: ['Pseudocode', 'Flussdiagramm', 'Struktogramm (Nassi-Shneiderman)', 'UML'],
+        question: 'Welche Darstellung besteht aus geschachtelten Rechtecken und Trapezen?',
+        options: ['Pseudocode', 'Flussdiagramm', 'Struktogramm', 'UML'],
         correct: 2,
-        explanation: 'Struktogramm = Rechtecke (Anweisungen) + Trapeze (Schleifen) + Dreiecke (Verzweigungen). Alles geschachtelt – "keine gotos möglich".'
+        explanation: 'Struktogramm = Nassi-Shneiderman, alles geschachtelt.'
       },
       {
         type: 'multiple-choice',
-        question: 'Welches Symbol steht in einem Flussdiagramm nach DIN 66001 für eine Verzweigung?',
+        question: 'Welches Symbol ist eine Verzweigung im Flussdiagramm?',
         options: ['Oval', 'Raute', 'Rechteck', 'Parallelogramm'],
         correct: 1,
-        explanation: 'Raute = bedingte Verzweigung (Ja/Nein). Oval = Start/Stop, Rechteck = Operation, Parallelogramm = Ein-/Ausgabe.'
+        explanation: 'Raute = Verzweigung (Ja/Nein).'
       },
       {
         type: 'multiple-choice',
-        question: 'Welche Darstellungsform ist am nähesten an einer Programmiersprache, aber nicht direkt ausführbar?',
-        options: ['Flussdiagramm', 'Pseudocode', 'Struktogramm', 'Java-Quelltext'],
+        question: 'Welche Darstellung ist am nächsten an Programmiersprache?',
+        options: ['Flussdiagramm', 'Pseudocode', 'Struktogramm', 'Java'],
         correct: 1,
-        explanation: 'Pseudocode nutzt Programmier-Syntax (Variablen, Schleifen, if), aber in freier, ungeprüfter Form – nicht ausführbar, aber eindeutig lesbar.'
+        explanation: 'Pseudocode nutzt Programmier-Syntax, ist aber nicht ausführbar.'
       },
       {
         type: 'multiple-choice',
-        question: 'Warum sind Flussdiagramme bei komplexen Algorithmen problematisch?',
+        question: 'Warum werden Flussdiagramme bei komplexen Algorithmen problematisch?',
         options: [
-          'Sie brauchen zu viel Papier.',
-          'Komplexe Verzweigungen und Schleifen führen schnell zu unübersichtlichen Diagrammen.',
-          'Flussdiagramme erlauben keine Verzweigungen.',
-          'Sie sind nicht wissenschaftlich anerkannt.'
+          'Zu viel Papier.',
+          'Viele Pfeile kreuzen sich → unübersichtlich.',
+          'Keine Verzweigungen möglich.',
+          'Nicht wissenschaftlich.'
         ],
         correct: 1,
-        explanation: 'Viele Pfeile kreuzen sich bei Verschachtelung – das Diagramm wird schnell zum "Spaghetti-Code-Bild". Struktogramme zwingen zu sauberer Struktur; Pseudocode bleibt auch komplex lesbar.'
+        explanation: 'Bei vielen Schleifen/Verzweigungen wird das Diagramm ein Chaos. Struktogramm ist da übersichtlicher.'
       }
     ]
   },
@@ -266,119 +232,107 @@ const LessonsA4 = [
     title: 'Arrays & Listen (einfach/doppelt/Ring)',
     explanation: {
       html:
-        '<h2>Arrays und Listen – wann welche Struktur?</h2>'
-        + '<p>Für die gleiche Aufgabe gibt es oft mehrere Datenstrukturen zur Auswahl. Wer die Unterschiede kennt, trifft die richtige Wahl für sein Problem.</p>'
+        '<h2>Arrays und Listen – wann welche?</h2>'
+        + '<p>Für verschiedene Aufgaben braucht man verschiedene Datenstrukturen. Die Wahl ist wichtig – sie entscheidet, wie schnell dein Programm läuft.</p>'
         + '<div class="analogy-box">'
-        + '<strong>Analogie aus dem Alltag:</strong> Ein Array ist wie ein Parkhaus mit nummerierten Plätzen – du kommst zu jedem Platz sofort hin ("Platz 42"). Eine verkettete Liste ist wie eine Schnitzeljagd – du findest jeden Hinweis nur, indem du dem vorherigen folgst. Das Parkhaus ist schneller zum Zugriff, aber starr (neuen Platz zwischendrin einfügen heißt alle nach hinten verschieben). Die Schnitzeljagd ist flexibel (einen Hinweis umleiten ist einfach), aber langsam im Zugriff.'
+        + '<strong>Analogie – Parkhaus vs. Schnitzeljagd:</strong> Ein Array ist wie ein Parkhaus mit nummerierten Plätzen – du kommst zu Platz 42 sofort. Eine Liste ist wie eine Schnitzeljagd – du findest jeden Hinweis nur, indem du dem vorherigen folgst. Parkhaus = schneller Zugriff, aber starr. Schnitzeljagd = flexibel, aber langsamer.'
         + '</div>'
         + '<h3>Array (Feld)</h3>'
         + '<ul>'
-        + '<li>Feste Länge, zusammenhängender Speicher</li>'
-        + '<li>Zugriff über Index: <code>a[5]</code> → sofort</li>'
-        + '<li>In Java: <code>int[] a = new int[10];</code></li>'
-        + '<li>Einfügen/Löschen in der Mitte: langsam (verschieben aller folgenden Elemente)</li>'
+        + '<li>Feste Länge, nummerierte Plätze (Index)</li>'
+        + '<li>Zugriff über Index: <code>a[5]</code> sofort</li>'
+        + '<li>Einfügen in der Mitte: langsam (alle weiteren verschieben)</li>'
         + '</ul>'
-        + '<h3>Einfach verkettete Liste (Linked List)</h3>'
+        + '<h3>Einfach verkettete Liste</h3>'
         + '<ul>'
-        + '<li>Jedes Element hat <strong>data</strong> + <strong>next</strong> (Zeiger auf nächstes Element)</li>'
-        + '<li>Letzter Verweis = null</li>'
-        + '<li>Dynamisch wachsend/schrumpfend</li>'
-        + '<li>Kein direkter Zugriff auf Mitte – man muss immer von vorne durchlaufen</li>'
+        + '<li>Jedes Element hat <strong>Daten</strong> + <strong>Zeiger aufs nächste</strong></li>'
+        + '<li>Letztes Element zeigt auf null</li>'
+        + '<li>Dynamisch: wächst und schrumpft</li>'
+        + '<li>Nur vorwärts durchlaufen</li>'
         + '</ul>'
         + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
         + 'head → [o1|•] → [o2|•] → [o3|null]</pre>'
         + '<h3>Doppelt verkettete Liste</h3>'
-        + '<ul>'
-        + '<li>Jedes Element hat zusätzlich <strong>prev</strong> (Zeiger auf vorheriges)</li>'
-        + '<li>In beide Richtungen durchlaufbar</li>'
-        + '<li>Beim Einfügen/Löschen muss man 2 Pointer (prev + next) anpassen</li>'
-        + '</ul>'
+        + '<p>Jedes Element hat zusätzlich einen <strong>Zeiger aufs vorherige</strong>. In beide Richtungen durchlaufbar.</p>'
         + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
         + 'null ← [•|o1|•] ↔ [•|o2|•] ↔ [•|o3|null]</pre>'
         + '<h3>Ringliste</h3>'
-        + '<ul>'
-        + '<li>Das letzte Element zeigt (per next) auf das erste zurück</li>'
-        + '<li>Kein "Ende" – zyklische Struktur</li>'
-        + '<li>Braucht keinen tail-Pointer</li>'
-        + '</ul>'
-        + '<h3>Vergleich: Wann welche Struktur?</h3>'
+        + '<p>Das letzte Element zeigt auf das erste zurück. Kein Ende, zyklisch.</p>'
+        + '<h3>Wann welche?</h3>'
         + '<table class="icon-table" style="border-collapse:collapse;margin:8px 0;width:100%;">'
-        + '<tr style="background:#eff6ff"><th style="padding:6px;border:1px solid #ccc;">Aufgabe</th><th style="padding:6px;border:1px solid #ccc;">Beste Wahl</th><th style="padding:6px;border:1px solid #ccc;">Grund</th></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;">Direkter Zugriff auf Mitte</td><td style="padding:6px;border:1px solid #ccc;">Array</td><td style="padding:6px;border:1px solid #ccc;">O(1) per Index</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;">Viel Einfügen/Löschen zwischendrin</td><td style="padding:6px;border:1px solid #ccc;">Verkettete Liste</td><td style="padding:6px;border:1px solid #ccc;">Nur Pointer umbiegen</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;">Durchlauf in beide Richtungen</td><td style="padding:6px;border:1px solid #ccc;">Doppelt verkettet</td><td style="padding:6px;border:1px solid #ccc;">prev-Pointer</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;">Zyklisches Rotieren</td><td style="padding:6px;border:1px solid #ccc;">Ringliste</td><td style="padding:6px;border:1px solid #ccc;">Kein Ende</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;">Schnelle Suche</td><td style="padding:6px;border:1px solid #ccc;">Hashtabelle oder BST</td><td style="padding:6px;border:1px solid #ccc;">O(1) bzw. O(log n)</td></tr>'
+        + '<tr style="background:#eff6ff"><th style="padding:6px;border:1px solid #ccc;">Aufgabe</th><th style="padding:6px;border:1px solid #ccc;">Beste Wahl</th></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;">Schneller Zugriff per Index</td><td style="padding:6px;border:1px solid #ccc;"><b>Array</b></td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;">Viel Einfügen/Löschen zwischendrin</td><td style="padding:6px;border:1px solid #ccc;"><b>Liste</b></td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;">Vorwärts + Rückwärts durchlaufen</td><td style="padding:6px;border:1px solid #ccc;"><b>Doppelt verkettet</b></td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;">Zyklisch rotieren</td><td style="padding:6px;border:1px solid #ccc;"><b>Ringliste</b></td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;">Schnell suchen</td><td style="padding:6px;border:1px solid #ccc;"><b>Hashtabelle / BST</b></td></tr>'
         + '</table>'
-        + '<div class="why-context">'
-        + '<strong>Warum lernen wir das?</strong> Fast jede Programmieraufgabe beginnt mit der Frage "Welche Datenstruktur?". Die falsche Wahl macht Programme langsam. In der Klausur ist das eine Standard-Aufgabe: "Gegeben Anwendung X, welche Struktur eignet sich?"'
-        + '</div>'
     },
     example: {
-      title: 'Beispiel: Datenstruktur für verschiedene Anwendungen',
+      title: 'Beispiel: Passende Datenstruktur wählen',
       steps: [
         {
-          label: 'Zugriff auf das mittlere Element',
+          label: 'Mittleres Element finden',
           html:
-            '<p><strong>Beste Wahl: Array</strong> – direkter Index-Zugriff in einem Schritt. Liste bräuchte n/2 Schritte bis zur Mitte.</p>'
+            '<p><strong>Array</strong> – Index-Zugriff in einem Schritt.</p>'
         },
         {
           label: 'Einfügen an beliebiger Stelle',
           html:
-            '<p><strong>Beste Wahl: einfach verkettete Liste</strong> – nur zwei Pointer ändern: Vorgänger.next = neu; neu.next = (ehemals Vorgänger.next). Bei Array müssten alle folgenden Elemente verschoben werden.</p>'
+            '<p><strong>Liste</strong> – nur zwei Zeiger ändern. Bei Array müsstest du alle folgenden verschieben.</p>'
         },
         {
-          label: 'Adressbuch (nach Namen suchen)',
+          label: 'Adressbuch (suchen nach Name)',
           html:
-            '<p><strong>Beste Wahl: Hashtabelle oder BST</strong> – Suchaufwand wenige Schritte statt n. Array oder Liste: muss jedes Element einzeln prüfen.</p>'
+            '<p><strong>Hashtabelle</strong> – direkter Zugriff. Oder BST.</p>'
         },
         {
-          label: 'Browser-Verlauf',
+          label: 'Browser-Verlauf (chronologisch, vor/zurück)',
           html:
-            '<p><strong>Beste Wahl: (doppelt) verkettete Liste</strong> – neue Seiten hinten anhängen, alte vorne löschen ist schnell. Array wäre möglich, aber Größe muss begrenzt werden.</p>'
+            '<p><strong>Doppelt verkettete Liste</strong> – in beide Richtungen.</p>'
         }
       ]
     },
     exercises: [
       {
         type: 'multiple-choice',
-        question: 'Welche Datenstruktur ist am besten, wenn man schnellen Zugriff auf das mittlere Element braucht?',
+        question: 'Schneller Zugriff auf mittleres Element?',
         options: ['Array', 'Einfach verkettete Liste', 'Doppelt verkettete Liste', 'Ringliste'],
         correct: 0,
-        explanation: 'Array: direkter Zugriff per Index in einem Schritt. Listen müssten von vorn durchlaufen werden.'
+        explanation: 'Array: direkter Index-Zugriff.'
       },
       {
         type: 'multiple-choice',
-        question: 'Bei welcher Listenart zeigt der next-Pointer des letzten Elements auf das erste Element?',
-        options: ['Einfach verkettete Liste', 'Doppelt verkettete Liste', 'Ringliste', 'Array'],
+        question: 'Wo zeigt der next-Pointer des letzten Elements aufs erste?',
+        options: ['Einfach', 'Doppelt', 'Ringliste', 'Array'],
         correct: 2,
-        explanation: 'Definition der Ringliste: Ende verweist zurück auf Anfang → zyklische Struktur.'
+        explanation: 'Ringliste = zyklisch.'
       },
       {
         type: 'multiple-choice',
-        question: 'Welche Datenstruktur eignet sich am besten für eine Mitglieder-Datenbank mit eindeutiger ID, in der schnell nach ID gesucht wird?',
-        options: ['Array', 'Einfach verkettete Liste', 'Hashtabelle', 'Ringliste'],
+        question: 'Mitglieder-Datenbank mit ID – schnelle Suche. Beste Wahl?',
+        options: ['Array', 'Einfach verkettet', 'Hashtabelle', 'Ringliste'],
         correct: 2,
-        explanation: 'Hashtabelle: Suche in O(1) durch direkten Zugriff per Hashwert. Für große Datenbanken die beste Wahl.'
+        explanation: 'Hashtabelle: direkte Zuordnung ID → Datensatz.'
       },
       {
         type: 'multiple-choice',
-        question: 'Welche Aussage ist nur bei einer doppelt verketteten Liste zutreffend?',
+        question: 'Welche Eigenschaft gilt NUR bei doppelt verketteten Listen?',
         options: [
-          'Man kann die Liste in beide Richtungen durchlaufen.',
-          'Man kann Elemente einfügen und entfernen.',
-          'Die Liste hat einen Head-Pointer.',
-          'Die Liste kann beliebig lang werden.'
+          'Durchlauf in beide Richtungen.',
+          'Kann Elemente einfügen.',
+          'Hat Head-Pointer.',
+          'Beliebig lang.'
         ],
         correct: 0,
-        explanation: 'Nur bei doppelt verketteten Listen gibt es prev-Pointer → Durchlauf in beide Richtungen. Die anderen Eigenschaften haben auch einfach verkettete Listen.'
+        explanation: 'Nur doppelt verkettet kennt den prev-Pointer.'
       },
       {
         type: 'multiple-choice',
-        question: 'Ein Browser-Verlauf soll chronologisch gespeichert und vor/zurück durchblättert werden. Welche Struktur ist ideal?',
-        options: ['Array', 'Hashtabelle', 'Doppelt verkettete Liste', 'Binärer Suchbaum'],
+        question: 'Browser-Verlauf – beste Struktur?',
+        options: ['Array', 'Hashtabelle', 'Doppelt verkettete Liste', 'BST'],
         correct: 2,
-        explanation: 'Doppelt verkettet: vor/zurück in beide Richtungen. Array wäre starr in der Größe; Hashtabelle und BST kennen keine chronologische Ordnung.'
+        explanation: 'Chronologisch + vor/zurück → doppelt verkettet.'
       }
     ]
   },
@@ -390,34 +344,31 @@ const LessonsA4 = [
     explanation: {
       html:
         '<h2>Sieb des Eratosthenes</h2>'
-        + '<p>Ein über 2000 Jahre alter Algorithmus, um alle Primzahlen bis zu einer Zahl n zu finden. Klassisches Beispiel in der Klausur für Algorithmus-Ausführung auf Struktogrammen.</p>'
+        + '<p>Ein 2000 Jahre alter Algorithmus, der alle Primzahlen bis zu einer Zahl n findet. Klassische Klausuraufgabe: Struktogramm ausführen und Zwischenstände notieren.</p>'
         + '<div class="analogy-box">'
-        + '<strong>Analogie aus dem Alltag:</strong> Stell dir ein Sieb vor, durch das du Sand rieseln lässt – die großen Steine bleiben oben. Eratosthenes (ca. 200 v. Chr.) hatte eine ähnliche Idee für Primzahlen: Statt Primzahlen direkt zu suchen, streicht er <em>alle Nicht-Primzahlen</em> durch. Was übrig bleibt, sind die Primzahlen. Das ist überraschend einfach und effizient.'
+        + '<strong>Analogie – Sieb mit Steinchen:</strong> Durch ein Sieb rieseln Sand und Steinchen. Was zu groß ist, bleibt oben liegen. Eratosthenes (ca. 200 v. Chr.) hatte dieselbe Idee für Primzahlen: Statt sie direkt zu suchen, streicht er alle Nicht-Primzahlen weg. Was übrig bleibt, muss prim sein.'
         + '</div>'
-        + '<h3>Die Idee</h3>'
-        + '<ol>'
-        + '<li>Schreibe alle Zahlen von 2 bis n auf</li>'
-        + '<li>Streiche 1 (ist keine Primzahl)</li>'
-        + '<li>Die erste nicht gestrichene Zahl ist prim: markiere sie, streiche alle ihre Vielfachen</li>'
-        + '<li>Nimm die nächste nicht gestrichene Zahl, streiche deren Vielfache</li>'
-        + '<li>Wiederhole bis zur Wurzel von n (alles größer hat schon einen kleineren Teiler)</li>'
-        + '<li>Alle übrigen Zahlen sind Primzahlen</li>'
+        + '<div class="reading-guide">'
+        + '<strong>Die Idee:</strong>'
+        + '<ol style="margin:6px 0 0 20px;">'
+        + '<li>Alle Zahlen von 1 bis n aufschreiben</li>'
+        + '<li>1 streichen (ist keine Primzahl)</li>'
+        + '<li>Erste nicht gestrichene Zahl ist prim → alle ihre Vielfachen streichen</li>'
+        + '<li>Nächste nicht gestrichene → deren Vielfache streichen</li>'
+        + '<li>Weiter bis Wurzel von n</li>'
+        + '<li>Fertig! Alle übrigen Zahlen sind Primzahlen.</li>'
         + '</ol>'
-        + '<h3>Warum nur bis √n?</h3>'
-        + '<p>Jede zusammengesetzte Zahl n = a · b hat einen Teiler ≤ √n. Wenn du alle Vielfachen von Zahlen bis √n weggestrichen hast, sind alle zusammengesetzten Zahlen auch gestrichen.</p>'
-        + '<div class="tip-box">'
-        + '<strong>Beispiel:</strong> Für n = 20 reicht es, bis √20 ≈ 4,47 zu gehen – also i = 2, 3, 4. Alles, was bis dahin nicht gestrichen wurde, ist garantiert prim.'
         + '</div>'
-        + '<h3>Als Struktogramm (Klausur-Aufgabe!)</h3>'
-        + '<p>In der Klausur-A4 bekommst du das Sieb als Struktogramm vorgelegt – dein Job ist, es auszuführen und die Zwischenstände zu dokumentieren.</p>'
-        + '<div class="why-context">'
-        + '<strong>Warum lernen wir das?</strong> Ein klassischer Algorithmus zum Trainieren der <em>Ausführung</em> eines Struktogramms. In der Klausur garantiert zu finden (3 Punkte in der Übung A4). Darüber hinaus: Primzahlen sind fundamental für Kryptographie – ohne effiziente Primzahl-Bestimmung keine sichere Verschlüsselung.'
-        + '</div>',
+        + '<div class="tip-box">'
+        + '<strong>Warum nur bis √n?</strong> Jede zusammengesetzte Zahl n = a · b hat einen Teiler ≤ √n. Wenn man alles bis √n gestrichen hat, sind alle Nicht-Primzahlen erfasst.'
+        + '</div>'
+        + '<h3>Das Struktogramm</h3>'
+        + '<p>In der Klausur bekommst du dieses Struktogramm – deine Aufgabe ist, es auszuführen:</p>',
       visuals: [
         {
           type: 'struktogramm',
           blocks: [
-            { kind: 'stmt', text: 'SIEB[1] := X   (1 ist keine Primzahl)' },
+            { kind: 'stmt', text: 'SIEB[1] := X   (1 streichen)' },
             { kind: 'stmt', text: 'i := 2; MAX := √n' },
             { kind: 'loop', header: 'solange i ≤ MAX', body: [
               { kind: 'if', cond: 'SIEB[i] ≠ X ?',
@@ -442,7 +393,7 @@ const LessonsA4 = [
             ]},
             { kind: 'stmt', text: 'return P' }
           ],
-          label: 'Sieb des Eratosthenes als Struktogramm'
+          label: 'Sieb-Struktogramm'
         }
       ]
     },
@@ -453,32 +404,30 @@ const LessonsA4 = [
           label: 'Start: Alle Zahlen 1..20',
           html:
             '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
-            + 'Index:  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20\n'
-            + 'SIEB:   1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20</pre>'
-            + '<p>SIEB[1] := X (1 ist keine Primzahl)</p>'
+            + '1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20</pre>'
+            + '<p>SIEB[1] := X → 1 ist weg.</p>'
         },
         {
           label: 'i=2: Vielfache von 2 streichen',
           html:
-            '<p>SIEB[2] = 2 (nicht X), also Vielfache streichen: 4, 6, 8, 10, 12, 14, 16, 18, 20</p>'
+            '<p>4, 6, 8, 10, 12, 14, 16, 18, 20 → alle werden X</p>'
             + '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
-            + 'SIEB:  X 2 3 X 5 X 7 X 9 X 11 X 13 X 15 X 17 X 19 X</pre>'
+            + 'X  2  3  X  5  X  7  X  9  X  11  X  13  X  15  X  17  X  19  X</pre>'
         },
         {
           label: 'i=3: Vielfache von 3 streichen',
           html:
-            '<p>SIEB[3] = 3 (nicht X), Vielfache: 6, 9, 12, 15, 18 (einige schon X, egal)</p>'
+            '<p>9, 15 werden neu gestrichen (6, 12, 18 waren schon X)</p>'
             + '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
-            + 'SIEB:  X 2 3 X 5 X 7 X X X 11 X 13 X X X 17 X 19 X</pre>'
+            + 'X  2  3  X  5  X  7  X  X  X  11  X  13  X  X  X  17  X  19  X</pre>'
         },
         {
-          label: 'i=4: SIEB[4] ist X, überspringen',
+          label: 'i=4: Schon X, überspringen → Ende',
           html:
-            '<p>Da SIEB[4] bereits gestrichen (= X), macht die Schleife nichts. i wird zu 5.</p>'
-            + '<p>MAX = √20 ≈ 4,47, also i=5 &gt; MAX → äußere Schleife endet.</p>'
+            '<p>SIEB[4] ist X → nichts tun. i wird 5, aber √20 ≈ 4,47, also Schleife beendet.</p>'
         },
         {
-          label: 'Ergebnis: Primzahlen sammeln',
+          label: 'Ergebnis sammeln',
           html:
             '<p>Alles, was nicht X ist, ist prim:</p>'
             + '<p><strong>P = [2, 3, 5, 7, 11, 13, 17, 19]</strong></p>'
@@ -488,38 +437,38 @@ const LessonsA4 = [
     exercises: [
       {
         type: 'multiple-choice',
-        question: 'Nach welchem Prinzip arbeitet das Sieb des Eratosthenes?',
+        question: 'Nach welchem Prinzip arbeitet das Sieb?',
         options: [
-          'Jede Zahl wird einzeln auf Primzahleigenschaft geprüft.',
-          'Alle Vielfachen von Primzahlen werden gestrichen, übrig bleiben Primzahlen.',
-          'Zufälliges Testen, bis eine Primzahl gefunden wird.',
+          'Jede Zahl einzeln auf Primzahl prüfen.',
+          'Alle Vielfachen streichen – übrig bleiben Primzahlen.',
+          'Zufällig testen.',
           'Division durch alle kleineren Zahlen.'
         ],
         correct: 1,
-        explanation: 'Das Sieb streicht systematisch alle Vielfachen. Was nicht gestrichen wird, ist prim.'
+        explanation: 'Streichen statt Prüfen – einfach und effizient.'
       },
       {
         type: 'multiple-choice',
-        question: 'Bis zu welcher Zahl muss man i laufen lassen, um alle Primzahlen bis n zu finden?',
+        question: 'Wie weit muss i laufen?',
         options: ['n', 'n/2', '√n', 'log n'],
         correct: 2,
-        explanation: 'Jede zusammengesetzte Zahl hat einen Teiler ≤ √n. Darum reicht es, Vielfache bis √n zu streichen – alle anderen zusammengesetzten Zahlen sind dann schon erfasst.'
+        explanation: 'Bis √n reicht. Alles größere hat einen kleineren Teiler, ist also schon gestrichen.'
       },
       {
         type: 'multiple-choice',
-        question: 'Warum ist SIEB[1] im Algorithmus gleich zu Beginn mit X markiert?',
+        question: 'Warum SIEB[1] := X am Anfang?',
         options: [
-          'Weil 1 eine Primzahl ist und sie als erste gemerkt werden soll.',
-          'Weil 1 keine Primzahl ist und daher nicht im Ergebnis erscheinen darf.',
-          'Weil 1 gleichzeitig gerade und ungerade ist.',
-          'Aus Versehen – das gehört eigentlich weggelassen.'
+          '1 ist die erste Primzahl.',
+          '1 ist keine Primzahl → muss weg.',
+          '1 ist gerade und ungerade.',
+          'Aus Versehen.'
         ],
         correct: 1,
-        explanation: '1 ist per Definition keine Primzahl. Darum wird sie direkt am Anfang als gelöscht markiert, damit sie nicht fälschlich in P landet.'
+        explanation: '1 ist per Definition keine Primzahl.'
       },
       {
         type: 'multiple-choice',
-        question: 'Das Sieb berechnet alle Primzahlen bis n=20. Welche Ausgabeliste entsteht?',
+        question: 'Ergebnisliste für n=20?',
         options: [
           '[2, 3, 5, 7, 9, 11, 13, 17, 19]',
           '[2, 3, 5, 7, 11, 13, 17, 19]',
@@ -527,7 +476,7 @@ const LessonsA4 = [
           '[2, 3, 5, 7, 11, 13, 15, 17, 19]'
         ],
         correct: 1,
-        explanation: 'Die Primzahlen bis 20: 2, 3, 5, 7, 11, 13, 17, 19. Die 9 und 15 sind Vielfache von 3, die 1 ist per Definition keine Primzahl.'
+        explanation: 'Primzahlen ≤ 20: 2,3,5,7,11,13,17,19. Kein 1, keine 9, keine 15.'
       }
     ]
   },
@@ -538,116 +487,99 @@ const LessonsA4 = [
     title: 'Prüfziffern – ISBN-13',
     explanation: {
       html:
-        '<h2>Prüfziffern bei ISBN-13</h2>'
-        + '<p>Wenn du eine Büchernummer abschreibst und eine Ziffer vertauschst, soll der Computer das merken. Lösung: eine <strong>Prüfziffer</strong>, die aus den anderen Ziffern berechnet wird.</p>'
+        '<h2>ISBN-Prüfziffern</h2>'
+        + '<p>Wenn du eine lange Nummer abschreibst, kann sich ein Fehler einschleichen. Damit der Computer das bemerkt, gibt es am Ende eine <strong>Prüfziffer</strong>, die aus den anderen Ziffern berechnet wird.</p>'
         + '<div class="analogy-box">'
-        + '<strong>Analogie aus dem Alltag:</strong> Wie bei einer Rechenaufgabe, bei der du hinten die Querprobe machst – "passt die Endsumme?". Die Prüfziffer ist so eine eingebaute Querprobe. Bei einer Bestellung, Überweisung oder Buchbestellung merkt das System sofort, wenn du eine Ziffer verdreht hast, weil die Prüfziffer nicht mehr stimmt.'
+        + '<strong>Analogie – Querprobe in Mathe:</strong> In der Grundschule hast du gelernt: Nach einer schriftlichen Addition machst du die Querprobe. Wenn sie nicht stimmt, hast du einen Fehler gemacht. Eine Prüfziffer funktioniert genau so – sie ist eine eingebaute Querprobe für Zahlen.'
         + '</div>'
-        + '<h3>Das ISBN-13-Verfahren</h3>'
-        + '<p>Eine ISBN-13 hat 13 Ziffern. Die 13. Ziffer ist die <strong>Prüfziffer</strong>. Berechnung:</p>'
-        + '<ol>'
-        + '<li>Die 12 Zifferns z₁ bis z₁₂ werden <strong>abwechselnd mit 1 und 3</strong> multipliziert (z₁·1, z₂·3, z₃·1, z₄·3, …)</li>'
-        + '<li>Alle Produkte werden aufsummiert</li>'
-        + '<li>Die Prüfziffer z₁₃ wird so gewählt, dass die Gesamtsumme durch 10 teilbar ist</li>'
+        + '<h3>Das ISBN-13 Verfahren</h3>'
+        + '<p>Eine ISBN-13 hat 13 Ziffern. Die letzte ist die Prüfziffer. So wird sie berechnet:</p>'
+        + '<div class="reading-guide">'
+        + '<ol style="margin:6px 0 0 20px;">'
+        + '<li>Die 13 Ziffern abwechselnd mit <strong>1 und 3</strong> multiplizieren (z₁·1, z₂·3, z₃·1, z₄·3, …)</li>'
+        + '<li>Alle Produkte aufaddieren</li>'
+        + '<li>Die Summe muss <strong>durch 10 teilbar</strong> sein – sonst ist die ISBN falsch!</li>'
         + '</ol>'
-        + '<div class="info-card" style="padding:10px;text-align:center;">'
-        + 'Σ (z<sub>i</sub> · Gewicht<sub>i</sub>) mod 10 = 0'
         + '</div>'
-        + '<p>Wobei Gewicht = 1 für ungerade Position, 3 für gerade Position.</p>'
-        + '<h3>Beispiel ISBN 978-3-8274-1926-2</h3>'
+        + '<h3>Beispiel: 978-3-8274-1926-2</h3>'
         + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
-        + 'Ziffer:   9  7  8  3  8  2  7  4  1  9  2  6  | 2\n'
-        + 'Gewicht:  1  3  1  3  1  3  1  3  1  3  1  3  |\n'
-        + 'Produkt:  9 21  8  9  8  6  7 12  1 27  2 18  = 128\n'
-        + '\n'
-        + 'Summe (mit Prüfziffer): 128 + 2 = 130\n'
-        + '130 mod 10 = 0 ✓ → ISBN gültig</pre>'
-        + '<h3>Fehlende Ziffer berechnen</h3>'
-        + '<p>Ist in einer ISBN genau eine Ziffer unleserlich, lässt sie sich rekonstruieren:</p>'
-        + '<ol>'
-        + '<li>Alle bekannten Ziffern mit ihren Gewichten multiplizieren und summieren</li>'
-        + '<li>Die fehlende Ziffer sei x mit Gewicht g</li>'
-        + '<li>(Summe + x·g) mod 10 = 0 → x·g ≡ -Summe (mod 10)</li>'
-        + '<li>x berechnen (meist durch Ausprobieren von 0..9)</li>'
-        + '</ol>'
-        + '<div class="tip-box">'
-        + '<strong>Praxis:</strong> Nimm die Summe, berechne (10 - (Summe mod 10)) mod 10 = was noch fehlt, um durch 10 teilbar zu werden. Wenn das Gewicht der fehlenden Ziffer 1 ist, ist das direkt x. Bei Gewicht 3 musst du eine Ziffer finden, deren Dreifaches diesen Rest ergibt.'
-        + '</div>'
-        + '<div class="why-context">'
-        + '<strong>Warum lernen wir das?</strong> ISBN, IBAN, EAN-Codes, Personalausweis-Nummern – überall werden Prüfziffern genutzt, um Tippfehler und Übertragungsfehler zu erkennen. Die Mathematik dahinter ist einfach, die Anwendung allgegenwärtig. Klausurrelevant: 4,5 Punkte in der Übung A4.'
-        + '</div>'
+        + 'Ziffer:   9  7  8  3  8  2  7  4  1  9  2  6  2\n'
+        + 'Gewicht:  1  3  1  3  1  3  1  3  1  3  1  3  1\n'
+        + 'Produkt:  9 21  8  9  8  6  7 12  1 27  2 18  2\n'
+        + 'Summe = 130 → 130 mod 10 = 0 ✓ ISBN gültig!</pre>'
+        + '<h3>Fehlende Ziffer finden</h3>'
+        + '<p>Ist in einer ISBN eine Ziffer unleserlich, kann man sie rekonstruieren:</p>'
+        + '<ul>'
+        + '<li>Summe der bekannten Produkte ausrechnen</li>'
+        + '<li>Fehlende Ziffer × ihr Gewicht muss die Gesamtsumme auf ein Vielfaches von 10 bringen</li>'
+        + '</ul>'
     },
     example: {
-      title: 'Beispiel: Fehlende Ziffer in 978-3-8362-84?7-1 finden',
+      title: 'Beispiel: Fehlende Ziffer finden',
       steps: [
         {
-          label: 'Ziffern mit Gewichten aufschreiben',
+          label: 'Aufgabe',
           html:
-            '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
-            + 'Position: 1  2  3  4  5  6  7  8  9 10 11 12 | 13\n'
-            + 'Ziffer:   9  7  8  3  8  3  6  2  8  4  ?  7 |  1\n'
-            + 'Gewicht:  1  3  1  3  1  3  1  3  1  3  1  3 |  1</pre>'
+            '<p>ISBN: <strong>978-3-8362-84?7-1</strong> – eine Ziffer ist weg. Welche?</p>'
         },
         {
-          label: 'Bekannte Summe berechnen',
+          label: 'Schritt 1 – Bekannte Summe',
           html:
-            '<pre style="font-family:monospace;">'
-            + '9·1 + 7·3 + 8·1 + 3·3 + 8·1 + 3·3 + 6·1 + 2·3 + 8·1 + 4·3 + ?·1 + 7·3 + 1·1\n'
-            + '= 9 + 21 + 8 + 9 + 8 + 9 + 6 + 6 + 8 + 12 + ? + 21 + 1\n'
-            + '= 118 + ?</pre>'
+            '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
+            + 'Position: 1  2  3  4  5  6  7  8  9 10 11 12 13\n'
+            + 'Ziffer:   9  7  8  3  8  3  6  2  8  4  ?  7  1\n'
+            + 'Gewicht:  1  3  1  3  1  3  1  3  1  3  1  3  1\n'
+            + '\n'
+            + 'Bekannt: 9 + 21 + 8 + 9 + 8 + 9 + 6 + 6 + 8 + 12 + ?·1 + 21 + 1\n'
+            + '       = 118 + ?</pre>'
         },
         {
-          label: 'Bedingung aufstellen',
+          label: 'Schritt 2 – Bedingung',
           html:
-            '<p>(118 + x) mod 10 = 0 → x mod 10 = -118 mod 10 = 2 (weil 118 mod 10 = 8, also brauchen wir 10-8 = 2)</p>'
-            + '<p>Gewicht der fehlenden Ziffer ist 1, also ist die fehlende Ziffer direkt <strong>2</strong>.</p>'
-        },
-        {
-          label: 'Probe',
-          html:
-            '<p>Mit x = 2: 118 + 2 = 120. 120 mod 10 = 0 ✓</p>'
-            + '<p>Die korrekte ISBN lautet: 978-3-8362-8427-1</p>'
+            '<p>(118 + x) muss durch 10 teilbar sein. 118 mod 10 = 8, also brauchen wir x = 2.</p>'
+            + '<p><strong>Fehlende Ziffer: 2</strong></p>'
+            + '<p>Probe: 118 + 2 = 120 ✓ ISBN: 978-3-8362-8427-1</p>'
         }
       ]
     },
     exercises: [
       {
         type: 'multiple-choice',
-        question: 'Welche Gewichte werden bei der ISBN-13 Prüfziffer abwechselnd verwendet?',
+        question: 'Welche Gewichte bei ISBN-13?',
         options: ['1 und 2', '1 und 3', '2 und 4', '3 und 5'],
         correct: 1,
-        explanation: 'Bei ISBN-13 werden die Ziffern abwechselnd mit 1 und 3 multipliziert. Ungerade Position × 1, gerade Position × 3.'
+        explanation: 'Abwechselnd 1 und 3.'
       },
       {
         type: 'multiple-choice',
-        question: 'Welches Kriterium muss die Summe aller gewichteten ISBN-Ziffern erfüllen?',
+        question: 'Welche Bedingung muss die Summe erfüllen?',
         options: [
-          'Die Summe muss eine Primzahl sein.',
-          'Die Summe muss durch 10 teilbar sein.',
-          'Die Summe muss durch 13 teilbar sein.',
-          'Die Summe muss genau 100 ergeben.'
+          'Primzahl.',
+          'Durch 10 teilbar.',
+          'Durch 13 teilbar.',
+          'Gleich 100.'
         ],
         correct: 1,
-        explanation: 'Die Prüfziffer wird so gewählt, dass die Gesamtsumme durch 10 teilbar ist. Das heißt: (Summe mod 10) = 0.'
+        explanation: 'Summe mod 10 = 0.'
       },
       {
         type: 'multiple-choice',
-        question: 'Warum nutzt man überhaupt Prüfziffern bei ISBN, IBAN & Co?',
+        question: 'Wozu Prüfziffern?',
         options: [
-          'Damit die Nummern schöner aussehen.',
-          'Um Tipp- und Übertragungsfehler beim Eingeben zu erkennen.',
-          'Damit die Zahl durch 10 teilbar ist.',
-          'Weil es so vorgeschrieben ist.'
+          'Schönere Zahlen.',
+          'Tipp-Fehler erkennen.',
+          'Teilbar durch 10 machen.',
+          'Vorschrift.'
         ],
         correct: 1,
-        explanation: 'Prüfziffern sind eine einfache, sehr effektive Fehlererkennung: Ein Tippfehler in einer Ziffer ändert die Summe und wird sofort bemerkt.'
+        explanation: 'Tipp-/Übertragungsfehler erkennen.'
       },
       {
         type: 'multiple-choice',
-        question: 'Die fehlende Ziffer in einer ISBN hat Gewicht 3 und die Rest-Summe der anderen Produkte ergibt (mod 10) = 4. Was muss die fehlende Ziffer sein?',
+        question: 'Fehlende Ziffer hat Gewicht 3, bekannte Summe mod 10 = 4. Welche Ziffer?',
         options: ['2', '6', '3', '8'],
         correct: 0,
-        explanation: 'Wir brauchen (4 + x·3) mod 10 = 0 → x·3 ≡ -4 ≡ 6 (mod 10). Teste: 2·3 = 6 ✓. Also x = 2.'
+        explanation: '(4 + x·3) mod 10 = 0 → x·3 ≡ 6 → x = 2.'
       }
     ]
   }
