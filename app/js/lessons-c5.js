@@ -7,18 +7,28 @@ const LessonsC5 = [
     explanation: {
       html:
         '<h2>IP-Grundlagen</h2>'
-        + '<p><strong>IPv4:</strong> 32-Bit-Adresse, dargestellt als 4 Dezimalzahlen (Oktette), getrennt durch Punkte. Jedes Oktett: 0\u2013255.</p>'
-        + '<p>Beispiel: <code>192.168.10.1</code> \u2192 4 Oktette: 192 | 168 | 10 | 1</p>'
-        + '<p><strong>IPv6:</strong> 128-Bit-Adresse, dargestellt als 8 Gruppen \u00e0 4 Hexadezimalziffern.</p>'
-        + '<p>Beispiel: <code>2001:0db8:85a3:0000:0000:8a2e:0370:7334</code></p>'
-        + '<h3>Netz-ID und Host-ID</h3>'
-        + '<p>Eine IP-Adresse besteht aus zwei Teilen:</p>'
-        + '<ul>'
-        + '<li><strong>Netz-ID:</strong> Identifiziert das Netzwerk (wie die Postleitzahl)</li>'
-        + '<li><strong>Host-ID:</strong> Identifiziert das Ger\u00e4t im Netzwerk (wie die Hausnummer)</li>'
+        + '<p>Eine <strong>IP-Adresse</strong> ist die eindeutige Kennung eines Ger\u00E4ts im Netzwerk. Ohne sie k\u00F6nnte kein Router ein Paket an die richtige Stelle schicken.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Postanschrift-Analogie:</strong> Eine IP-Adresse funktioniert wie eine Briefanschrift \u2013 sie besteht aus zwei Teilen:'
+        + '<ul style="margin:6px 0 0 0;padding-left:22px">'
+        + '<li><strong>Netz-ID = Postleitzahl:</strong> Sagt dem Router, in welches Netzwerk (= welche \u201EStadt\u201C) das Paket soll.</li>'
+        + '<li><strong>Host-ID = Hausnummer:</strong> Identifiziert das konkrete Ger\u00E4t im Netz.</li>'
         + '</ul>'
-        + '<p>Die <strong>Subnetzmaske</strong> legt fest, welche Bits zur Netz-ID und welche zur Host-ID geh\u00f6ren.</p>'
-        + '<p><strong>Wichtig:</strong> Die Netzwerkadresse (alle Host-Bits = 0) ist f\u00fcr das Netz reserviert. Der Hostanteil der Netzwerkadresse ist immer 0.</p>'
+        + 'Die <strong>Subnetzmaske</strong> ist wie eine Trennlinie, die beide Teile trennt.'
+        + '</div>'
+        + '<h3>IPv4 vs. IPv6:</h3>'
+        + '<ul>'
+        + '<li><strong>IPv4:</strong> 32-Bit-Adresse als 4 Dezimalzahlen (Oktette), getrennt durch Punkte. Jedes Oktett: 0\u2013255. <br>Beispiel: <code>192.168.10.1</code></li>'
+        + '<li><strong>IPv6:</strong> 128-Bit-Adresse als 8 Hex-Gruppen, getrennt durch Doppelpunkte. <br>Beispiel: <code>2001:0db8:85a3:0000:0000:8a2e:0370:7334</code></li>'
+        + '</ul>'
+        + '<div class="why-context">'
+        + '<strong>Warum es gleich zwei IP-Versionen gibt:</strong> IPv4 bietet \u201Enur\u201C 2\u00B3\u00B2 = ca. 4,3 Milliarden Adressen. Das klingt viel, aber bei weltweit Milliarden von Ger\u00E4ten wird\u2019s knapp. IPv6 l\u00F6st das Problem mit 128 Bit \u2013 genug Adressen, um buchst\u00E4blich jeden Sandkorn auf der Erde zu adressieren. In der Praxis laufen beide Protokolle parallel.'
+        + '</div>'
+        + '<p><strong>Zum Selbst-Ausprobieren:</strong> Der interaktive IP-Konverter unten rechnet zwischen Dezimal und Bin\u00E4r um. Klick auf einzelne Bits oder tippe eine Dezimalzahl ein \u2013 und siehe, wie sich Bin\u00E4r- und Dezimal-Darstellung gegenseitig entsprechen. Besonders n\u00FCtzlich: Du siehst, dass jedes Oktett nur 8 Bits hat, also maximal 255 erreicht.</p>'
+        + '<p><strong>Achtung:</strong> Die Netzwerkadresse (alle Host-Bits = 0) ist f\u00FCr das Netz reserviert. Der Hostanteil der Netzwerkadresse ist immer 0.</p>',
+      visuals: [
+        { type: 'ip-converter', label: 'IP-Konverter \u2013 Dezimal \u2194 Bin\u00E4r live umschalten' }
+      ]
     },
     example: {
       title: 'Beispiel: IPv4 vs. IPv6 erkennen',
@@ -84,21 +94,32 @@ const LessonsC5 = [
     explanation: {
       html:
         '<h2>IP-Adressen validieren</h2>'
-        + '<p>Eine g\u00fcltige IPv4-Adresse hat <strong>genau 4 Oktette</strong>, jedes zwischen 0 und 255.</p>'
-        + '<h3>Validierungsregeln:</h3>'
+        + '<p>In der Klausur bekommst du oft eine Liste von IP-Adressen und musst erkennen, welche g\u00FCltig sind \u2013 und bei ung\u00FCltigen eine Begr\u00FCndung liefern.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Postleitzahl-Analogie:</strong> Genau wie eine Postleitzahl muss eine IP-Adresse einem festen Format folgen. Eine deutsche PLZ hat genau <em>5 Ziffern</em> im Bereich 01000\u201399999 \u2013 eine IPv4-Adresse hat genau <em>4 Oktette</em> im Bereich 0\u2013255. W\u00E4re das anders, k\u00F6nnte der Briefsortierer (Router) das Paket nicht zuordnen.'
+        + '</div>'
+        + '<h3>Drei Validierungsregeln:</h3>'
         + '<ol>'
-        + '<li><strong>Genau 4 Oktette</strong> \u2013 getrennt durch Punkte, kein Oktett darf fehlen</li>'
-        + '<li><strong>Jedes Oktett: 0\u2013255</strong> \u2013 Wert 256 oder h\u00f6her ist ung\u00fcltig</li>'
-        + '<li><strong>Nur Zahlen</strong> \u2013 keine Buchstaben, keine Sonderzeichen</li>'
+        + '<li><strong>Genau 4 Oktette</strong> \u2013 durch Punkte getrennt; zu viele oder zu wenige \u2192 ung\u00FCltig.</li>'
+        + '<li><strong>Jedes Oktett: 0\u2013255</strong> \u2013 denn 8 Bit = 2\u2078 = 256 m\u00F6gliche Werte, von 0 bis 255.</li>'
+        + '<li><strong>Nur Dezimalzahlen</strong> \u2013 keine Buchstaben, keine negativen Zahlen, kein Hex-Zeichen.</li>'
         + '</ol>'
-        + '<h3>Sonderf\u00e4lle (die du kennen solltest):</h3>'
+        + '<div class="why-context">'
+        + '<strong>Warum es 0\u2013255 sein <em>muss</em>:</strong> Jedes Oktett ist <em>technisch</em> 8 Bit lang. 8 Bit k\u00F6nnen 2\u2078 = 256 verschiedene Zahlen kodieren, und zwar 0, 1, 2, \u2026, 255. Zahlen dar\u00FCber (256, 300\u2026) lassen sich in 8 Bit gar nicht darstellen. Das ist kein k\u00FCnstliches Limit, sondern pure Informatik-Mathematik.'
+        + '</div>'
+        + '<h3>Sonderf\u00E4lle (klausurrelevant!):</h3>'
         + '<ul>'
-        + '<li><code>0.0.0.0</code> \u2013 g\u00fcltig (Sonderadresse: kein Netz)</li>'
-        + '<li><code>255.255.255.255</code> \u2013 g\u00fcltig (Broadcast an alle)</li>'
-        + '<li><code>256.0.0.1</code> \u2013 <strong>ung\u00fcltig!</strong> (256 > 255)</li>'
-        + '<li><code>192.168.1</code> \u2013 <strong>ung\u00fcltig!</strong> (nur 3 Oktette)</li>'
+        + '<li><code>0.0.0.0</code> \u2192 <strong>g\u00FCltig</strong> (Sonderadresse: \u201Ekein Netz / alle Netze\u201C, oft als Default)</li>'
+        + '<li><code>255.255.255.255</code> \u2192 <strong>g\u00FCltig</strong> (Broadcast: Paket an alle im lokalen Netz)</li>'
+        + '<li><code>256.0.0.1</code> \u2192 <strong>ung\u00FCltig</strong> (256 > 255)</li>'
+        + '<li><code>192.168.1</code> \u2192 <strong>ung\u00FCltig</strong> (nur 3 Oktette, eines fehlt)</li>'
+        + '<li><code>192.168.1.1.1</code> \u2192 <strong>ung\u00FCltig</strong> (5 Oktette, eines zu viel)</li>'
         + '</ul>'
-        + '<p><strong>Tipp f\u00fcr die Klausur:</strong> Jedes Oktett einzeln pr\u00fcfen. Begr\u00fcndung immer angeben!</p>'
+        + '<p><strong>Klausur-Tipp:</strong> Jedes Oktett <em>einzeln</em> pr\u00FCfen und bei Ung\u00FCltigkeit die konkrete Begr\u00FCndung schreiben (\u201E4. Oktett = 300 > 255\u201C). Nie einfach nur \u201Eung\u00FCltig\u201C ankreuzen.</p>'
+        + '<p>Mit dem IP-Konverter unten kannst du Werte direkt ausprobieren: Tippe z.B. 256 in ein Oktett \u2013 der Konverter zeigt dir, dass das nicht geht.</p>',
+      visuals: [
+        { type: 'ip-converter', label: 'IP-Konverter \u2013 Probier g\u00FCltige und ung\u00FCltige Werte aus' }
+      ]
     },
     example: {
       title: 'Beispiel: IP-Adressen aus der Klausur pr\u00fcfen',
@@ -151,21 +172,34 @@ const LessonsC5 = [
     title: 'Subnetzmasken & bin\u00e4re Schreibweise',
     explanation: {
       html:
-        '<h2>Subnetzmasken & bin\u00e4re Schreibweise</h2>'
-        + '<p>Eine Subnetzmaske besteht aus f\u00fchrenden Einsen (Netz-Bits) gefolgt von Nullen (Host-Bits).</p>'
-        + '<h3>CIDR-Notation (Pr\u00e4fix-L\u00e4nge):</h3>'
-        + '<p><code>/24</code> bedeutet: 24 f\u00fchrende Einsen \u2192 8 Host-Bits (Nullen)</p>'
+        '<h2>Subnetzmasken & bin\u00E4re Schreibweise</h2>'
+        + '<p>Eine Subnetzmaske teilt die 32 Bits einer IP-Adresse in einen <strong>Netz-Teil</strong> (vorne, Einsen) und einen <strong>Host-Teil</strong> (hinten, Nullen).</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Schablonen-Analogie:</strong> Stell dir die Maske als <em>Lochplatte</em> vor, die du \u00FCber die IP-Adresse legst. \u00DCberall wo die Maske eine <strong>1</strong> hat, siehst du den Netz-Teil. \u00DCberall wo sie eine <strong>0</strong> hat, liegt der Host-Teil darunter. Die Gr\u00F6\u00DFe des Netzes ergibt sich aus der Anzahl der 1en.'
+        + '</div>'
+        + '<h3>CIDR-Notation (Pr\u00E4fix-L\u00E4nge):</h3>'
+        + '<p><code>/24</code> bedeutet: 24 f\u00FChrende Einsen \u2192 die ersten 24 Bits sind Netz, die restlichen 8 sind Host. Kurze Schreibweise f\u00FCr <code>255.255.255.0</code>.</p>'
         + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
-        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:4px">CIDR</th><th style="border:1px solid #ccc;padding:4px">Dezimal</th><th style="border:1px solid #ccc;padding:4px">Bin\u00e4r (Dotted-Binary)</th></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">/8</td><td style="border:1px solid #ccc;padding:4px">255.0.0.0</td><td style="border:1px solid #ccc;padding:4px">11111111.00000000.00000000.00000000</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">/16</td><td style="border:1px solid #ccc;padding:4px">255.255.0.0</td><td style="border:1px solid #ccc;padding:4px">11111111.11111111.00000000.00000000</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">/24</td><td style="border:1px solid #ccc;padding:4px">255.255.255.0</td><td style="border:1px solid #ccc;padding:4px">11111111.11111111.11111111.00000000</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">/27</td><td style="border:1px solid #ccc;padding:4px">255.255.255.224</td><td style="border:1px solid #ccc;padding:4px">11111111.11111111.11111111.11100000</td></tr>'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">CIDR</th><th style="border:1px solid #ccc;padding:6px 10px">Dezimal</th><th style="border:1px solid #ccc;padding:6px 10px">Bin\u00E4r (Dotted-Binary)</th><th style="border:1px solid #ccc;padding:6px 10px">Host-Bits</th><th style="border:1px solid #ccc;padding:6px 10px">Nutzbare Hosts</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">/8</td><td style="border:1px solid #ccc;padding:6px 10px">255.0.0.0</td><td style="border:1px solid #ccc;padding:6px 10px"><code>11111111.00000000.00000000.00000000</code></td><td style="border:1px solid #ccc;padding:6px 10px">24</td><td style="border:1px solid #ccc;padding:6px 10px">2\u00B2\u2074\u22122 \u2248 16,7 Mio</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">/16</td><td style="border:1px solid #ccc;padding:6px 10px">255.255.0.0</td><td style="border:1px solid #ccc;padding:6px 10px"><code>11111111.11111111.00000000.00000000</code></td><td style="border:1px solid #ccc;padding:6px 10px">16</td><td style="border:1px solid #ccc;padding:6px 10px">65534</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">/24</td><td style="border:1px solid #ccc;padding:6px 10px">255.255.255.0</td><td style="border:1px solid #ccc;padding:6px 10px"><code>11111111.11111111.11111111.00000000</code></td><td style="border:1px solid #ccc;padding:6px 10px">8</td><td style="border:1px solid #ccc;padding:6px 10px">254</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">/27</td><td style="border:1px solid #ccc;padding:6px 10px">255.255.255.224</td><td style="border:1px solid #ccc;padding:6px 10px"><code>11111111.11111111.11111111.11100000</code></td><td style="border:1px solid #ccc;padding:6px 10px">5</td><td style="border:1px solid #ccc;padding:6px 10px">30</td></tr>'
         + '</table>'
-        + '<h3>Dotted-Binary-Notation:</h3>'
-        + '<p>Jedes Oktett einzeln in 8-Bit-Bin\u00e4r umrechnen, durch Punkte trennen.</p>'
-        + '<p>224 in Bin\u00e4r: <code>11100000</code> (128+64+32 = 224)</p>'
-        + '<p><strong>Analogie:</strong> Die Subnetzmaske ist wie eine Schablone: Einsen markieren den Netz-Teil (Postleitzahl), Nullen den Host-Teil (Hausnummer).</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum kennt die Klausur so viele Masken?</strong> Je kleiner ein Unternehmens-/Schulnetzwerk, desto sparsamer der IP-Verbrauch. Eine kleine Abteilung mit 10 Rechnern braucht kein /24 (das w\u00E4re Platz f\u00FCr 254 Ger\u00E4te \u2013 95\% unbenutzt). Mit /27 bekommen sie 30 Hosts \u2013 genau richtig. Subnetting ist deshalb zentrales IT-Wissen: Wer es beherrscht, spart Adressen und kann Netze sinnvoll strukturieren.'
+        + '</div>'
+        + '<h3>Rechenregel (vom CIDR zur Dezimalmaske):</h3>'
+        + '<ol>'
+        + '<li>CIDR = Anzahl f\u00FChrender Einsen. Rest sind Nullen bis 32 Bit.</li>'
+        + '<li>Teile in 4 Oktette \u00E0 8 Bit.</li>'
+        + '<li>Jedes Oktett von Bin\u00E4r nach Dezimal umrechnen (128\u00B7b\u2087 + 64\u00B7b\u2086 + \u2026 + 1\u00B7b\u2080).</li>'
+        + '</ol>'
+        + '<p><strong>Beispiel /27:</strong> 27 Einsen = 24 Einsen (ersten 3 Oktette 255) + 3 Einsen im 4. Oktett (<code>11100000</code> = 128+64+32 = <strong>224</strong>). Also /27 = 255.255.255.224.</p>'
+        + '<p>Der IP-Konverter unten kann dir helfen: Setze die ersten Bits im letzten Oktett und sieh, welcher Dezimalwert sich ergibt.</p>',
+      visuals: [
+        { type: 'ip-converter', label: 'IP-Konverter \u2013 n\u00FCtzlich um Maskenwerte bin\u00E4r zu setzen' }
+      ]
     },
     example: {
       title: 'Beispiel: /27 in Dotted-Binary-Notation',
@@ -224,15 +258,33 @@ const LessonsC5 = [
     explanation: {
       html:
         '<h2>Netzwerk-IDs berechnen</h2>'
-        + '<p>Die <strong>Netz-ID</strong> (Netzwerkadresse) erh\u00e4lt man durch bitweises AND von IP-Adresse und Subnetzmaske.</p>'
-        + '<h3>Vorgehen:</h3>'
+        + '<p>Die <strong>Netz-ID</strong> (= Netzwerkadresse) ist die \u201EAdresse\u201C des gesamten Netzwerks. Sie bekommt man durch <strong>bitweises AND</strong> von IP-Adresse und Subnetzmaske.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Schablonen-Analogie:</strong> Die Subnetzmaske ist eine Lochplatte \u00FCber deiner IP-Adresse. Dort wo die Maske eine <strong>1</strong> hat, <em>scheint die IP-Adresse durch</em>. Dort wo sie eine <strong>0</strong> hat, <em>wird die Zahl ausradiert</em> (AND mit 0 ergibt 0). Was \u00FCbrigbleibt, ist die Netz-ID \u2013 der Teil der IP, der das Netzwerk identifiziert.'
+        + '</div>'
+        + '<h3>Die Regel: Netz-ID = IP AND Maske</h3>'
+        + '<p><strong>Bitweises AND:</strong> <code>1 \u2227 1 = 1</code>, <code>1 \u2227 0 = 0</code>, <code>0 \u2227 0 = 0</code>. Nur zwei Einsen ergeben eine 1, alle anderen F\u00E4lle eine 0.</p>'
+        + '<h3>Vorgehen (sichere, langsame Methode):</h3>'
         + '<ol>'
-        + '<li><strong>IP und Maske bin\u00e4r schreiben</strong></li>'
-        + '<li><strong>Bitweises AND</strong>: 1\u22071=1, 1\u22070=0, 0\u22070=0</li>'
-        + '<li><strong>Ergebnis zur\u00fcckrechnen</strong> \u2192 das ist die Netz-ID</li>'
+        + '<li>IP-Adresse bin\u00E4r aufschreiben (4 Oktette \u00E0 8 Bit).</li>'
+        + '<li>Subnetzmaske bin\u00E4r aufschreiben.</li>'
+        + '<li>Bitweises AND anwenden (eine Zeile pro Bit-Paar).</li>'
+        + '<li>Ergebnis zur\u00FCck in Dezimal \u2192 Netz-ID.</li>'
         + '</ol>'
-        + '<p><strong>Kurzweg bei einfachen Masken:</strong><br>Bei /24 (255.255.255.0): letztes Oktett auf 0 setzen \u2192 Netz-ID<br>Bei /16 (255.255.0.0): letzten 2 Oktette auf 0 setzen \u2192 Netz-ID</p>'
-        + '<p><strong>Analogie:</strong> Die Subnetzmaske ist eine Schablone. Sie blendet den Host-Teil aus und l\u00e4sst nur den Netz-Teil \u00fcbrig.</p>'
+        + '<h3>Kurzweg (bei \u201Eschlanken\u201C Masken wie /8, /16, /24):</h3>'
+        + '<ul>'
+        + '<li>Bei <strong>/24</strong> (255.255.255.0): Letztes Oktett auf 0 setzen \u2192 Netz-ID. <em>Beispiel:</em> 192.168.10.100/24 \u2192 Netz-ID 192.168.10.0.</li>'
+        + '<li>Bei <strong>/16</strong> (255.255.0.0): Letzten 2 Oktette auf 0 setzen.</li>'
+        + '<li>Bei <strong>/8</strong> (255.0.0.0): Letzten 3 Oktette auf 0 setzen.</li>'
+        + '<li>Bei \u201Ekrummer\u201C Maske (z.B. /27, /25): <em>nur das letzte relevante Oktett</em> bin\u00E4r rechnen, die davor bleiben gleich.</li>'
+        + '</ul>'
+        + '<div class="why-context">'
+        + '<strong>Warum macht der Router das AND?</strong> Wenn ein Router ein Paket empf\u00E4ngt, muss er entscheiden: \u201EIst das Ziel-Ger\u00E4t im lokalen Netz, oder muss ich das Paket weiterleiten?\u201C Er rechnet dazu Netz-ID(Ziel-IP) und Netz-ID(eigenes Netz) \u2013 wenn beide gleich sind, ist das Ziel im lokalen Netz. Diese Rechnung passiert millionenfach pro Sekunde in jedem Router der Welt.'
+        + '</div>'
+        + '<p>Der <strong>Subnet-Rechner</strong> unten macht genau das interaktiv: IP + Maske eintippen, und du siehst bin\u00E4r, welche Bits gesetzt sind, welcher Teil Netz und welcher Host ist, und die Netz-ID wird automatisch ausgerechnet.</p>',
+      visuals: [
+        { type: 'subnet-calculator', label: 'Subnet-Rechner \u2013 IP + Maske \u2192 Netz-ID automatisch' }
+      ]
     },
     example: {
       title: 'Beispiel: Netz-ID von 192.168.10.100/27 berechnen',
@@ -286,22 +338,23 @@ const LessonsC5 = [
     explanation: {
       html:
         '<h2>Subnetting Praxis</h2>'
-        + '<p>Ein Subnetz mit der Maske /27 hat <strong>32 Adressen</strong> (2\u2075 = 32 Host-Bits):</p>'
+        + '<p>Jetzt wird es konkret: F\u00FCr ein gegebenes Netz sollst du die <strong>Netz-ID</strong>, die <strong>Broadcast-Adresse</strong> und die Range der <strong>nutzbaren Hosts</strong> berechnen. Das ist der Praxis-Teil jeder Netzwerk-Klausur.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>H\u00E4userblock-Analogie:</strong> Ein Subnetz ist wie ein Wohnblock mit nummerierten Wohnungen. Die <em>erste Adresse</em> ist das Briefkasten-Gem\u00E4chte f\u00FCr den ganzen Block (Netz-ID). Die <em>letzte Adresse</em> ist der Hausmeister-Aushang f\u00FCr alle (Broadcast). Die Wohnungen dazwischen sind die nutzbaren Hosts \u2013 dort wohnen die Ger\u00E4te.'
+        + '</div>'
+        + '<p>Ein Subnetz mit der Maske <strong>/27</strong> hat <strong>32 Adressen</strong> (2\u2075 = 32 Host-Bits-Kombinationen):</p>'
         + '<ul>'
-        + '<li><strong>Erste Adresse</strong> = Netzwerkadresse (nicht nutzbar)</li>'
-        + '<li><strong>Letzte Adresse</strong> = Broadcast-Adresse (nicht nutzbar)</li>'
+        + '<li><strong>Erste Adresse</strong> = Netzwerkadresse (nicht als Host nutzbar)</li>'
+        + '<li><strong>Letzte Adresse</strong> = Broadcast-Adresse (nicht als Host nutzbar)</li>'
         + '<li><strong>Dazwischen</strong> = 30 nutzbare Host-Adressen</li>'
         + '</ul>'
-        + '<h3>Klausur-Berechnung f\u00fcr zwei aufeinanderfolgende /27-Subnetze:</h3>'
-        + '<p>Ausgangsnetz: <code>192.168.10.96/27</code></p>'
-        + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
-        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:4px"></th><th style="border:1px solid #ccc;padding:4px">Subnetz 1</th><th style="border:1px solid #ccc;padding:4px">Subnetz 2</th></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">Netz-ID</td><td style="border:1px solid #ccc;padding:4px">192.168.10.96</td><td style="border:1px solid #ccc;padding:4px">192.168.10.128</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">Erste Host-IP</td><td style="border:1px solid #ccc;padding:4px">192.168.10.97</td><td style="border:1px solid #ccc;padding:4px">192.168.10.129</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">Letzte Host-IP</td><td style="border:1px solid #ccc;padding:4px">192.168.10.126</td><td style="border:1px solid #ccc;padding:4px">192.168.10.158</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:4px">Broadcast</td><td style="border:1px solid #ccc;padding:4px">192.168.10.127</td><td style="border:1px solid #ccc;padding:4px">192.168.10.159</td></tr>'
-        + '</table>'
-        + '<p><strong>Broadcast bin\u00e4r:</strong> 127\u2081\u2080 = 01111111\u2082, 159\u2081\u2080 = 10011111\u2082</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum immer \u201Eminus 2\u201C?</strong> Die erste Adresse eines Subnetzes ist f\u00FCr die Netzwerk-Identifikation reserviert (Host-Bits alle 0). Die letzte Adresse ist f\u00FCr Broadcasts (Host-Bits alle 1). Das sind also <em>nicht</em> Hosts, sondern Spezialadressen. Deshalb musst du von 2\u207F Host-Adressen immer 2 abziehen, um die nutzbare Host-Anzahl zu bekommen.'
+        + '</div>'
+        + '<p>Das <strong>interaktive Subnetting-Tool</strong> unten \u00FCbernimmt die Arithmetik: Du gibst Netz und CIDR ein, es liefert Netz-ID, Broadcast, ersten/letzten Host, und die bin\u00E4re Aufschl\u00FCsselung.</p>',
+      visuals: [
+        { type: 'subnetting-viz', network: '192.168.10.96', cidr: 27, label: 'Subnetting-Viz: 192.168.10.96/27 \u2013 alle Werte auf einen Blick' }
+      ]
     },
     example: {
       title: 'Klausur-Beispiel: /27-Subnetze berechnen',
