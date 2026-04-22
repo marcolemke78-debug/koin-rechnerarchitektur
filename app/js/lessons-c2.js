@@ -396,36 +396,76 @@ const LessonsC2 = [
     explanation: {
       html:
         '<h2>SR-Riegel & Timing-Diagramme</h2>'
-        + '<p>Der SR-Riegel ist eine <strong>bistabile Kippstufe</strong> \u2013 er kann sich einen Zustand merken (0 oder 1), auch wenn die Eing\u00E4nge wieder 0 werden.</p>'
-        + '<h3>Eing\u00E4nge & Ausg\u00E4nge:</h3>'
-        + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
-        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px">Eingang</th><th style="border:1px solid #ccc;padding:6px">Bedeutung</th></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>S (Set)</strong></td><td style="border:1px solid #ccc;padding:6px">Ausgang Q auf 1 setzen</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>R (Reset)</strong></td><td style="border:1px solid #ccc;padding:6px">Ausgang Q auf 0 zur\u00FCcksetzen</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px"><strong>C (Clock/Takt)</strong></td><td style="border:1px solid #ccc;padding:6px">Zustands\u00E4nderung nur wenn C=1</td></tr>'
+        + '<p>Der SR-Riegel ist eine <strong>bistabile Kippstufe</strong> \u2013 er kann sich einen Zustand (0 oder 1) <em>merken</em>, auch wenn die Eing\u00E4nge wieder 0 werden. Alles, was du bisher gelernt hast, war \u201Ezustandslos\u201C (Ausgang h\u00E4ngt nur von den aktuellen Eing\u00E4ngen ab). Der SR-Riegel ist der erste Baustein mit <strong>Ged\u00E4chtnis</strong>.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Lichtschalter-Analogie:</strong> Stell dir einen Lichtschalter vor, den du einmal dr\u00FCckst \u2013 und das Licht bleibt an, auch wenn du den Finger wegnimmst. Erst wenn du einen zweiten, separaten Reset-Knopf dr\u00FCckst, geht das Licht wieder aus. Genau das macht der SR-Riegel: Einmal gesetzt (S=1), bleibt der Zustand gespeichert, bis er aktiv zur\u00FCckgesetzt wird (R=1).'
+        + '</div>'
+        + '<div class="why-context">'
+        + '<strong>Der gro\u00DFe Sprung \u2013 aus Logik wird Speicher.</strong> Alles bisher (Gatter, Addierer, Subtrahierer) war zustandslos. Mit dem SR-Riegel kommt das erste Ged\u00E4chtnis dazu. Aus diesem Prinzip entstehen Flipflops, Register und schlie\u00DFlich RAM \u2013 also Arbeitsspeicher. Wenn dein Rechner 16 GB RAM hat, sind das im Prinzip Milliarden solcher Riegel-Bausteine.</p><p style="margin:6px 0 0 0">Damit das Ganze \u00FCberhaupt funktionieren kann, muss die Schaltung einen Trick haben: <strong>R\u00FCckkopplung</strong>. Der Ausgang eines Gatters flie\u00DFt wieder als Eingang in das andere Gatter zur\u00FCck. Dadurch h\u00E4lt sich die Schaltung ihren eigenen Zustand \u2013 wie zwei Kinder, die sich gegenseitig den Arm hochhalten.'
+        + '</div>'
+        + '<h3>Teil 1: Der asynchrone SR-Riegel (Kern-Prinzip, 2 NOR-Gatter)</h3>'
+        + '<p>Die einfachste Variante: zwei NOR-Gatter, bei denen der Ausgang jedes Gatters wieder als Eingang ins andere geht. Kein Taktsignal, der Zustand \u00E4ndert sich sofort, wenn S oder R auf 1 geht.</p>'
+        + '<div class="reading-guide">'
+        + '<strong>So liest du die Schaltung unten:</strong>'
+        + '<ul style="margin:6px 0 0 0;padding-left:20px">'
+        + '<li><strong>S</strong> (Set) geht ins obere NOR-Gatter (<code>\u22651</code> mit Kringel = NOR). Dessen Ausgang ist <strong>Q</strong>.</li>'
+        + '<li><strong>R</strong> (Reset) geht ins untere NOR-Gatter. Dessen Ausgang ist <strong>Q\u0305</strong> (Q-Quer = immer das Gegenteil von Q).</li>'
+        + '<li>Das Besondere: Der Ausgang des oberen NOR geht als <em>zweiter Eingang</em> ins untere NOR \u2013 und umgekehrt. Das ist die <strong>R\u00FCckkopplung</strong>. Sie sorgt daf\u00FCr, dass die Schaltung ihren Zustand h\u00E4lt.</li>'
+        + '<li>Klicke S auf 1 \u2192 Q wird 1 und bleibt 1, auch wenn du S wieder auf 0 klickst. Klicke R auf 1 \u2192 Q wird 0 und bleibt 0.</li>'
+        + '</ul>'
+        + '</div>'
+        + '<div class="circuit-legend">'
+        + '<span class="legend-item"><span class="legend-symbol">\u22651\u00B0</span>NOR (OR mit invertiertem Ausgang)</span>'
+        + '</div>'
+        + '<h4 style="margin-top:16px">Wahrheitstabelle (asynchroner SR-Riegel, ohne Takt):</h4>'
+        + '<table style="border-collapse:collapse;margin:8px 0">'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">S</th><th style="border:1px solid #ccc;padding:6px 10px">R</th><th style="border:1px solid #ccc;padding:6px 10px">Q (n\u00E4chster)</th><th style="border:1px solid #ccc;padding:6px 10px">Bedeutung</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">Q (h\u00E4lt)</td><td style="border:1px solid #ccc;padding:6px 10px">Speichern</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">Setzen</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">R\u00FCcksetzen</td></tr>'
+        + '<tr style="background:#fff3cd"><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">\u26A0\uFE0F verboten</td><td style="border:1px solid #ccc;padding:6px 10px">Widerspruch \u2013 undefiniert</td></tr>'
         + '</table>'
-        + '<h3>Zustands\u00FCbergangstabelle:</h3>'
-        + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
-        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px">C</th><th style="border:1px solid #ccc;padding:6px">S</th><th style="border:1px solid #ccc;padding:6px">R</th><th style="border:1px solid #ccc;padding:6px">Q (n\u00E4chster)</th><th style="border:1px solid #ccc;padding:6px">Bedeutung</th></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">x</td><td style="border:1px solid #ccc;padding:6px">x</td><td style="border:1px solid #ccc;padding:6px">Q (h\u00E4lt)</td><td style="border:1px solid #ccc;padding:6px">Keine \u00C4nderung (Takt=0)</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">Q (h\u00E4lt)</td><td style="border:1px solid #ccc;padding:6px">Speichern</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">Setzen</td></tr>'
-        + '<tr><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">0</td><td style="border:1px solid #ccc;padding:6px">R\u00FCcksetzen</td></tr>'
-        + '<tr style="background:#fff3cd"><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">1</td><td style="border:1px solid #ccc;padding:6px">\u26A0\uFE0F verboten</td><td style="border:1px solid #ccc;padding:6px">Undefiniert!</td></tr>'
-        + '</table>'
-        + '<p><strong>Analogie:</strong> Wie ein Lichtschalter mit Ged\u00E4chtnis: S dr\u00FCcken = Licht an (bleibt an!). R dr\u00FCcken = Licht aus (bleibt aus!). C=0 = Schalter gesperrt.</p>'
-        + '<p><strong>Q\u0305 (Q-Quer):</strong> Immer das Gegenteil von Q.</p>'
+        + '<p>Unter der Schaltung siehst du ein <strong>Timing-Diagramm</strong>, das sich automatisch mit deinen Klicks mit-aktualisiert. So siehst du, wie S, R und Q zeitlich zusammenh\u00E4ngen.</p>',
+      visuals: [
+        { type: 'circuit', circuit: 'sr-latch', label: 'Asynchroner SR-Riegel \u2013 klicke S oder R, sieh Q umschalten' },
+        { type: 'timing-diagram', signals: ['S', 'R', 'Q', 'Q\u0304'], label: 'Timing-Diagramm \u2013 f\u00FCllt sich automatisch bei jedem Klick in der Schaltung' }
+      ]
     },
     example: {
-      title: 'Klausur-Beispiel: Timing-Diagramm ausf\u00FCllen',
+      title: 'Zustandsfolge im SR-Riegel \u2013 Phase f\u00FCr Phase',
       steps: [
         {
-          label: 'Gegeben: C, S, R \u2013 Gesucht: Q und Q\u0305',
-          html: '<p>Startbedingung: Q=0<br><br>Takt 1: C=1, S=1, R=0 \u2192 <strong>Setzen</strong> \u2192 Q wird 1<br>Takt 2: C=1, S=0, R=0 \u2192 <strong>Halten</strong> \u2192 Q bleibt 1<br>Takt 3: C=0, S=1, R=0 \u2192 <strong>gesperrt</strong> \u2192 Q bleibt 1<br>Takt 4: C=1, S=0, R=1 \u2192 <strong>R\u00FCcksetzen</strong> \u2192 Q wird 0</p>'
+          label: 'Phase 1: S=0, R=0 (Halten, Startzustand Q=0)',
+          html: '<p>Beide Eing\u00E4nge sind 0. Q beh\u00E4lt seinen aktuellen Wert. Der Riegel \u201Eschl\u00E4ft\u201C \u2013 er tut nichts, aber er vergisst auch nichts.</p>'
         },
         {
-          label: 'Wichtige Regel',
-          html: '<p><strong>Nur bei C=1 kann sich Q \u00E4ndern!</strong> Selbst wenn S=1 und R=0 ist, passiert nichts solange C=0. Das ist der Sinn des Taktsignals: Es kontrolliert, wann der Riegel reagiert.</p><p>Q\u0305 ist immer das Gegenteil von Q. Wenn Q=1, dann Q\u0305=0 und umgekehrt.</p>'
+          label: 'Phase 2: S=1 (Setzen)',
+          html: '<p>S wird 1. Das zwingt Q auf 1 (weil das obere NOR bei mindestens einem 1-Eingang immer 0 ausgibt \u2013 und durch die R\u00FCckkopplung kippt die gesamte Schaltung konsistent). Q=1, Q\u0305=0. Das ist wie \u201ELicht einschalten\u201C.</p>'
+        },
+        {
+          label: 'Phase 3: S=0 zur\u00FCck auf 0 \u2013 aber Q bleibt 1!',
+          html: '<p>S geht wieder auf 0. Aber Q bleibt bei 1. <strong>Das ist die eigentliche Speicher-Eigenschaft:</strong> Die R\u00FCckkopplung h\u00E4lt den Zustand. Selbst ohne aktives Set-Signal erinnert sich der Riegel.</p><p><em>Probier es im Visual: Klicke S auf 1 und dann wieder auf 0 \u2013 Q bleibt leuchtend gr\u00FCn.</em></p>'
+        },
+        {
+          label: 'Phase 4: R=1 (R\u00FCcksetzen)',
+          html: '<p>Jetzt wird R auf 1 geklickt. Das zwingt Q auf 0. Licht aus. Symmetrisch zum Setzen: Sobald R wieder auf 0 geht, bleibt Q bei 0, bis das n\u00E4chste Mal S gedr\u00FCckt wird.</p>'
+        },
+        {
+          label: 'Teil 2: Getakteter SR-Riegel (wie in der Klausur)',
+          html: '<p>In der Klausur wird h\u00E4ufig eine erweiterte Variante verwendet: der SR-Riegel mit <strong>Clock-Eingang (C)</strong>. Dabei werden S und R zus\u00E4tzlich durch ein UND mit C \u201Egefiltert\u201C: Nur wenn C=1, wirken S und R \u00FCberhaupt.</p>'
+          + '<table style="border-collapse:collapse;margin:8px 0">'
+          + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">C</th><th style="border:1px solid #ccc;padding:6px 10px">S</th><th style="border:1px solid #ccc;padding:6px 10px">R</th><th style="border:1px solid #ccc;padding:6px 10px">Q (n\u00E4chster)</th><th style="border:1px solid #ccc;padding:6px 10px">Bedeutung</th></tr>'
+          + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">x</td><td style="border:1px solid #ccc;padding:6px 10px">x</td><td style="border:1px solid #ccc;padding:6px 10px">Q (h\u00E4lt)</td><td style="border:1px solid #ccc;padding:6px 10px">Keine \u00C4nderung (Takt=0)</td></tr>'
+          + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">Q (h\u00E4lt)</td><td style="border:1px solid #ccc;padding:6px 10px">Speichern</td></tr>'
+          + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">Setzen</td></tr>'
+          + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">R\u00FCcksetzen</td></tr>'
+          + '<tr style="background:#fff3cd"><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">\u26A0\uFE0F verboten</td><td style="border:1px solid #ccc;padding:6px 10px">Undefiniert</td></tr>'
+          + '</table>'
+          + '<p><strong>Klausur-Typ-Aufgabe:</strong> Du bekommst C, S, R als Impulsdiagramm vorgegeben und sollst Q (und Q\u0305) zeichnen. Regel: Bei C=0 bleibt Q unver\u00E4ndert. Bei C=1 gelten die Zeilen 2\u20135.</p>'
+        },
+        {
+          label: 'Klausur-Beispiel: Takt-basiertes Timing',
+          html: '<p>Start: Q=0<br><br>Takt 1: C=1, S=1, R=0 \u2192 <strong>Setzen</strong> \u2192 Q=1<br>Takt 2: C=1, S=0, R=0 \u2192 <strong>Halten</strong> \u2192 Q=1<br>Takt 3: C=0, S=1, R=0 \u2192 <strong>gesperrt!</strong> \u2192 Q=1 (keine \u00C4nderung trotz S=1, weil C=0)<br>Takt 4: C=1, S=0, R=1 \u2192 <strong>R\u00FCcksetzen</strong> \u2192 Q=0</p><p>Q\u0305 ist immer das Gegenteil von Q.</p><p><em>Der Unterschied zwischen asynchronem und getaktetem Riegel: Beim asynchronen reagiert die Schaltung sofort. Beim getakteten nur, wenn der Takt C=1 ist \u2013 das macht Schaltungen mit vielen Flipflops synchron und stabil (Prinzip einer CPU-Taktung).</em></p>'
         }
       ]
     },
