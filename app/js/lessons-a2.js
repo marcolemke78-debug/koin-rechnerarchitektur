@@ -149,7 +149,21 @@ const LessonsA2 = [
         + '</table>'
         + '<div class="why-context">'
         + '<strong>Warum lernen wir das?</strong> Obwohl das Einerkomplement in der Praxis nicht verwendet wird, ist es die logische Zwischenstufe zum Zweierkomplement – und in der Klausur wird es oft gemeinsam abgefragt. Wer EK versteht, versteht die Motivation für ZK automatisch: "Warum noch +1?" → "Um die doppelte Null zu eliminieren."'
-        + '</div>'
+        + '</div>',
+      visuals: [
+        {
+          type: 'bit-layout',
+          bits: '00100101',
+          groups: [{ start: 0, length: 1, color: '#DCFCE7', label: '+' }, { start: 1, length: 7, color: '#F3F4F6', label: '37 binär' }],
+          label: '+37 normal (führendes Bit = 0)'
+        },
+        {
+          type: 'bit-layout',
+          bits: '11011010',
+          groups: [{ start: 0, length: 1, color: '#FEE2E2', label: '−' }, { start: 1, length: 7, color: '#F3F4F6', label: 'invertiert' }],
+          label: '-37 im Einerkomplement (alle Bits gekippt)'
+        }
+      ]
     },
     example: {
       title: 'Beispiel: -42 im 8-Bit Einerkomplement',
@@ -258,7 +272,27 @@ const LessonsA2 = [
         + '<p>8-Bit ZK stellt Werte von <strong>-128 bis +127</strong> dar (eine mehr auf der Negativ-Seite, weil die Null nur einmal vorkommt).</p>'
         + '<div class="why-context">'
         + '<strong>Warum lernen wir das?</strong> Wenn du in Java eine <code>int</code>-Variable nutzt, wird sie als 32-Bit ZK gespeichert. Wenn du in Python -5 tippst, liegt sie intern im ZK. Wenn ein Messwert überläuft und negativ wird, ist das ZK-Verhalten. Wer ZK nicht versteht, versteht eine riesige Klasse von Bugs nicht. In der Klausur ist es eine sichere 3-Punkte-Aufgabe mit klarem Schema.'
-        + '</div>'
+        + '</div>',
+      visuals: [
+        {
+          type: 'bit-layout',
+          bits: '00100101',
+          groups: [{ start: 0, length: 1, color: '#DCFCE7', label: 'V' }, { start: 1, length: 7, color: '#F3F4F6', label: '+37' }],
+          label: '+37 als 8-Bit ZK (führende 0 = positiv)'
+        },
+        {
+          type: 'bit-layout',
+          bits: '11011010',
+          groups: [{ start: 0, length: 1, color: '#FEE2E2', label: 'V' }, { start: 1, length: 7, color: '#F3F4F6', label: 'EK' }],
+          label: 'Schritt 1: Einerkomplement (alle Bits invertiert)'
+        },
+        {
+          type: 'bit-layout',
+          bits: '11011011',
+          groups: [{ start: 0, length: 1, color: '#FEE2E2', label: 'V' }, { start: 1, length: 7, color: '#FEF3C7', label: 'ZK (+1)' }],
+          label: 'Schritt 2: +1 addiert → -37 im Zweierkomplement'
+        }
+      ]
     },
     example: {
       title: 'Beispiel: 45 + (-37) im 8-Bit ZK',
@@ -362,11 +396,7 @@ const LessonsA2 = [
         + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>E</b> – Exponent</td><td style="padding:6px;border:1px solid #ccc;">8 Bits</td><td style="padding:6px;border:1px solid #ccc;">Exponent + 127 (Bias)</td></tr>'
         + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>M</b> – Mantisse</td><td style="padding:6px;border:1px solid #ccc;">23 Bits</td><td style="padding:6px;border:1px solid #ccc;">Nachkomma (die 1, vor dem Komma ist implizit)</td></tr>'
         + '</table>'
-        + '<div class="info-card" style="padding:10px;font-family:monospace;">'
-        + '| V |   E   |          M          |<br>'
-        + '|1b |  8b   |         23b         |<br>'
-        + 'Bit: 31  30...23  22...............0'
-        + '</div>'
+        + '<p>So sind die 32 Bits angeordnet (als Beispiel die Zahl +1,0 dargestellt):</p>'
         + '<h3>Die Formel</h3>'
         + '<div class="info-card" style="padding:12px;text-align:center;font-size:1.1em;">'
         + 'Zahl = (-1)<sup>V</sup> · 1,M · 2<sup>(E - 127)</sup>'
@@ -394,7 +424,19 @@ const LessonsA2 = [
         + '</div>'
         + '<div class="why-context">'
         + '<strong>Warum lernen wir das?</strong> Jedes <code>float</code> in Java/C/Python/JavaScript ist IEEE 754. Wenn 0,1 + 0,2 nicht exakt 0,3 ergibt (berühmter Bug-Klassiker!), liegt das an IEEE 754. In der Klausur ist das die "große" Rechenaufgabe für 2,5 Punkte – aber mit klarem Schema gut machbar.'
-        + '</div>'
+        + '</div>',
+      visuals: [
+        {
+          type: 'bit-layout',
+          bits: '00111111100000000000000000000000',
+          groups: [
+            { start: 0, length: 1, color: '#FEF3C7', label: 'V' },
+            { start: 1, length: 8, color: '#DBEAFE', label: 'Exponent (E)' },
+            { start: 9, length: 23, color: '#D1FAE5', label: 'Mantisse (M)' }
+          ],
+          label: 'IEEE 754: Darstellung von +1,0 (V=0, E=127, M=0)'
+        }
+      ]
     },
     example: {
       title: 'Beispiel: -3,875 in IEEE 754 (32 Bit)',
@@ -432,13 +474,20 @@ const LessonsA2 = [
         {
           label: 'Schritt 6 – Zusammensetzen',
           html:
-            '<pre style="background:#f3f4f6;padding:10px;border-radius:4px;font-family:monospace;">'
-            + 'V  | E        | M\n'
-            + '1  | 10000000 | 11110000000000000000000\n'
-            + '\n'
-            + 'Gesamt (32 Bit):\n'
-            + '1 10000000 11110000000000000000000</pre>'
-            + '<p>Hex: <code>C07C0000</code></p>'
+            '<p>V = 1, E = 10000000, M = 11110000… (auf 23 Bit aufgefüllt)</p>'
+            + '<p>So sieht die fertige 32-Bit-Zahl aus:</p>',
+          visuals: [
+            {
+              type: 'bit-layout',
+              bits: '11000000011110000000000000000000',
+              groups: [
+                { start: 0, length: 1, color: '#FEE2E2', label: 'V=1' },
+                { start: 1, length: 8, color: '#DBEAFE', label: 'E=128' },
+                { start: 9, length: 23, color: '#D1FAE5', label: 'M=1111 0…' }
+              ],
+              label: '-3,875 als IEEE 754 – Hex: C07C0000'
+            }
+          ]
         }
       ]
     },

@@ -2018,3 +2018,516 @@ Visuals.renderNetworkDiagram = function(config, container) {
   wrapper.appendChild(svg);
   container.appendChild(wrapper);
 };
+
+// ============================================================================
+//  BST Visualisierung (A3)
+// ============================================================================
+//
+// config: {
+//   type: 'bst-viz',
+//   tree: { value: 24, left: {value:20, left:{...}, right:{...}}, right: {...} },
+//   highlight: [12, 19],           // optional: gelb markieren
+//   highlightPath: [24, 20, 18],   // optional: Pfad rot einfärben
+//   newNode: 19,                   // optional: neu eingefügt -> grün
+//   label: 'Beschreibung'
+// }
+Visuals.renderBstViz = function(config, container) {
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  if (config.label) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'visual-label';
+    labelEl.textContent = config.label;
+    wrapper.appendChild(labelEl);
+  }
+
+  if (!config.tree) {
+    wrapper.innerHTML += '<p style="color:#888">(leerer Baum)</p>';
+    container.appendChild(wrapper);
+    return;
+  }
+
+  // --- Positionierung: Tiefen-Layout mit Inorder-x-Position ---
+  // Wir laufen inorder durch, vergeben x-Koordinaten nach Reihenfolge,
+  // y-Koordinaten nach Tiefe.
+  const nodes = [];
+  let inorderIdx = 0;
+  let maxDepth = 0;
+  function layout(node, depth) {
+    if (!node) return;
+    layout(node.left, depth + 1);
+    node._x = inorderIdx++;
+    node._y = depth;
+    maxDepth = Math.max(maxDepth, depth);
+    nodes.push(node);
+    layout(node.right, depth + 1);
+  }
+  layout(config.tree, 0);
+
+  const xStep = 50;
+  const yStep = 60;
+  const pad = 30;
+  const W = Math.max(300, (inorderIdx + 1) * xStep + 2 * pad);
+  const H = (maxDepth + 1) * yStep + 2 * pad;
+
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('style', 'max-width:' + W + 'px; display:block; margin:0 auto;');
+  svg.classList.add('bst-viz');
+
+  const highlight = new Set(config.highlight || []);
+  const highlightPath = new Set(config.highlightPath || []);
+  const newNode = config.newNode;
+
+  function px(n) { return pad + n._x * xStep; }
+  function py(n) { return pad + n._y * yStep; }
+
+  // --- Kanten zuerst zeichnen ---
+  function drawEdges(node, parent) {
+    if (!node) return;
+    if (parent) {
+      const line = document.createElementNS(svgNS, 'line');
+      line.setAttribute('x1', px(parent));
+      line.setAttribute('y1', py(parent) + 16);
+      line.setAttribute('x2', px(node));
+      line.setAttribute('y2', py(node) - 16);
+      const onPath = highlightPath.has(parent.value) && highlightPath.has(node.value);
+      line.setAttribute('stroke', onPath ? '#DC2626' : '#6B7280');
+      line.setAttribute('stroke-width', onPath ? 3 : 2);
+      svg.appendChild(line);
+    }
+    drawEdges(node.left, node);
+    drawEdges(node.right, node);
+  }
+  drawEdges(config.tree, null);
+
+  // --- Knoten ---
+  nodes.forEach(n => {
+    const g = document.createElementNS(svgNS, 'g');
+    const circle = document.createElementNS(svgNS, 'circle');
+    circle.setAttribute('cx', px(n));
+    circle.setAttribute('cy', py(n));
+    circle.setAttribute('r', 18);
+    let fill = '#FFFFFF';
+    let stroke = '#374151';
+    if (n.value === newNode) {
+      fill = '#D1FAE5'; stroke = '#059669';
+    } else if (highlight.has(n.value)) {
+      fill = '#FEF3C7'; stroke = '#D97706';
+    } else if (highlightPath.has(n.value)) {
+      fill = '#FEE2E2'; stroke = '#DC2626';
+    }
+    circle.setAttribute('fill', fill);
+    circle.setAttribute('stroke', stroke);
+    circle.setAttribute('stroke-width', 2);
+    g.appendChild(circle);
+
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', px(n));
+    text.setAttribute('y', py(n) + 5);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('font-family', 'system-ui, sans-serif');
+    text.setAttribute('font-size', '14');
+    text.setAttribute('font-weight', 'bold');
+    text.setAttribute('fill', '#1F2937');
+    text.textContent = n.value;
+    g.appendChild(text);
+    svg.appendChild(g);
+  });
+
+  wrapper.appendChild(svg);
+
+  // Legende nur wenn Highlight aktiv
+  if (newNode !== undefined || highlight.size > 0 || highlightPath.size > 0) {
+    const legend = document.createElement('div');
+    legend.style.cssText = 'text-align:center; font-size:0.85em; color:#6B7280; margin-top:6px;';
+    const items = [];
+    if (newNode !== undefined) items.push('<span style="background:#D1FAE5;border:1px solid #059669;padding:2px 8px;border-radius:999px;">neu eingefügt</span>');
+    if (highlight.size > 0) items.push('<span style="background:#FEF3C7;border:1px solid #D97706;padding:2px 8px;border-radius:999px;">markiert</span>');
+    if (highlightPath.size > 0) items.push('<span style="background:#FEE2E2;border:1px solid #DC2626;padding:2px 8px;border-radius:999px;">Suchpfad</span>');
+    legend.innerHTML = items.join(' &nbsp; ');
+    wrapper.appendChild(legend);
+  }
+
+  container.appendChild(wrapper);
+};
+
+
+// ============================================================================
+//  Hashtable Visualisierung (A3)
+// ============================================================================
+//
+// config: {
+//   type: 'hashtable-viz',
+//   size: 7,
+//   entries: [15, 43, 2, 53, 12, 5, 19],
+//   hashFn: 'mod',                // aktuell nur 'mod'
+//   highlight: 43,                 // optional: markieren
+//   label: 'h(k) = k mod 7'
+// }
+Visuals.renderHashtableViz = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  if (config.label) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'visual-label';
+    labelEl.textContent = config.label;
+    wrapper.appendChild(labelEl);
+  }
+
+  const m = config.size;
+  const entries = config.entries || [];
+  const buckets = Array.from({length: m}, () => []);
+  entries.forEach(k => {
+    const idx = ((k % m) + m) % m;
+    buckets[idx].push(k);
+  });
+
+  const highlight = config.highlight;
+
+  const table = document.createElement('div');
+  table.style.cssText = 'display:grid; grid-template-columns: 48px 1fr; gap:0; border:1px solid #D1D5DB; border-radius:6px; overflow:hidden; font-family:monospace; max-width:500px; margin:0 auto;';
+
+  for (let i = 0; i < m; i++) {
+    const idxCell = document.createElement('div');
+    idxCell.style.cssText = 'background:#F3F4F6; padding:10px; text-align:center; font-weight:bold; color:#374151; border-right:1px solid #D1D5DB; border-bottom:1px solid #E5E7EB;';
+    idxCell.textContent = i;
+    if (i === m - 1) idxCell.style.borderBottom = 'none';
+
+    const listCell = document.createElement('div');
+    listCell.style.cssText = 'padding:10px; display:flex; align-items:center; gap:4px; flex-wrap:wrap; border-bottom:1px solid #E5E7EB; min-height:40px;';
+    if (i === m - 1) listCell.style.borderBottom = 'none';
+
+    if (buckets[i].length === 0) {
+      listCell.innerHTML = '<span style="color:#9CA3AF; font-style:italic;">(leer)</span>';
+    } else {
+      buckets[i].forEach((v, j) => {
+        const node = document.createElement('span');
+        const isHi = v === highlight;
+        node.style.cssText = 'background:' + (isHi ? '#FEF3C7' : '#EFF6FF') + '; border:1px solid ' + (isHi ? '#D97706' : '#2563EB') + '; padding:4px 10px; border-radius:4px; font-weight:bold; color:#1E40AF;';
+        node.textContent = v;
+        listCell.appendChild(node);
+        if (j < buckets[i].length - 1) {
+          const arrow = document.createElement('span');
+          arrow.style.cssText = 'color:#6B7280; font-size:1.2em;';
+          arrow.textContent = '→';
+          listCell.appendChild(arrow);
+        }
+      });
+    }
+
+    table.appendChild(idxCell);
+    table.appendChild(listCell);
+  }
+
+  wrapper.appendChild(table);
+  container.appendChild(wrapper);
+};
+
+
+// ============================================================================
+//  Bit-Layout Visualisierung (A2 - IEEE 754, ZK, etc.)
+// ============================================================================
+//
+// config: {
+//   type: 'bit-layout',
+//   bits: '01000000101100000000000000000000',
+//   groups: [              // optional: farbige Gruppen
+//     { start: 0, length: 1, color: '#FEF3C7', label: 'V' },
+//     { start: 1, length: 8, color: '#DBEAFE', label: 'E' },
+//     { start: 9, length: 23, color: '#D1FAE5', label: 'M' }
+//   ],
+//   label: 'IEEE 754'
+// }
+Visuals.renderBitLayout = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  if (config.label) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'visual-label';
+    labelEl.textContent = config.label;
+    wrapper.appendChild(labelEl);
+  }
+
+  const bits = (config.bits || '').replace(/\s+/g, '');
+  const groups = config.groups || [{start: 0, length: bits.length, color: '#F3F4F6', label: '' }];
+
+  const outer = document.createElement('div');
+  outer.style.cssText = 'display:flex; flex-direction:column; gap:6px; max-width:100%; overflow-x:auto; padding:10px 0;';
+
+  // Gruppen-Labels-Zeile (oben)
+  const labelRow = document.createElement('div');
+  labelRow.style.cssText = 'display:flex; gap:2px; font-size:0.75em; color:#6B7280; font-weight:bold;';
+  groups.forEach(g => {
+    const cell = document.createElement('div');
+    cell.style.cssText = `width:${g.length * 24}px; text-align:center;`;
+    cell.textContent = g.label || '';
+    labelRow.appendChild(cell);
+  });
+
+  // Bit-Zeile
+  const bitRow = document.createElement('div');
+  bitRow.style.cssText = 'display:flex; gap:2px; font-family:monospace;';
+  for (let i = 0; i < bits.length; i++) {
+    const bit = bits[i];
+    const group = groups.find(g => i >= g.start && i < g.start + g.length);
+    const cell = document.createElement('div');
+    cell.style.cssText = `width:22px; height:28px; background:${group ? group.color : '#F3F4F6'}; border:1px solid #D1D5DB; display:flex; align-items:center; justify-content:center; font-weight:bold; color:#1F2937;`;
+    cell.textContent = bit;
+    bitRow.appendChild(cell);
+  }
+
+  outer.appendChild(labelRow);
+  outer.appendChild(bitRow);
+  wrapper.appendChild(outer);
+  container.appendChild(wrapper);
+};
+
+
+// ============================================================================
+//  Stellenwert-Tabelle (A1)
+// ============================================================================
+//
+// config: {
+//   type: 'stellenwert-viz',
+//   digits: ['1','0','1','1',',','0','1'],
+//   base: 2,
+//   exponents: [3,2,1,0,null,-1,-2],    // null bei Komma
+//   values: [8,4,2,1,null,0.5,0.25],
+//   result: 11.25,
+//   label: '...'
+// }
+Visuals.renderStellenwertViz = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  if (config.label) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'visual-label';
+    labelEl.textContent = config.label;
+    wrapper.appendChild(labelEl);
+  }
+
+  const digits = config.digits || [];
+  const exponents = config.exponents || [];
+  const values = config.values || [];
+  const base = config.base || 2;
+
+  const tbl = document.createElement('table');
+  tbl.style.cssText = 'margin:0 auto; border-collapse:collapse; font-family:monospace; font-size:1.05em;';
+
+  const rowHdr = document.createElement('tr');
+  digits.forEach((d, i) => {
+    const td = document.createElement('td');
+    const isComma = d === ',';
+    const isOne = d === '1' && !isComma;
+    td.style.cssText = `padding:8px 12px; border:${isComma ? 'none' : '1px solid #D1D5DB'}; text-align:center; font-weight:bold; background:${isOne ? '#DBEAFE' : (isComma ? 'transparent' : '#F9FAFB')}; color:#1F2937; font-size:1.3em;`;
+    td.textContent = d;
+    rowHdr.appendChild(td);
+  });
+  tbl.appendChild(rowHdr);
+
+  const rowExp = document.createElement('tr');
+  exponents.forEach((e, i) => {
+    const td = document.createElement('td');
+    td.style.cssText = 'padding:6px 12px; text-align:center; color:#6B7280; font-size:0.9em;';
+    if (e !== null && e !== undefined) {
+      td.innerHTML = base + '<sup>' + e + '</sup>';
+    }
+    rowExp.appendChild(td);
+  });
+  tbl.appendChild(rowExp);
+
+  const rowVal = document.createElement('tr');
+  values.forEach((v, i) => {
+    const td = document.createElement('td');
+    const isOne = digits[i] === '1';
+    td.style.cssText = `padding:6px 12px; text-align:center; color:${isOne ? '#2563EB' : '#9CA3AF'}; font-weight:${isOne ? 'bold' : 'normal'};`;
+    if (v !== null && v !== undefined) td.textContent = v;
+    rowVal.appendChild(td);
+  });
+  tbl.appendChild(rowVal);
+
+  wrapper.appendChild(tbl);
+
+  if (config.result !== undefined) {
+    const sum = document.createElement('div');
+    sum.style.cssText = 'text-align:center; margin-top:10px; font-family:monospace; font-size:1.05em;';
+    // Summe der 1-Stellen aufschreiben
+    const contribs = [];
+    digits.forEach((d, i) => {
+      if (d === '1') contribs.push(values[i]);
+    });
+    sum.innerHTML = contribs.join(' + ') + ' = <strong style="color:#2563EB;">' + config.result + '<sub>10</sub></strong>';
+    wrapper.appendChild(sum);
+  }
+
+  container.appendChild(wrapper);
+};
+
+
+// ============================================================================
+//  Struktogramm Visualisierung (A4)
+// ============================================================================
+//
+// config: {
+//   type: 'struktogramm',
+//   blocks: [
+//     { kind: 'stmt', text: 'min := M[1]' },
+//     { kind: 'loop', header: 'solange i := 2 bis n', body: [
+//       { kind: 'if', cond: 'M[i] < min?', yes: [{kind:'stmt', text:'min := M[i]'}], no: [{kind:'stmt', text:'(nichts)'}] }
+//     ]},
+//     { kind: 'stmt', text: 'gib min aus' }
+//   ]
+// }
+Visuals.renderStruktogramm = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  if (config.label) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'visual-label';
+    labelEl.textContent = config.label;
+    wrapper.appendChild(labelEl);
+  }
+
+  function render(blocks, parent) {
+    blocks.forEach(b => {
+      if (b.kind === 'stmt') {
+        const el = document.createElement('div');
+        el.style.cssText = 'padding:8px 12px; border:1px solid #374151; background:#F9FAFB; font-family:monospace;';
+        el.textContent = b.text;
+        parent.appendChild(el);
+      } else if (b.kind === 'loop') {
+        const outer = document.createElement('div');
+        outer.style.cssText = 'border:1px solid #374151;';
+        const header = document.createElement('div');
+        header.style.cssText = 'padding:8px 12px; background:#DBEAFE; border-bottom:1px solid #374151; font-family:monospace; font-weight:bold;';
+        header.textContent = b.header;
+        outer.appendChild(header);
+        const body = document.createElement('div');
+        body.style.cssText = 'margin-left:16px; padding:0; display:flex; flex-direction:column; gap:0;';
+        render(b.body || [], body);
+        outer.appendChild(body);
+        parent.appendChild(outer);
+      } else if (b.kind === 'if') {
+        const outer = document.createElement('div');
+        outer.style.cssText = 'border:1px solid #374151;';
+        const header = document.createElement('div');
+        header.style.cssText = 'padding:8px 12px; background:#FEF3C7; border-bottom:1px solid #374151; font-family:monospace; text-align:center; font-weight:bold;';
+        header.textContent = b.cond;
+        outer.appendChild(header);
+        const split = document.createElement('div');
+        split.style.cssText = 'display:grid; grid-template-columns:1fr 1fr;';
+        const yesCol = document.createElement('div');
+        yesCol.style.cssText = 'border-right:1px solid #374151;';
+        const yesHdr = document.createElement('div');
+        yesHdr.style.cssText = 'padding:4px 8px; background:#D1FAE5; border-bottom:1px solid #374151; font-size:0.85em; text-align:center;';
+        yesHdr.textContent = 'ja';
+        yesCol.appendChild(yesHdr);
+        render(b.yes || [], yesCol);
+        const noCol = document.createElement('div');
+        const noHdr = document.createElement('div');
+        noHdr.style.cssText = 'padding:4px 8px; background:#FEE2E2; border-bottom:1px solid #374151; font-size:0.85em; text-align:center;';
+        noHdr.textContent = 'nein';
+        noCol.appendChild(noHdr);
+        render(b.no || [], noCol);
+        split.appendChild(yesCol);
+        split.appendChild(noCol);
+        outer.appendChild(split);
+        parent.appendChild(outer);
+      }
+    });
+  }
+
+  const box = document.createElement('div');
+  box.style.cssText = 'max-width:640px; margin:0 auto; display:flex; flex-direction:column; gap:0; font-size:0.95em;';
+  render(config.blocks || [], box);
+  wrapper.appendChild(box);
+  container.appendChild(wrapper);
+};
+
+
+// ============================================================================
+//  Flussdiagramm Visualisierung (A4)
+// ============================================================================
+//
+// config: {
+//   type: 'flussdiagramm',
+//   nodes: [
+//     { id: 'start', kind: 'start', text: 'Start' },
+//     { id: 'init', kind: 'op', text: 'min := M[1], i := 2' },
+//     { id: 'chk', kind: 'decision', text: 'i ≤ n ?' },
+//     { id: 'cmp', kind: 'decision', text: 'M[i] < min ?' },
+//     { id: 'upd', kind: 'op', text: 'min := M[i]' },
+//     { id: 'inc', kind: 'op', text: 'i := i + 1' },
+//     { id: 'out', kind: 'io', text: 'Gib min aus' },
+//     { id: 'stop', kind: 'start', text: 'Stop' }
+//   ],
+//   edges: [
+//     ['start','init'], ['init','chk'], ['chk','cmp','ja'], ['cmp','upd','ja'],
+//     ['upd','inc'], ['cmp','inc','nein'], ['inc','chk'], ['chk','out','nein'], ['out','stop']
+//   ],
+//   layout: [['start'], ['init'], ['chk'], ['cmp'], ['upd','inc'], ['out'], ['stop']]
+// }
+// Für einfache lineare Diagramme reicht eine klare Zeilen-Anordnung.
+Visuals.renderFlussdiagramm = function(config, container) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'visual-container';
+
+  if (config.label) {
+    const labelEl = document.createElement('div');
+    labelEl.className = 'visual-label';
+    labelEl.textContent = config.label;
+    wrapper.appendChild(labelEl);
+  }
+
+  const box = document.createElement('div');
+  box.style.cssText = 'display:flex; flex-direction:column; align-items:center; gap:0; font-family:system-ui, sans-serif;';
+
+  const shapeStyle = {
+    start:    'padding:8px 28px; border:2px solid #059669; border-radius:999px; background:#D1FAE5; font-weight:bold;',
+    op:       'padding:8px 20px; border:2px solid #374151; border-radius:4px; background:#F3F4F6;',
+    io:       'padding:8px 20px; border:2px solid #2563EB; background:#DBEAFE; transform:skew(-10deg);',
+    decision: 'padding:8px 20px; border:2px solid #D97706; background:#FEF3C7; transform:rotate(45deg); width:110px; height:110px; display:flex; align-items:center; justify-content:center;'
+  };
+
+  (config.nodes || []).forEach((n, i) => {
+    const el = document.createElement('div');
+    if (n.kind === 'decision') {
+      // Diamant mit gedrehtem Text
+      const outerDiamond = document.createElement('div');
+      outerDiamond.style.cssText = 'padding:14px 28px; border:2px solid #D97706; background:#FEF3C7; transform:rotate(45deg); display:inline-block; margin:24px 0;';
+      const inner = document.createElement('div');
+      inner.style.cssText = 'transform:rotate(-45deg); white-space:nowrap; font-weight:bold;';
+      inner.textContent = n.text;
+      outerDiamond.appendChild(inner);
+      box.appendChild(outerDiamond);
+    } else {
+      el.style.cssText = shapeStyle[n.kind] || shapeStyle.op;
+      if (n.kind === 'io') {
+        const span = document.createElement('span');
+        span.style.cssText = 'display:inline-block; transform:skew(10deg);';
+        span.textContent = n.text;
+        el.appendChild(span);
+      } else {
+        el.textContent = n.text;
+      }
+      box.appendChild(el);
+    }
+    if (i < config.nodes.length - 1) {
+      const arrow = document.createElement('div');
+      arrow.style.cssText = 'width:2px; height:16px; background:#374151; position:relative;';
+      arrow.innerHTML = '<div style="position:absolute; bottom:-3px; left:-4px; width:0; height:0; border-left:5px solid transparent; border-right:5px solid transparent; border-top:6px solid #374151;"></div>';
+      box.appendChild(arrow);
+    }
+  });
+
+  wrapper.appendChild(box);
+  container.appendChild(wrapper);
+};

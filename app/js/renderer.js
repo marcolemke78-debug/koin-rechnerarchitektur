@@ -359,6 +359,24 @@ Renderer.renderVisuals = function(visuals, container) {
       case 'network-diagram':
         Visuals.renderNetworkDiagram(vis, container);
         break;
+      case 'bst-viz':
+        Visuals.renderBstViz(vis, container);
+        break;
+      case 'hashtable-viz':
+        Visuals.renderHashtableViz(vis, container);
+        break;
+      case 'bit-layout':
+        Visuals.renderBitLayout(vis, container);
+        break;
+      case 'stellenwert-viz':
+        Visuals.renderStellenwertViz(vis, container);
+        break;
+      case 'struktogramm':
+        Visuals.renderStruktogramm(vis, container);
+        break;
+      case 'flussdiagramm':
+        Visuals.renderFlussdiagramm(vis, container);
+        break;
       default:
         console.warn('Unbekannter Visual-Typ:', vis.type);
     }

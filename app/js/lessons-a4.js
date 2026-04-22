@@ -183,40 +183,43 @@ const LessonsA4 = [
             + 'print min</pre>'
         },
         {
-          label: 'Als Struktogramm',
+          label: 'Als Struktogramm (Nassi-Shneiderman)',
           html:
-            '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;line-height:1.2;">'
-            + '+---------------------------------+\n'
-            + '| min := M[1]                     |\n'
-            + '+---------------------------------+\n'
-            + '| solange i := 2 bis n            |\n'
-            + '|  +----------------------------+ |\n'
-            + '|  | M[i] < min ?               | |\n'
-            + '|  +----ja--------|--nein-------+ |\n'
-            + '|  | min := M[i] | (nichts tun) | |\n'
-            + '|  +-------------+--------------+ |\n'
-            + '+---------------------------------+\n'
-            + '| Gib min aus                     |\n'
-            + '+---------------------------------+</pre>'
+            '<p>Die Schleife steht im blauen Block, die if-Verzweigung gliedert sich in ja/nein-Spalten:</p>',
+          visuals: [
+            {
+              type: 'struktogramm',
+              blocks: [
+                { kind: 'stmt', text: 'min := M[1]' },
+                { kind: 'loop', header: 'solange i := 2 bis n', body: [
+                  { kind: 'if', cond: 'M[i] < min ?',
+                    yes: [{ kind: 'stmt', text: 'min := M[i]' }],
+                    no:  [{ kind: 'stmt', text: '(nichts tun)' }] }
+                ]},
+                { kind: 'stmt', text: 'gib min aus' }
+              ]
+            }
+          ]
         },
         {
           label: 'Als Flussdiagramm',
           html:
-            '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;line-height:1.2;">'
-            + '     ( Start )\n'
-            + '        |\n'
-            + '  [ min := M[1] ]\n'
-            + '  [ i := 2 ]\n'
-            + '        |\n'
-            + '    <  i ≤ n ?  >---nein--→( Ausgabe min )\n'
-            + '        |ja                      |\n'
-            + '  < M[i] < min ? >--nein--+\n'
-            + '        |ja               |\n'
-            + '  [ min := M[i] ]        |\n'
-            + '        |                 |\n'
-            + '        +--→[ i := i+1 ]←+\n'
-            + '             |\n'
-            + '             └────────→ (zurück zur Bedingung)</pre>'
+            '<p>Rauten = Verzweigungen, Rechtecke = Operationen, Ovale = Start/Stop:</p>',
+          visuals: [
+            {
+              type: 'flussdiagramm',
+              nodes: [
+                { kind: 'start', text: 'Start' },
+                { kind: 'op',    text: 'min := M[1]; i := 2' },
+                { kind: 'decision', text: 'i ≤ n ?' },
+                { kind: 'decision', text: 'M[i] < min ?' },
+                { kind: 'op',    text: 'min := M[i]' },
+                { kind: 'op',    text: 'i := i + 1' },
+                { kind: 'io',    text: 'Gib min aus' },
+                { kind: 'start', text: 'Stop' }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -407,26 +410,41 @@ const LessonsA4 = [
         + '</div>'
         + '<h3>Als Struktogramm (Klausur-Aufgabe!)</h3>'
         + '<p>In der Klausur-A4 bekommst du das Sieb als Struktogramm vorgelegt – dein Job ist, es auszuführen und die Zwischenstände zu dokumentieren.</p>'
-        + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;font-size:0.9em;">'
-        + 'SIEB[1] := X   (Löschmarkierung für 1)\n'
-        + 'i := 2\n'
-        + 'MAX := √n\n'
-        + 'solange i ≤ MAX:\n'
-        + '  wenn SIEB[i] ≠ X:\n'
-        + '    j := i + i\n'
-        + '    solange j ≤ n:\n'
-        + '      SIEB[j] := X\n'
-        + '      j := j + i\n'
-        + '  print i, SIEB\n'
-        + '  i := i + 1\n'
-        + 'P := []\n'
-        + 'für i := 1 bis n:\n'
-        + '  wenn SIEB[i] ≠ X:\n'
-        + '    füge SIEB[i] ans Ende von P\n'
-        + 'return P</pre>'
         + '<div class="why-context">'
         + '<strong>Warum lernen wir das?</strong> Ein klassischer Algorithmus zum Trainieren der <em>Ausführung</em> eines Struktogramms. In der Klausur garantiert zu finden (3 Punkte in der Übung A4). Darüber hinaus: Primzahlen sind fundamental für Kryptographie – ohne effiziente Primzahl-Bestimmung keine sichere Verschlüsselung.'
-        + '</div>'
+        + '</div>',
+      visuals: [
+        {
+          type: 'struktogramm',
+          blocks: [
+            { kind: 'stmt', text: 'SIEB[1] := X   (1 ist keine Primzahl)' },
+            { kind: 'stmt', text: 'i := 2; MAX := √n' },
+            { kind: 'loop', header: 'solange i ≤ MAX', body: [
+              { kind: 'if', cond: 'SIEB[i] ≠ X ?',
+                yes: [
+                  { kind: 'stmt', text: 'j := i + i' },
+                  { kind: 'loop', header: 'solange j ≤ n', body: [
+                    { kind: 'stmt', text: 'SIEB[j] := X' },
+                    { kind: 'stmt', text: 'j := j + i' }
+                  ]}
+                ],
+                no: [{ kind: 'stmt', text: '(nichts)' }]
+              },
+              { kind: 'stmt', text: 'print i, SIEB' },
+              { kind: 'stmt', text: 'i := i + 1' }
+            ]},
+            { kind: 'stmt', text: 'P := []' },
+            { kind: 'loop', header: 'für i := 1 bis n', body: [
+              { kind: 'if', cond: 'SIEB[i] ≠ X ?',
+                yes: [{ kind: 'stmt', text: 'füge SIEB[i] an P' }],
+                no:  [{ kind: 'stmt', text: '(nichts)' }]
+              }
+            ]},
+            { kind: 'stmt', text: 'return P' }
+          ],
+          label: 'Sieb des Eratosthenes als Struktogramm'
+        }
+      ]
     },
     example: {
       title: 'Beispiel: Sieb für n=20',

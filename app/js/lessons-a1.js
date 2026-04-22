@@ -44,12 +44,19 @@ const LessonsA1 = [
         {
           label: 'Schritt 1 – Stellen identifizieren',
           html:
-            '<p>Wir schreiben die Zahl <code>1011,01<sub>2</sub></code> mit ihren Stellenwerten auf. Vorkommastellen werden von rechts durchnummeriert (2⁰, 2¹, 2², 2³), Nachkommastellen von links (2⁻¹, 2⁻²):</p>'
-            + '<pre style="background:#f3f4f6;padding:10px;border-radius:4px;">'
-            + '  1    0    1    1  ,  0    1\n'
-            + ' 2³   2²   2¹   2⁰    2⁻¹  2⁻²\n'
-            + '  8    4    2    1   0,5  0,25'
-            + '</pre>'
+            '<p>Wir schreiben die Zahl <code>1011,01<sub>2</sub></code> mit ihren Stellenwerten auf. Vorkommastellen werden von rechts durchnummeriert (2⁰, 2¹, 2², 2³), Nachkommastellen von links (2⁻¹, 2⁻²).</p>'
+            + '<p>Jede <strong>1</strong> trägt mit ihrem Stellenwert zur Summe bei (blau markiert):</p>',
+          visuals: [
+            {
+              type: 'stellenwert-viz',
+              digits: ['1','0','1','1',',','0','1'],
+              exponents: [3,2,1,0,null,-1,-2],
+              values: [8,4,2,1,null,0.5,0.25],
+              base: 2,
+              result: 11.25,
+              label: '1011,01₂ als Stellenwert-Zerlegung'
+            }
+          ]
         },
         {
           label: 'Schritt 2 – Stellenwerte aufsummieren',
@@ -122,7 +129,7 @@ const LessonsA1 = [
         + '<strong>Analogie aus dem Alltag:</strong> Eine Dezimalzahl in Binär umzurechnen ist wie Geld in kleine Münzen zu wechseln – du gibst immer die größte passende Münze und rechnest den Rest weiter runter. Der Trick: Die "Münzen" sind nicht 1€, 2€, 5€, sondern Zweierpotenzen (1, 2, 4, 8, 16, 32, 64, 128 …).'
         + '</div>'
         + '<h3>Richtung 1: Binär → Dezimal (einfach)</h3>'
-        + '<p>Stellenwerte aufschreiben, bei jeder 1 addieren – das ist genau das Verfahren aus Lektion 22. Nachkommastellen nicht vergessen!</p>'
+        + '<p>Stellenwerte aufschreiben, bei jeder 1 addieren. Beispiel <code>101011<sub>2</sub></code> unten:</p>'
         + '<h3>Richtung 2: Dezimal → Binär (Algorithmus)</h3>'
         + '<p>Für Dezimalzahl <em>n</em> ≥ 0 gibt es einen festen Algorithmus (aus der Vorlesung):</p>'
         + '<div class="info-card" style="padding:12px;background:#f3f4f6;border-radius:6px;">'
@@ -153,7 +160,18 @@ const LessonsA1 = [
         + '</div>'
         + '<div class="why-context">'
         + '<strong>Warum lernen wir das?</strong> Ein Computer kennt nur Binär. Jede Eingabe (Tastatur, Datei, Netzwerk) muss in Binär übersetzt werden – und umgekehrt für die Anzeige. Wenn du ein Programm schreibst, das eine Zahl speichert oder eine Farbe darstellt, läuft diese Umrechnung im Hintergrund. Außerdem ist das <em>das</em> typische Klausur-Muster: 6 Punkte auf dem A1-Blatt, oft verdoppelt in der finalen Klausur.'
-        + '</div>'
+        + '</div>',
+      visuals: [
+        {
+          type: 'stellenwert-viz',
+          digits: ['1','0','1','0','1','1'],
+          exponents: [5,4,3,2,1,0],
+          values: [32,16,8,4,2,1],
+          base: 2,
+          result: 43,
+          label: 'Binär → Dezimal: 101011₂ = 43₁₀'
+        }
+      ]
     },
     example: {
       title: 'Beispiel: 21,75₁₀ → Binär',

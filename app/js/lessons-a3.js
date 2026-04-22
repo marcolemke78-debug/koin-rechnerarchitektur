@@ -1,3 +1,18 @@
+// Gemeinsame Beispielbäume für A3 (zur Wiederverwendung)
+const A3_BEISPIELBAUM = {
+  value: 10,
+  left: {
+    value: 5,
+    left: { value: 2, left: { value: 1 }, right: { value: 3 } },
+    right: { value: 8 }
+  },
+  right: {
+    value: 14,
+    left: { value: 12, right: { value: 13 } },
+    right: { value: 17 }
+  }
+};
+
 const LessonsA3 = [
 
   // ===== LEKTION 32: Binäre Suchbäume – Grundlagen =====
@@ -9,98 +24,67 @@ const LessonsA3 = [
         '<h2>Binäre Suchbäume – Grundlagen</h2>'
         + '<p>Ein binärer Suchbaum (BST = Binary Search Tree) ist eine <strong>Datenstruktur</strong>, die Zahlen so speichert, dass man sehr schnell suchen kann. Der Name kommt daher, dass jeder Knoten maximal <em>zwei</em> Kinder hat.</p>'
         + '<div class="analogy-box">'
-        + '<strong>Analogie aus dem Alltag:</strong> Stell dir die Suche in einem dicken Wörterbuch vor. Du schlägst in der Mitte auf – dein Wort steht links oder rechts. Du machst wieder die Mitte der richtigen Hälfte auf – wieder links oder rechts. Nach ~20 Schritten bist du am Ziel, auch bei 1 Million Einträgen. Genau das macht ein binärer Suchbaum: Jeder Knoten trifft eine Entscheidung, Hälfte des Suchraums fällt weg.'
+        + '<strong>Analogie aus dem Alltag:</strong> Stell dir die Suche in einem dicken Wörterbuch vor. Du schlägst in der Mitte auf – dein Wort steht links oder rechts. Du machst wieder die Mitte der richtigen Hälfte auf – wieder links oder rechts. Nach ~20 Schritten bist du am Ziel, auch bei 1 Million Einträgen. Genau das macht ein binärer Suchbaum.'
         + '</div>'
-        + '<h3>Fachbegriffe (Klausur!)</h3>'
-        + '<ul>'
-        + '<li><strong>Wurzel</strong>: Der oberste Knoten (keine Eltern)</li>'
-        + '<li><strong>Kinder</strong>: Direkt darunter hängende Knoten (links &amp; rechts)</li>'
-        + '<li><strong>Elternknoten</strong>: Der Knoten, von dem ein Kind hängt</li>'
-        + '<li><strong>Blatt</strong> (Blattknoten): Knoten ohne Kinder</li>'
-        + '<li><strong>Innerer Knoten</strong>: Knoten mit mindestens einem Kind (und nicht die Wurzel)</li>'
-        + '<li><strong>Nullzeiger</strong>: Fehlender Kind-Verweis (intern "null")</li>'
-        + '<li><strong>Teilbaum</strong>: Jeder Knoten mit seinen Nachfolgern bildet wieder einen BST</li>'
-        + '</ul>'
-        + '<h3>Die BST-Eigenschaft (Pflichtregel!)</h3>'
-        + '<div class="info-card" style="padding:12px;background:#eff6ff;border-left:3px solid #2563EB;">'
-        + '<strong>Für jeden Knoten K gilt:</strong>'
-        + '<ul style="margin:8px 0 0 20px;">'
-        + '<li>Alle Schlüssel im <em>linken Teilbaum</em> sind <strong>kleiner</strong> als K</li>'
-        + '<li>Alle Schlüssel im <em>rechten Teilbaum</em> sind <strong>größer</strong> als K</li>'
-        + '<li>Keine doppelten Schlüssel (im Kontaktstudium strikt!)</li>'
-        + '</ul>'
-        + '</div>'
-        + '<div class="warning-box">'
-        + '<strong>Achtung Klausurfalle:</strong> Die Regel gilt nicht nur für direkte Kinder, sondern für <em>alle</em> Knoten im jeweiligen Teilbaum. Ein Knoten mit Wert 10 im linken Teilbaum einer 15 ist ok – aber derselbe Knoten mit 10 weiter unten rechts von einer 12 wäre falsch.'
-        + '</div>'
-        + '<h3>Suche nach einem Schlüssel</h3>'
-        + '<ol>'
-        + '<li>Mit der Wurzel beginnen</li>'
-        + '<li>Gesuchter Wert &lt; aktueller Knoten → links weiter</li>'
-        + '<li>Gesuchter Wert &gt; aktueller Knoten → rechts weiter</li>'
-        + '<li>Wert gleich → gefunden</li>'
-        + '<li>Kein Kind mehr vorhanden → nicht enthalten ("key not found")</li>'
-        + '</ol>'
-        + '<h3>Vorteile &amp; Nachteile</h3>'
-        + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">'
-        + '<div class="tip-box">'
-        + '<strong>Vorteil:</strong> Bei einem <em>balancierten</em> Baum ist die Suche in ⌈log₂ n⌉ Schritten fertig – bei 1 Mio. Einträgen sind das ~20 Schritte.'
-        + '</div>'
-        + '<div class="warning-box">'
-        + '<strong>Nachteil:</strong> Bei ungünstiger Einfüge-Reihenfolge (z.B. sortiert) <em>entartet</em> der Baum zu einer Liste – Suche dauert dann n Schritte statt log n.'
-        + '</div>'
-        + '</div>'
-        + '<div class="why-context">'
-        + '<strong>Warum lernen wir das?</strong> BSTs sind die Grundlage von Mengen-Datenstrukturen (Set, TreeMap in Java), Datenbank-Indizes, Dateisystemen. Wer BST versteht, versteht, warum sortiertes Speichern so schnell ist. In der Klausur zuverlässig gefragt: BST zeichnen, nach einer Reihe von insert-Operationen.'
-        + '</div>'
+        + '<h3>Fachbegriffe am Beispielbaum</h3>'
+        + '<p>Der Baum unten ist unser Arbeits-Beispielbaum. Jeder Knoten ist eine Zahl. Die Verbindungslinien zeigen die Eltern-Kind-Beziehung.</p>',
+      visuals: [
+        { type: 'bst-viz', tree: A3_BEISPIELBAUM, label: 'Beispielbaum mit 9 Knoten' }
+      ]
     },
     example: {
-      title: 'Beispiel: Beispielbaum analysieren',
+      title: 'Fachbegriffe + Suche nach 13',
       steps: [
         {
-          label: 'Gegebener Baum',
-          html:
-            '<pre style="background:#f3f4f6;padding:10px;border-radius:4px;font-family:monospace;text-align:center;">'
-            + '        10\n'
-            + '       /  \\\n'
-            + '      5    14\n'
-            + '     / \\   / \\\n'
-            + '    2   8 12  17\n'
-            + '   / \\     \\\n'
-            + '  1   3    13</pre>'
-        },
-        {
-          label: 'Fachbegriffe zuordnen',
+          label: 'Schritt 1 – Fachbegriffe zuordnen',
           html:
             '<ul>'
-            + '<li><strong>Wurzel</strong>: 10</li>'
-            + '<li><strong>Blätter</strong>: 1, 3, 8, 13, 17 (keine Kinder)</li>'
-            + '<li><strong>Innere Knoten</strong>: 5, 2, 14, 12 (je mindestens 1 Kind)</li>'
-            + '<li><strong>Elternknoten von 13</strong>: 12</li>'
+            + '<li><strong>Wurzel</strong>: 10 (ganz oben, keine Eltern)</li>'
+            + '<li><strong>Blätter</strong>: 1, 3, 8, 13, 17 (haben keine Kinder → unten gelb markiert)</li>'
+            + '<li><strong>Innere Knoten</strong>: 5, 2, 14, 12</li>'
+            + '<li><strong>Elternknoten von 13</strong>: der Knoten 12</li>'
             + '<li><strong>Linker Teilbaum der Wurzel</strong>: alles unter 5</li>'
-            + '</ul>'
+            + '</ul>',
+          visuals: [
+            { type: 'bst-viz', tree: A3_BEISPIELBAUM, highlight: [1,3,8,13,17], label: 'Blätter gelb markiert' }
+          ]
         },
         {
-          label: 'Suche nach 13',
+          label: 'Schritt 2 – Suche nach 13',
           html:
-            '<ol>'
+            '<p>Der rote Pfad zeigt den Suchweg für die Zahl <strong>13</strong>:</p>'
+            + '<ol>'
             + '<li>Start bei Wurzel 10. 13 &gt; 10 → rechts</li>'
             + '<li>Bei 14. 13 &lt; 14 → links</li>'
             + '<li>Bei 12. 13 &gt; 12 → rechts</li>'
             + '<li>Bei 13. Treffer!</li>'
             + '</ol>'
-            + '<p>Nur 4 Schritte bei 9 Knoten – das ist die Stärke des BST.</p>'
+            + '<p>Nur 4 Schritte bei 9 Knoten – das ist die Stärke des BST.</p>',
+          visuals: [
+            { type: 'bst-viz', tree: A3_BEISPIELBAUM, highlightPath: [10,14,12,13], label: 'Suchpfad von 13 (rot)' }
+          ]
         },
         {
-          label: 'BST-Eigenschaft prüfen',
+          label: 'Schritt 3 – BST-Eigenschaft prüfen',
           html:
-            '<p>Für jeden Knoten schauen: Alle links kleiner, alle rechts größer?</p>'
+            '<div class="info-card" style="padding:12px;background:#eff6ff;border-left:3px solid #2563EB;">'
+            + '<strong>Für jeden Knoten K gilt:</strong>'
+            + '<ul style="margin:8px 0 0 20px;">'
+            + '<li>Alle Schlüssel im <em>linken Teilbaum</em> sind <strong>kleiner</strong> als K</li>'
+            + '<li>Alle Schlüssel im <em>rechten Teilbaum</em> sind <strong>größer</strong> als K</li>'
+            + '<li>Keine doppelten Schlüssel (im Kontaktstudium strikt!)</li>'
+            + '</ul>'
+            + '</div>'
+            + '<p>Kurzer Check am Baum:</p>'
             + '<ul>'
             + '<li>Wurzel 10: links (5,2,1,3,8) alle &lt; 10 ✓ ; rechts (14,12,13,17) alle &gt; 10 ✓</li>'
             + '<li>Knoten 5: links (2,1,3) alle &lt; 5 ✓ ; rechts (8) &gt; 5 ✓</li>'
             + '<li>Knoten 14: links (12,13) alle &lt; 14 ✓ ; rechts (17) &gt; 14 ✓</li>'
             + '</ul>'
-            + '<p>Alle Knoten erfüllen die Regel → gültiger binärer Suchbaum.</p>'
+            + '<p>Alle Knoten erfüllen die Regel → gültiger BST.</p>'
+            + '<div class="warning-box">'
+            + '<strong>Klausurfalle:</strong> Die Regel gilt nicht nur für direkte Kinder, sondern für <em>alle</em> Knoten im jeweiligen Teilbaum.'
+            + '</div>'
         }
       ]
     },
@@ -110,7 +94,7 @@ const LessonsA3 = [
         question: 'Wie nennt man einen Knoten ohne Kinder in einem Binärbaum?',
         options: ['Wurzel', 'Innerer Knoten', 'Blatt(knoten)', 'Nullzeiger'],
         correct: 2,
-        explanation: 'Ein Blattknoten (oder kurz Blatt) hat keine Kinder. Intern hat er statt Kind-Verweisen zwei Nullzeiger.'
+        explanation: 'Ein Blattknoten hat keine Kinder. Intern hat er statt Kind-Verweisen zwei Nullzeiger.'
       },
       {
         type: 'multiple-choice',
@@ -129,7 +113,7 @@ const LessonsA3 = [
         question: 'Bei einem idealen balancierten BST mit n Knoten – wie viele Schritte braucht eine Suche im schlimmsten Fall?',
         options: ['n', 'n/2', '⌈log₂ n⌉', '2^n'],
         correct: 2,
-        explanation: 'Bei balanciertem Baum halbiert jeder Schritt den Suchraum → logarithmische Laufzeit. Bei entartetem Baum (Sonderfall) wäre es n.'
+        explanation: 'Bei balanciertem Baum halbiert jeder Schritt den Suchraum → logarithmische Laufzeit. Bei entartetem Baum wäre es n.'
       },
       {
         type: 'multiple-choice',
@@ -155,78 +139,106 @@ const LessonsA3 = [
         '<h2>BST – Schlüssel einfügen</h2>'
         + '<p>Einfügen ist die einfachste Operation auf einem BST. Die Regel: Neue Knoten landen <strong>immer</strong> als Blätter – und zwar an der Stelle, an der die Suche nach ihrem Wert ins Leere läuft.</p>'
         + '<div class="analogy-box">'
-        + '<strong>Analogie aus dem Alltag:</strong> Stell dir vor, du ordnest Bücher in ein Regal nach Titel. Für ein neues Buch suchst du den richtigen Platz: immer vergleichen mit dem aktuellen Buch (kleiner → links weiter, größer → rechts weiter). Irgendwann findest du eine Lücke – genau dort stellst du es rein. So macht es der BST auch.'
+        + '<strong>Analogie aus dem Alltag:</strong> Stell dir vor, du ordnest Bücher in ein Regal nach Titel. Für ein neues Buch suchst du den richtigen Platz: immer vergleichen (kleiner → links weiter, größer → rechts weiter). Irgendwann findest du eine Lücke – dort stellst du es rein. So macht es der BST auch.'
         + '</div>'
         + '<h3>Das Verfahren</h3>'
         + '<ol>'
-        + '<li>Wenn Baum leer: Der neue Knoten wird <strong>Wurzel</strong>. Fertig.</li>'
+        + '<li>Wenn Baum leer: Der neue Knoten wird <strong>Wurzel</strong></li>'
         + '<li>Sonst: Mit der Wurzel beginnen</li>'
         + '<li>Neuer Wert &lt; aktueller Knoten → links weitergehen</li>'
         + '<li>Neuer Wert &gt; aktueller Knoten → rechts weitergehen</li>'
-        + '<li>Wenn das nächste Kind "null" ist: Neuen Knoten <em>dort</em> als Blatt einfügen</li>'
+        + '<li>Nächstes Kind "null" → Neuen Knoten <em>dort</em> als Blatt einfügen</li>'
         + '</ol>'
-        + '<div class="info-card" style="padding:10px;">'
-        + '<strong>Kernregel:</strong> Beim Einfügen bewegst du dich exakt wie bei der Suche – solange, bis du "über das Blatt hinaus" gehen würdest. Dort wird der neue Knoten eingefügt.'
-        + '</div>'
-        + '<h3>Warum immer als Blatt?</h3>'
-        + '<p>Würde man Knoten irgendwo mittendrin einfügen, müsste man Teilbäume umordnen – das wäre aufwändig und fehleranfällig. Die "immer als Blatt"-Regel garantiert, dass die BST-Eigenschaft automatisch erhalten bleibt.</p>'
-        + '<div class="warning-box">'
-        + '<strong>Reihenfolge zählt!</strong> Zwei Einfüge-Sequenzen mit denselben Zahlen in unterschiedlicher Reihenfolge ergeben <em>unterschiedliche</em> Bäume.<br>'
-        + 'insert(10,5,15): ausgewogen, Wurzel = 10<br>'
-        + 'insert(5,10,15): Liste nach rechts, Wurzel = 5'
-        + '</div>'
-        + '<div class="why-context">'
-        + '<strong>Warum lernen wir das?</strong> Einfügen + Suchen sind die beiden Operationen, die man <em>immer</em> auf einem BST macht. In der Klausur wird fast immer verlangt: "Führe folgende insert-Operationen aus und zeichne den Baum." Wer das sicher zeichnet, sammelt zuverlässig Punkte.'
-        + '</div>'
+        + '<p>Unten siehst du einen Baum <em>vor</em> und <em>nach</em> dem insert(11). Der neue Knoten ist grün markiert.</p>',
+      visuals: [
+        {
+          type: 'bst-viz',
+          tree: A3_BEISPIELBAUM,
+          label: 'Vorher: Baum ohne 11'
+        },
+        {
+          type: 'bst-viz',
+          tree: {
+            value: 10,
+            left: {
+              value: 5,
+              left: { value: 2, left: { value: 1 }, right: { value: 3 } },
+              right: { value: 8 }
+            },
+            right: {
+              value: 14,
+              left: { value: 12, left: { value: 11 }, right: { value: 13 } },
+              right: { value: 17 }
+            }
+          },
+          newNode: 11,
+          highlightPath: [10, 14, 12],
+          label: 'Nachher: insert(11) – grün = neuer Knoten, rot = Suchpfad'
+        }
+      ]
     },
     example: {
       title: 'Beispiel: insert(24,20,18,12,28,25,120,22,19)',
       steps: [
         {
-          label: 'insert(24)',
+          label: 'Schritt 1 – insert(24): Baum war leer',
           html:
-            '<p>Baum leer → 24 wird Wurzel.</p>'
-            + '<pre style="font-family:monospace;">24</pre>'
+            '<p>Leerer Baum → 24 wird Wurzel.</p>',
+          visuals: [
+            { type: 'bst-viz', tree: { value: 24 }, newNode: 24 }
+          ]
         },
         {
-          label: 'insert(20)',
+          label: 'Schritt 2 – insert(20, 18, 12)',
           html:
-            '<p>20 &lt; 24 → links, dort leer → einfügen.</p>'
-            + '<pre style="font-family:monospace;">'
-            + '  24\n'
-            + '  /\n'
-            + ' 20</pre>'
+            '<p>20 &lt; 24 → links von 24. 18 &lt; 20 → links von 20. 12 &lt; 18 → links von 18.</p>',
+          visuals: [
+            { type: 'bst-viz', tree: {
+              value: 24,
+              left: {
+                value: 20,
+                left: {
+                  value: 18,
+                  left: { value: 12 }
+                }
+              }
+            }, newNode: 12 }
+          ]
         },
         {
-          label: 'insert(18)',
+          label: 'Schritt 3 – insert(28, 25, 120)',
           html:
-            '<p>18 &lt; 24 → links zu 20. 18 &lt; 20 → links, leer → einfügen.</p>'
-            + '<pre style="font-family:monospace;">'
-            + '    24\n'
-            + '    /\n'
-            + '  20\n'
-            + '  /\n'
-            + ' 18</pre>'
+            '<p>28 &gt; 24 → rechts von 24. 25 &lt; 28 → links von 28. 120 &gt; 28 → rechts von 28.</p>',
+          visuals: [
+            { type: 'bst-viz', tree: {
+              value: 24,
+              left: { value: 20, left: { value: 18, left: { value: 12 } } },
+              right: { value: 28, left: { value: 25 }, right: { value: 120 } }
+            }, newNode: 120 }
+          ]
         },
         {
-          label: 'insert(12,28,25,120,22,19) – Endergebnis',
+          label: 'Schritt 4 – insert(22, 19): Endbaum',
           html:
-            '<p>Alle weiteren Schritte analog. Nachverfolgen des Pfades für <strong>19</strong>:</p>'
+            '<p>22: &lt;24 links → &gt;20 rechts → einfügen. 19: &lt;24 links → &lt;20 links → &gt;18 rechts → ABER rechts von 18 gibt es jetzt 22 → weiter; 19 &lt; 22 → links von 22.</p>'
+            + '<div class="warning-box"><strong>Achtung:</strong> Nach Einfügen von 22 ist 22 das rechte Kind von 20 (nicht von 18!). Auf dem Pfad zu 19 kommt man an 22 vorbei.</div>'
+            + '<p><em>Moment</em> – das ist nicht ganz richtig. Wir schauen genau hin:</p>'
             + '<ul>'
-            + '<li>19 &lt; 24 → links zu 20</li>'
-            + '<li>19 &lt; 20 → links zu 18</li>'
-            + '<li>19 &gt; 18 → rechts zu 22 (22 war nach 20.rechts eingefügt worden)</li>'
-            + '<li>19 &lt; 22 → links, dort leer → einfügen</li>'
+            + '<li>insert(22): 22&lt;24 L, 22&gt;20 R → leer → einfügen (22 wird rechtes Kind von 20)</li>'
+            + '<li>insert(19): 19&lt;24 L, 19&lt;20 L, 19&gt;18 R → leer → einfügen (19 wird rechtes Kind von 18)</li>'
             + '</ul>'
-            + '<p>Endbaum:</p>'
-            + '<pre style="font-family:monospace;line-height:1.4;">'
-            + '            24\n'
-            + '           /  \\\n'
-            + '         20    28\n'
-            + '         /\\    / \\\n'
-            + '       18 22  25 120\n'
-            + '       /  /\n'
-            + '     12  19</pre>'
+            + '<p>Der endgültige Baum:</p>',
+          visuals: [
+            { type: 'bst-viz', tree: {
+              value: 24,
+              left: {
+                value: 20,
+                left: { value: 18, left: { value: 12 }, right: { value: 19 } },
+                right: { value: 22 }
+              },
+              right: { value: 28, left: { value: 25 }, right: { value: 120 } }
+            }, newNode: 19 }
+          ]
         }
       ]
     },
@@ -272,7 +284,7 @@ const LessonsA3 = [
           'Der BST wird zurückgesetzt.'
         ],
         correct: 1,
-        explanation: 'Im Kontaktstudium wird explizit festgelegt, dass keine doppelten Schlüssel erlaubt sind. In realen Implementierungen gibt es verschiedene Strategien (Zähler hochzählen, Liste bilden, ignorieren).'
+        explanation: 'Im Kontaktstudium wird explizit festgelegt, dass keine doppelten Schlüssel erlaubt sind.'
       }
     ]
   },
@@ -284,80 +296,100 @@ const LessonsA3 = [
     explanation: {
       html:
         '<h2>BST – Schlüssel löschen</h2>'
-        + '<p>Löschen ist die <strong>kniffligste</strong> BST-Operation. Je nachdem, wo der zu löschende Knoten im Baum steht, gibt es drei Fälle – und dafür drei verschiedene Vorgehensweisen.</p>'
+        + '<p>Löschen ist die <strong>kniffligste</strong> BST-Operation. Je nachdem, wo der zu löschende Knoten steht, gibt es drei Fälle.</p>'
         + '<div class="analogy-box">'
-        + '<strong>Analogie aus dem Alltag:</strong> Stell dir eine Firmen-Hierarchie vor. Einen Chef ohne Mitarbeiter kannst du einfach entfernen. Einen Chef mit einer Stellvertretung kannst du durch die Stellvertretung ersetzen. Aber einen Chef mit zwei Abteilungsleitern darunter? Da musst du einen der Leiter als Nachfolger ernennen – und dessen alte Position wieder neu besetzen. Genau das macht der BST bei den drei Löschfällen.'
+        + '<strong>Analogie aus dem Alltag:</strong> Stell dir eine Firmen-Hierarchie vor. Einen Chef ohne Mitarbeiter kannst du einfach entfernen. Einen Chef mit einer Stellvertretung kannst du durch die Stellvertretung ersetzen. Aber einen Chef mit zwei Abteilungsleitern? Da musst du einen als Nachfolger ernennen – und dessen Position wieder neu besetzen.'
         + '</div>'
-        + '<h3>Fall 1: Knoten hat keine Kinder (Blatt)</h3>'
-        + '<p>Einfach: Den Verweis aus dem Elternknoten auf <code>null</code> setzen. Fertig.</p>'
-        + '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
-        + 'Vorher:      Nachher:\n'
-        + '   5           5\n'
-        + '  /             \n'
-        + ' 3  ←löschen    null</pre>'
-        + '<h3>Fall 2: Knoten hat genau ein Kind</h3>'
-        + '<p>Den Elternknoten <em>überspringen</em>: Der Elternknoten zeigt jetzt direkt auf das einzige Kind.</p>'
-        + '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
-        + 'Vorher:         Nachher:\n'
-        + '   10             10\n'
-        + '    \\              \\\n'
-        + '    14 ←löschen    13\n'
-        + '   /\n'
-        + '  13</pre>'
-        + '<h3>Fall 3: Knoten hat zwei Kinder (der schwierigste Fall)</h3>'
-        + '<p>Den Schlüssel des zu löschenden Knotens durch einen <strong>Ersatz-Schlüssel</strong> ersetzen. Zwei gültige Möglichkeiten:</p>'
-        + '<ul>'
-        + '<li>Der <strong>linkeste Knoten im rechten Teilbaum</strong> (kleinster Wert, der größer als der gelöschte ist)</li>'
-        + '<li>Der <strong>rechteste Knoten im linken Teilbaum</strong> (größter Wert, der kleiner als der gelöschte ist)</li>'
-        + '</ul>'
-        + '<p>Diese Ersatz-Knoten haben garantiert höchstens 1 Kind – sie können per Fall 1 oder 2 wegbewegt werden.</p>'
-        + '<div class="tip-box">'
-        + '<strong>In Klausuren:</strong> Wenn die Aufgabe "remove" sagt und die Lösung "alle Möglichkeiten" verlangt, MUSST du beide Varianten zeichnen (linkeste rechts ODER rechteste links). Das ist eine häufige Falle.'
-        + '</div>'
-        + '<h3>Vorteile &amp; Nachteile des BST – Nachtrag</h3>'
-        + '<p>Wie schon erwähnt: Bei ungünstiger Einfüge- und Löschreihenfolge kann der Baum entarten. Es gibt daher in der Praxis <em>balancierte Bäume</em> (AVL-Baum, Rot-Schwarz-Baum, B-Baum). Die sind nicht Klausurstoff in A3, werden aber in AlgoDat weitergeführt.</p>'
-        + '<div class="why-context">'
-        + '<strong>Warum lernen wir das?</strong> Löschen ist der Unterschied zwischen "BST verstanden" und "BST verstanden und angewendet". In der Klausur kommen oft remove-Aufgaben mit 2 Kindern – genau der Fall, der die meisten Punkte bringt, weil er die meisten Teilschritte hat.'
-        + '</div>'
+        + '<h3>Fall 1: Blatt löschen (keine Kinder)</h3>'
+        + '<p>Einfach den Verweis aus dem Elternknoten auf <code>null</code> setzen. Unten: remove(3).</p>',
+      visuals: [
+        {
+          type: 'bst-viz',
+          tree: A3_BEISPIELBAUM,
+          highlight: [3],
+          label: 'Vorher: der Knoten 3 (gelb) ist ein Blatt'
+        },
+        {
+          type: 'bst-viz',
+          tree: {
+            value: 10,
+            left: {
+              value: 5,
+              left: { value: 2, left: { value: 1 } },
+              right: { value: 8 }
+            },
+            right: {
+              value: 14,
+              left: { value: 12, right: { value: 13 } },
+              right: { value: 17 }
+            }
+          },
+          label: 'Nachher: 3 ist verschwunden'
+        }
+      ]
     },
     example: {
-      title: 'Beispiel: remove(24) im BST',
+      title: 'Fall 2 und Fall 3 durchspielen',
       steps: [
         {
-          label: 'Ausgangsbaum',
+          label: 'Fall 2: Knoten mit einem Kind – remove(12)',
           html:
-            '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
-            + '          24\n'
-            + '         /  \\\n'
-            + '       20    28\n'
-            + '       /\\\n'
-            + '     18 22</pre>'
-            + '<p>24 hat zwei Kinder (20 und 28) → Fall 3.</p>'
+            '<p>12 hat nur ein Kind (13). Der Elternknoten 14 überspringt 12 und zeigt direkt auf 13.</p>',
+          visuals: [
+            { type: 'bst-viz', tree: A3_BEISPIELBAUM, highlight: [12], label: 'Vorher: 12 soll gelöscht werden' },
+            {
+              type: 'bst-viz',
+              tree: {
+                value: 10,
+                left: { value: 5, left: { value: 2, left:{value:1}, right:{value:3} }, right: { value: 8 } },
+                right: { value: 14, left: { value: 13 }, right: { value: 17 } }
+              },
+              label: 'Nachher: 13 ist an die Stelle von 12 gerückt'
+            }
+          ]
         },
         {
-          label: 'Möglichkeit A: linkester im rechten Teilbaum',
+          label: 'Fall 3: Knoten mit zwei Kindern – remove(10)',
           html:
-            '<p>Rechter Teilbaum = nur 28. Linkester Knoten dort = 28 selbst (hat kein linkes Kind).</p>'
-            + '<p>24 durch 28 ersetzen, alten 28-Knoten entfernen (Blatt, Fall 1):</p>'
-            + '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
-            + '          28\n'
-            + '         /\n'
-            + '       20\n'
-            + '       /\\\n'
-            + '     18 22</pre>'
+            '<p>10 ist die Wurzel und hat zwei Kinder (5 und 14). Zwei gültige Ersatz-Strategien:</p>'
+            + '<ul>'
+            + '<li><strong>Linkester im rechten Teilbaum</strong> = 12 (ganz links im rechten Teilbaum)</li>'
+            + '<li><strong>Rechtester im linken Teilbaum</strong> = 8 (ganz rechts im linken Teilbaum)</li>'
+            + '</ul>'
+            + '<p>Unten beide Möglichkeiten:</p>',
+          visuals: [
+            {
+              type: 'bst-viz',
+              tree: {
+                value: 12,
+                left: { value: 5, left: { value: 2, left:{value:1}, right:{value:3} }, right: { value: 8 } },
+                right: { value: 14, left: { value: 13 }, right: { value: 17 } }
+              },
+              highlight: [12],
+              label: 'Variante A: linkester im rechten Teilbaum (12) ersetzt Wurzel'
+            },
+            {
+              type: 'bst-viz',
+              tree: {
+                value: 8,
+                left: { value: 5, left: { value: 2, left:{value:1}, right:{value:3} } },
+                right: { value: 14, left: { value: 12, right:{value:13} }, right: { value: 17 } }
+              },
+              highlight: [8],
+              label: 'Variante B: rechtester im linken Teilbaum (8) ersetzt Wurzel'
+            }
+          ]
         },
         {
-          label: 'Möglichkeit B: rechtester im linken Teilbaum',
+          label: 'Zusammenfassung',
           html:
-            '<p>Linker Teilbaum = 20 mit Kindern 18,22. Rechtester Knoten dort = 22.</p>'
-            + '<p>24 durch 22 ersetzen, alten 22-Knoten entfernen (Blatt, Fall 1):</p>'
-            + '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
-            + '          22\n'
-            + '         /  \\\n'
-            + '       20    28\n'
-            + '       /\n'
-            + '     18</pre>'
-            + '<p>Beide Lösungen sind gültig. In der Klausur: beide zeichnen!</p>'
+            '<table class="icon-table" style="border-collapse:collapse;margin:8px 0;">'
+            + '<tr style="background:#eff6ff"><th style="padding:6px;border:1px solid #ccc;">Fall</th><th style="padding:6px;border:1px solid #ccc;">Vorgehen</th></tr>'
+            + '<tr><td style="padding:6px;border:1px solid #ccc;">1 – Blatt</td><td style="padding:6px;border:1px solid #ccc;">Eltern-Verweis auf null</td></tr>'
+            + '<tr><td style="padding:6px;border:1px solid #ccc;">2 – 1 Kind</td><td style="padding:6px;border:1px solid #ccc;">Knoten überspringen, Eltern zeigt auf Kind</td></tr>'
+            + '<tr><td style="padding:6px;border:1px solid #ccc;">3 – 2 Kinder</td><td style="padding:6px;border:1px solid #ccc;">Ersatz = linkester rechts ODER rechtester links</td></tr>'
+            + '</table>'
+            + '<div class="tip-box"><strong>Klausur:</strong> Bei remove mit 2 Kindern IMMER beide Möglichkeiten zeichnen, wenn die Aufgabe das verlangt!</div>'
         }
       ]
     },
@@ -384,7 +416,7 @@ const LessonsA3 = [
           'Antworten 1 und 2 sind beide korrekt.'
         ],
         correct: 3,
-        explanation: 'Beide Varianten sind gültig – welche man wählt, ist eine Designentscheidung. Wichtig: Diese Ersatzknoten haben immer höchstens 1 Kind, lassen sich also anschließend per Fall 1 oder 2 bewegen.'
+        explanation: 'Beide Varianten sind gültig. Diese Ersatzknoten haben immer höchstens 1 Kind – sie lassen sich anschließend per Fall 1 oder 2 bewegen.'
       },
       {
         type: 'multiple-choice',
@@ -396,7 +428,7 @@ const LessonsA3 = [
           'Das stimmt nicht, er kann zwei Kinder haben.'
         ],
         correct: 1,
-        explanation: 'Definition "linkester": Folge so lange nach links, bis kein linkes Kind mehr da ist. Ein linkes Kind hat er also definitionsgemäß nicht. Ein rechtes Kind wäre aber erlaubt – darum "höchstens 1 Kind".'
+        explanation: 'Definition "linkester": Folge so lange nach links, bis kein linkes Kind mehr da ist. Ein linkes Kind hat er also definitionsgemäß nicht.'
       },
       {
         type: 'multiple-choice',
@@ -408,7 +440,7 @@ const LessonsA3 = [
           'Er ist kompliziert zu zeichnen.'
         ],
         correct: 1,
-        explanation: 'Der unbalancierte BST kann bei sortierter Eingabe zu einer Kette entarten. In der Praxis nimmt man darum balancierte Varianten (AVL-Baum, Rot-Schwarz-Baum).'
+        explanation: 'Der unbalancierte BST kann bei sortierter Eingabe zu einer Kette entarten. Darum nimmt man in der Praxis balancierte Varianten.'
       }
     ]
   },
@@ -420,54 +452,39 @@ const LessonsA3 = [
     explanation: {
       html:
         '<h2>Hashing – Streuspeicherung</h2>'
-        + '<p>Hashing ist eine Technik, die <strong>beliebige Schlüssel</strong> (Zahlen, Namen, Buchtitel …) auf einen festen Bereich von Array-Indizes abbildet. Das Ziel: direkter Zugriff in <em>einem Schritt</em>, unabhängig von der Anzahl der Einträge.</p>'
+        + '<p>Hashing bildet beliebige Schlüssel (Zahlen, Namen …) auf Array-Indizes ab – Zugriff in <em>einem Schritt</em>, unabhängig von der Anzahl der Einträge.</p>'
         + '<div class="analogy-box">'
-        + '<strong>Analogie aus dem Alltag:</strong> Denk an die Postfächer in einer Universität. Jeder Student hat ein eigenes Fach – das Fach wird aus seiner Matrikelnummer berechnet (z.B. "letzte drei Ziffern"). Die Nachricht landet direkt im richtigen Fach, ohne dass der Pförtner die Liste aller 10.000 Studenten durchsucht. Hashing macht genau das für Daten: Schlüssel → Index → direktes Fach.'
+        + '<strong>Analogie aus dem Alltag:</strong> Denk an die Postfächer an der Uni. Jeder Student bekommt ein Fach, das aus seiner Matrikelnummer berechnet wird (z.B. "letzte drei Ziffern"). Die Post landet direkt im richtigen Fach – ohne dass der Pförtner die Liste aller 10.000 Studenten durchsucht.'
         + '</div>'
-        + '<h3>Das Problem: Platz sparen</h3>'
-        + '<ul>'
-        + '<li>6-stellige Matrikelnummern: 10⁶ = 1 Mio. mögliche Werte</li>'
-        + '<li>Tatsächlich verwendet: ca. 10.000 Studenten</li>'
-        + '<li>Ein Array mit 1 Mio. Einträgen wäre Speicherverschwendung → <strong>Streuspeicherung</strong></li>'
-        + '</ul>'
-        + '<h3>Die Hashfunktion h(k)</h3>'
-        + '<p>Eine Hashfunktion bildet jeden Schlüssel k auf einen Index 0 ≤ h(k) ≤ m-1 ab, wobei m die Größe der Hashtabelle ist.</p>'
-        + '<div class="info-card" style="padding:10px;">'
-        + '<strong>Anforderungen an eine gute Hashfunktion:</strong>'
-        + '<ul style="margin:8px 0 0 20px;">'
-        + '<li>Schnell berechenbar</li>'
-        + '<li>Möglichst gleichmäßige Verteilung auf die Plätze</li>'
-        + '<li>Deterministisch (gleicher Schlüssel → gleicher Index, immer)</li>'
-        + '</ul>'
-        + '</div>'
-        + '<h3>Divisions-Rest-Methode (Standard!)</h3>'
+        + '<h3>Die Divisions-Rest-Methode</h3>'
         + '<div class="info-card" style="padding:12px;text-align:center;font-size:1.1em;background:#eff6ff;">'
         + '<strong>h(k) = k mod m</strong>'
         + '</div>'
-        + '<p>Einfach und erstaunlich effektiv. Aber: Die Wahl von m ist kritisch!</p>'
-        + '<div class="tip-box">'
-        + '<strong>Regeln für m:</strong>'
+        + '<p>Einfach und effektiv. <strong>m</strong> ist die Größe der Hashtabelle. Die Wahl von m entscheidet über die Verteilung:</p>'
         + '<ul>'
         + '<li>Beste Wahl: <strong>Primzahlen</strong> (2, 3, 5, 7, 11, 13, …)</li>'
-        + '<li>Schlechte Wahl: Potenzen der Basis (z.B. m=100 oder m=32), weil dann nur die untersten Ziffern den Hash bestimmen</li>'
-        + '<li>Faustregel: m sollte ungefähr so groß sein wie die Anzahl erwarteter Einträge</li>'
+        + '<li>Schlechte Wahl: Potenzen der Basis (z.B. 100) – dann bestimmen nur die letzten Ziffern den Hash</li>'
         + '</ul>'
-        + '</div>'
         + '<h3>Das Problem der Kollisionen</h3>'
-        + '<p>Da es meist mehr mögliche Schlüssel gibt als Plätze, können zwei Schlüssel denselben Hashwert bekommen. Beispiel mit m=7:</p>'
+        + '<p>Da es meist mehr mögliche Schlüssel gibt als Plätze, können zwei Schlüssel denselben Hashwert bekommen. Beispiel:</p>'
         + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
         + 'h(15) = 15 mod 7 = 1\n'
         + 'h(43) = 43 mod 7 = 1   ← Kollision!</pre>'
-        + '<p>Kollisionen sind unvermeidbar – die Frage ist: Wie behandeln wir sie? (Nächste Lektion!)</p>'
-        + '<div class="why-context">'
-        + '<strong>Warum lernen wir das?</strong> Hashing steckt überall: Python-Dictionaries, Java HashMap, Datenbank-Indizes, Git (Commit-Hashes), Passwort-Speicherung, Cryptocurrency. Wer Hashing versteht, versteht einen großen Teil moderner Software-Architektur.'
-        + '</div>'
+        + '<p>Unten siehst du eine Hashtabelle mit m=7 und einigen Schlüsseln. An Position 1 gibt es eine Kollision (15 und 43).</p>',
+      visuals: [
+        {
+          type: 'hashtable-viz',
+          size: 7,
+          entries: [15, 2, 43, 53, 12],
+          label: 'Hashtabelle m=7, h(k)=k mod 7'
+        }
+      ]
     },
     example: {
-      title: 'Beispiel: Hashfunktion h(k) = k mod 7',
+      title: 'Beispiel: h(k) = k mod 7',
       steps: [
         {
-          label: 'Schlüssel hashen',
+          label: 'Schritt 1 – Hashwerte berechnen',
           html:
             '<p>Gegeben Schlüssel: [2, 15, 12, 53, 5, 43, 19]</p>'
             + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
@@ -480,7 +497,20 @@ const LessonsA3 = [
             + 'h(19) = 19 mod 7 = 5   ← Kollision mit 12 und 5!</pre>'
         },
         {
-          label: 'Warum ist m=7 besser als m=10?',
+          label: 'Schritt 2 – Tabelle aufbauen (Reihenfolge wichtig!)',
+          html:
+            '<p>Bei Kollisionen wird <em>hinten angehängt</em>:</p>',
+          visuals: [
+            {
+              type: 'hashtable-viz',
+              size: 7,
+              entries: [2, 15, 12, 53, 5, 43, 19],
+              label: 'Endzustand mit Verkettung'
+            }
+          ]
+        },
+        {
+          label: 'Warum m=7 besser ist als m=10',
           html:
             '<p>Mit m=10 würden alle Schlüssel auf Basis ihrer <em>letzten Ziffer</em> verteilt:</p>'
             + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
@@ -509,7 +539,7 @@ const LessonsA3 = [
         type: 'multiple-choice',
         question: 'Berechne h(111) für eine Hashtabelle der Größe 11 (h(k) = k mod 11).',
         options: ['0', '1', '10', '11'],
-        correct: 0,
+        correct: 1,
         explanation: '111 = 11·10 + 1, also 111 mod 11 = 1. Der Schlüssel 111 landet an Position 1.'
       },
       {
@@ -522,7 +552,7 @@ const LessonsA3 = [
           'Weil sie immer ungerade sind.'
         ],
         correct: 1,
-        explanation: 'Bei Potenzen der Basis (z.B. 10 oder 100) bestimmen nur die letzten Ziffern den Hash. Primzahlen streuen gleichmäßiger, weil sie keinen gemeinsamen Teiler mit typischen Schlüssel-Mustern haben.'
+        explanation: 'Bei Potenzen der Basis bestimmen nur die letzten Ziffern den Hash. Primzahlen streuen gleichmäßiger.'
       },
       {
         type: 'multiple-choice',
@@ -534,7 +564,7 @@ const LessonsA3 = [
           'Wenn ein Schlüssel mehrfach eingefügt wird.'
         ],
         correct: 1,
-        explanation: 'Kollision = zwei Schlüssel k₁ ≠ k₂, aber h(k₁) = h(k₂). Bei endlich vielen Plätzen und beliebig vielen Schlüsseln unvermeidbar – darum gibt es Kollisionsbehandlung (nächste Lektion).'
+        explanation: 'Kollision = zwei Schlüssel k₁ ≠ k₂, aber h(k₁) = h(k₂). Bei endlich vielen Plätzen und beliebig vielen Schlüsseln unvermeidbar.'
       }
     ]
   },
@@ -546,57 +576,33 @@ const LessonsA3 = [
     explanation: {
       html:
         '<h2>Kollisionsbehandlung durch Verkettung</h2>'
-        + '<p>Wenn zwei Schlüssel auf denselben Hashwert abbilden, brauchen wir eine Strategie, wie beide gespeichert werden können. Die einfachste Methode: <strong>Verkettung</strong>.</p>'
+        + '<p>Wenn zwei Schlüssel auf denselben Hashwert abbilden, brauchen wir eine Strategie. Die einfachste: <strong>Verkettung</strong>.</p>'
         + '<div class="analogy-box">'
-        + '<strong>Analogie aus dem Alltag:</strong> Denk an die Post-Fächer im Wohnheim. Wenn zwei Studenten zufällig dasselbe Fach bekommen (z.B. weil ihr Nachname mit demselben Buchstaben anfängt), wird das Fach eben zu einem kleinen Papierstapel – jedes Stück Post darin gehört potenziell einem der beiden. Du suchst dann im Stapel nach deinem Namen. Genau das ist Verkettung: Jeder Hashtabellen-Platz ist eine kleine <em>Liste</em>, keine einzelne Zelle.'
+        + '<strong>Analogie aus dem Alltag:</strong> Denk an die Post-Fächer im Wohnheim. Wenn zwei Studenten dasselbe Fach bekommen (gleicher Nachname-Anfang), wird das Fach zu einem kleinen Papierstapel – du suchst im Stapel nach deinem Namen.'
         + '</div>'
         + '<h3>Das Prinzip</h3>'
         + '<ul>'
         + '<li>Jeder Platz der Hashtabelle speichert eine <strong>verkettete Liste</strong></li>'
-        + '<li>Bei Kollision wird der neue Eintrag <em>hinten an die Liste angehängt</em></li>'
-        + '<li>Bei der Suche: Erst Hashwert berechnen → Liste durchsuchen bis Schlüssel gefunden</li>'
+        + '<li>Bei Kollision wird neuer Eintrag <em>hinten an die Liste angehängt</em></li>'
+        + '<li>Suche: h(k) berechnen → Liste von vorne durchsuchen</li>'
         + '</ul>'
-        + '<h3>Operationen</h3>'
-        + '<table class="icon-table" style="border-collapse:collapse;margin:8px 0;">'
-        + '<tr style="background:#eff6ff"><th style="padding:6px;border:1px solid #ccc;">Operation</th><th style="padding:6px;border:1px solid #ccc;">Ablauf</th></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Suchen</b></td><td style="padding:6px;border:1px solid #ccc;">1. h(k) berechnen<br>2. Liste an Position h(k) durchgehen, bis k gefunden oder Ende</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Einfügen</b></td><td style="padding:6px;border:1px solid #ccc;">1. h(k) berechnen<br>2. Liste durchgehen (Duplikat-Prüfung optional)<br>3. Hinten anhängen</td></tr>'
-        + '<tr><td style="padding:6px;border:1px solid #ccc;"><b>Löschen</b></td><td style="padding:6px;border:1px solid #ccc;">1. h(k) berechnen<br>2. In der Liste suchen und entfernen</td></tr>'
-        + '</table>'
-        + '<div class="tip-box">'
-        + '<strong>Vorteil der Verkettung:</strong> Die Hashtabelle selbst muss nicht vergrößert werden, auch wenn mehr Einträge als Plätze hinzukommen. Die Listen wachsen einfach.'
-        + '</div>'
-        + '<div class="warning-box">'
-        + '<strong>Nachteil:</strong> Wenn viele Kollisionen auftreten, werden die Listen lang – die Suche wird langsam (wieder linear). Eine gute Hashfunktion minimiert das.'
-        + '</div>'
-        + '<h3>Klausur-Darstellung</h3>'
-        + '<p>Hashtabellen zeichnest du als Tabelle mit Position links und verketteten Listen rechts. Die Einfügereihenfolge zählt – neue Einträge kommen ans Ende der Liste.</p>'
-        + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
-        + 'Pos | Liste\n'
-        + '----+----------------------\n'
-        + ' 0  | (leer)\n'
-        + ' 1  | 15 → 43\n'
-        + ' 2  | 2\n'
-        + ' 3  | (leer)\n'
-        + ' 4  | 53\n'
-        + ' 5  | 12 → 5 → 19\n'
-        + ' 6  | (leer)</pre>'
-        + '<div class="why-context">'
-        + '<strong>Warum lernen wir das?</strong> Verkettung ist die einfachste und in der Praxis sehr gängige Kollisionsstrategie (z.B. in Java HashMap bis vor wenigen Versionen). Als Klausuraufgabe: "Fülle diese Hashtabelle mit folgenden Schlüsseln, Kollisionen durch Verkettung." – klares Rezept, sichere Punkte.'
-        + '</div>'
+        + '<p>Unten ein Beispiel mit viel Kollision:</p>',
+      visuals: [
+        {
+          type: 'hashtable-viz',
+          size: 7,
+          entries: [2, 15, 43, 9, 53, 12, 5, 19, 30],
+          label: 'Hashtabelle m=7 mit Verkettung (mehrere Kollisionen)'
+        }
+      ]
     },
     example: {
-      title: 'Beispiel: Hashtabelle Größe 7 mit Verkettung',
+      title: 'Beispiel: [4, 21, 13, 24, 78, 39, 16] in m=7',
       steps: [
         {
-          label: 'Aufgabe',
+          label: 'Schritt 1 – Hashwerte berechnen',
           html:
-            '<p>Füge [4, 21, 13, 24, 78, 39, 16] in eine leere Hashtabelle der Größe 7 ein (h(k) = k mod 7, Kollisionen durch Verkettung).</p>'
-        },
-        {
-          label: 'Hashwerte berechnen',
-          html:
-            '<pre style="font-family:monospace;">'
+            '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
             + 'h(4)  = 4 mod 7  = 4\n'
             + 'h(21) = 21 mod 7 = 0\n'
             + 'h(13) = 13 mod 7 = 6\n'
@@ -606,10 +612,23 @@ const LessonsA3 = [
             + 'h(16) = 16 mod 7 = 2</pre>'
         },
         {
-          label: 'Tabelle Schritt für Schritt',
+          label: 'Schritt 2 – Endzustand der Tabelle',
           html:
-            '<p>Nach allen Einfügungen:</p>'
-            + '<pre style="font-family:monospace;background:#f3f4f6;padding:10px;">'
+            '<p>Nur eine Kollision (4 und 39). 39 landet hinter 4 in der Liste an Position 4.</p>',
+          visuals: [
+            {
+              type: 'hashtable-viz',
+              size: 7,
+              entries: [4, 21, 13, 24, 78, 39, 16],
+              label: 'Endzustand'
+            }
+          ]
+        },
+        {
+          label: 'Klausur-Darstellung',
+          html:
+            '<p>So könntest du das in der Klausur auf Papier aufzeichnen:</p>'
+            + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
             + 'Pos | Liste\n'
             + '----+----------------------\n'
             + ' 0  | 21\n'
@@ -619,7 +638,6 @@ const LessonsA3 = [
             + ' 4  | 4 → 39\n'
             + ' 5  | (leer)\n'
             + ' 6  | 13</pre>'
-            + '<p>Nur eine Kollision (4 und 39). 39 landet hinter 4 in der Liste an Position 4.</p>'
         }
       ]
     },
@@ -629,12 +647,12 @@ const LessonsA3 = [
         question: 'Wie werden Kollisionen beim Hashing durch Verkettung behandelt?',
         options: [
           'Der kollidierende Schlüssel wird auf den nächsten freien Platz gelegt.',
-          'Jeder Platz der Hashtabelle enthält eine verkettete Liste; Kollisionen werden angehängt.',
+          'Jeder Platz enthält eine verkettete Liste; Kollisionen werden angehängt.',
           'Die Hashtabelle wird vergrößert und alle Schlüssel neu gehasht.',
           'Der ältere Schlüssel wird überschrieben.'
         ],
         correct: 1,
-        explanation: 'Verkettung = Liste pro Platz. Neue kollidierende Einträge kommen ans Listenende. Andere Strategien wie "offene Adressierung" nutzen den nächsten freien Platz – das ist aber nicht Verkettung.'
+        explanation: 'Verkettung = Liste pro Platz. Neue kollidierende Einträge kommen ans Listenende.'
       },
       {
         type: 'multiple-choice',
@@ -645,14 +663,14 @@ const LessonsA3 = [
       },
       {
         type: 'multiple-choice',
-        question: 'Hashtabelle m=7 mit h(k) = k mod 7. Bereits enthalten: Position 3 hat Liste [10 → 17 → 24]. Wohin gehört 38 im nächsten insert?',
+        question: 'Hashtabelle m=7. Bereits enthalten: Position 3 hat Liste [10 → 17 → 24]. Wohin gehört 38 im nächsten insert?',
         options: ['Position 3 ans Ende anhängen', 'Position 3 vorne einfügen', 'Position 0', 'Position 4'],
         correct: 0,
-        explanation: '38 mod 7 = 3 (weil 7·5 = 35, also 38 - 35 = 3). Liste an Position 3 wird [10 → 17 → 24 → 38]. Neue Einträge werden hinten angehängt.'
+        explanation: '38 mod 7 = 3. Liste an Position 3 wird [10 → 17 → 24 → 38]. Neue Einträge werden hinten angehängt.'
       },
       {
         type: 'multiple-choice',
-        question: 'Welcher Vorteil hat die Verkettung gegenüber der "offenen Adressierung" (Schlüssel auf nächsten freien Platz)?',
+        question: 'Welcher Vorteil hat die Verkettung gegenüber der "offenen Adressierung"?',
         options: [
           'Verkettung ist immer schneller.',
           'Die Hashtabelle muss nie vergrößert werden – mehr Einträge als Plätze sind möglich.',
@@ -660,7 +678,7 @@ const LessonsA3 = [
           'Verkettung braucht weniger Speicher.'
         ],
         correct: 1,
-        explanation: 'Verkettung erlaubt beliebig viele Einträge pro Platz – die Hashtabellen-Größe ist flexibel. Offene Adressierung braucht immer mehr Plätze als Einträge und wird bei Füllstand über ~70% sehr langsam.'
+        explanation: 'Verkettung erlaubt beliebig viele Einträge pro Platz. Offene Adressierung braucht immer mehr Plätze als Einträge.'
       }
     ]
   }
