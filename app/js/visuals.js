@@ -487,15 +487,30 @@ Visuals.renderBinaryAnimation = function(config, container) {
   const maxLen = Math.max(a.length, b.length);
   const aPadded = a.padStart(maxLen, '0');
   const bPadded = b.padStart(maxLen, '0');
+  const mode = config.mode || 'add';
+  const opSymbol = mode === 'subtract' ? '−' : '+';
+  const carryLabel = mode === 'subtract' ? 'Borgen' : 'Carry';
+  const finalLabel = mode === 'subtract' ? 'Borgen' : 'Übertrag';
 
-  // Addition berechnen
+  // Addition oder Subtraktion berechnen (carries wird im Subtrahier-Modus als Borgen interpretiert)
   const carries = new Array(maxLen + 1).fill(0);
   const result = new Array(maxLen).fill(0);
 
   for (let i = maxLen - 1; i >= 0; i--) {
-    const sum = parseInt(aPadded[i]) + parseInt(bPadded[i]) + carries[i + 1];
-    result[i] = sum % 2;
-    carries[i] = Math.floor(sum / 2);
+    if (mode === 'subtract') {
+      const diff = parseInt(aPadded[i]) - parseInt(bPadded[i]) - carries[i + 1];
+      if (diff < 0) {
+        result[i] = diff + 2;
+        carries[i] = 1;
+      } else {
+        result[i] = diff;
+        carries[i] = 0;
+      }
+    } else {
+      const sum = parseInt(aPadded[i]) + parseInt(bPadded[i]) + carries[i + 1];
+      result[i] = sum % 2;
+      carries[i] = Math.floor(sum / 2);
+    }
   }
   const finalCarry = carries[0];
 
@@ -579,7 +594,7 @@ Visuals.renderBinaryAnimation = function(config, container) {
     aHtml += '</div>';
 
     // Operand B
-    let bHtml = '<div class="binary-row"><span class="binary-cell" style="width:1.5rem;color:var(--text);">+</span>';
+    let bHtml = `<div class="binary-row"><span class="binary-cell" style="width:1.5rem;color:var(--text);">${opSymbol}</span>`;
     for (let i = 0; i < maxLen; i++) {
       const isActive = (maxLen - 1 - currentStep) === i;
       bHtml += `<span class="binary-cell${isActive ? ' active-col' : ''}">${bPadded[i]}</span>`;
@@ -619,7 +634,14 @@ Visuals.renderBinaryAnimation = function(config, container) {
       const bVal = parseInt(bPadded[col]);
       const cVal = carries[col + 1];
       const sum = aVal + bVal + cVal;
-      stepInfo.textContent = `Schritt ${currentStep + 1}/${totalSteps}: Stelle ${currentStep} → ${aVal}+${bVal}${cVal ? `+${cVal}(Carry)` : ''} = ${sum % 2}${Math.floor(sum / 2) ? ', Übertrag 1' : ''}`;
+      if (mode === 'subtract') {
+        const diff = aVal - bVal - cVal;
+        const resultBit = diff < 0 ? diff + 2 : diff;
+        const borrowOut = diff < 0 ? 1 : 0;
+        stepInfo.textContent = `Schritt ${currentStep + 1}/${totalSteps}: Stelle ${currentStep} → ${aVal}−${bVal}${cVal ? `−${cVal}(Borgen)` : ''} = ${resultBit}${borrowOut ? ', Borgen 1' : ''}`;
+      } else {
+        stepInfo.textContent = `Schritt ${currentStep + 1}/${totalSteps}: Stelle ${currentStep} → ${aVal}+${bVal}${cVal ? `+${cVal}(${carryLabel})` : ''} = ${sum % 2}${Math.floor(sum / 2) ? `, ${finalLabel} 1` : ''}`;
+      }
     }
 
     // Buttons aktualisieren
