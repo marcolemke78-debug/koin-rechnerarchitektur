@@ -1155,6 +1155,12 @@ Visuals.renderAdderSim = function(config, container) {
 
   const rowA = document.createElement('div');
   rowA.style.cssText = 'display:flex;gap:4px;justify-content:center;margin-bottom:4px;';
+
+  // Unsichtbarer Carry-Platzhalter, damit A/B/Σ alle auf derselben Achse zentrieren
+  const spacerA = document.createElement('span');
+  spacerA.className = 'bit-toggle';
+  spacerA.style.cssText = 'visibility:hidden;background:transparent;border:none;width:42px;';
+  rowA.appendChild(spacerA);
   const btnsA = [];
 
   for (let i = 0; i < bits; i++) {
@@ -1178,6 +1184,11 @@ Visuals.renderAdderSim = function(config, container) {
 
   const rowB = document.createElement('div');
   rowB.style.cssText = 'display:flex;gap:4px;justify-content:center;margin-bottom:12px;';
+
+  const spacerB = document.createElement('span');
+  spacerB.className = 'bit-toggle';
+  spacerB.style.cssText = 'visibility:hidden;background:transparent;border:none;width:42px;';
+  rowB.appendChild(spacerB);
   const btnsB = [];
 
   for (let i = 0; i < bits; i++) {
@@ -1193,9 +1204,15 @@ Visuals.renderAdderSim = function(config, container) {
   }
   wrapper.appendChild(rowB);
 
+  // Ergebnis-Label (oberhalb, konsistent mit A: und B:)
+  const labelS = document.createElement('div');
+  labelS.style.cssText = 'font-size:12px;color:var(--text-light);margin-bottom:4px;';
+  labelS.textContent = 'Σ:';
+  wrapper.appendChild(labelS);
+
   // Ergebnis
   const resultDiv = document.createElement('div');
-  resultDiv.style.cssText = 'display:flex;gap:4px;justify-content:center;margin-top:8px;';
+  resultDiv.style.cssText = 'display:flex;gap:4px;justify-content:center;margin-top:0;';
   wrapper.appendChild(resultDiv);
 
   const resultText = document.createElement('div');
@@ -1225,17 +1242,19 @@ Visuals.renderAdderSim = function(config, container) {
     // Ergebnis anzeigen
     resultDiv.innerHTML = '';
 
-    const labelS = document.createElement('span');
-    labelS.style.cssText = 'font-size:12px;color:var(--text-light);margin-right:4px;';
-    labelS.textContent = 'Σ:';
-    resultDiv.appendChild(labelS);
-
+    // Carry-Slot immer reservieren (sichtbar bei Carry, sonst unsichtbar),
+    // damit die 4 Ergebnis-Bits exakt unter A/B-Bits stehen.
     if (carry) {
       const carryBtn = document.createElement('span');
       carryBtn.className = 'bit-toggle';
       carryBtn.style.cssText = 'background:var(--signal-carry);font-size:0.8rem;width:42px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;color:white;font-weight:bold;';
       carryBtn.textContent = 'C=' + carry;
       resultDiv.appendChild(carryBtn);
+    } else {
+      const spacer = document.createElement('span');
+      spacer.className = 'bit-toggle';
+      spacer.style.cssText = 'visibility:hidden;background:transparent;border:none;width:42px;';
+      resultDiv.appendChild(spacer);
     }
 
     result.forEach(bit => {

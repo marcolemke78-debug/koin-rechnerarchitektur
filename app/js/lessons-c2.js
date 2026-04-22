@@ -319,35 +319,43 @@ const LessonsC2 = [
     explanation: {
       html:
         '<h2>Addierwerk 4-Bit</h2>'
-        + '<p>Ein 4-Bit-Addierwerk addiert zwei 4-Bit-Zahlen (A\u2083A\u2082A\u2081A\u2080 + B\u2083B\u2082B\u2081B\u2080). Es besteht aus:</p>'
+        + '<p>Ein 4-Bit-Addierwerk addiert zwei 4-Bit-Zahlen: <code>A\u2083A\u2082A\u2081A\u2080</code> und <code>B\u2083B\u2082B\u2081B\u2080</code>. Es setzt sich aus <strong>vier verketteten Bausteinen</strong> zusammen:</p>'
         + '<ul>'
-        + '<li><strong>Stelle 0:</strong> Halbaddierer (kein Carry-Eingang)</li>'
-        + '<li><strong>Stellen 1-3:</strong> je ein Volladdierer (mit Carry-Eingang C_in vom Vorg\u00E4nger)</li>'
+        + '<li><strong>Stelle 0 (ganz rechts):</strong> Halbaddierer \u2013 kein Carry-Eingang, weil es keine niedrigere Stelle gibt</li>'
+        + '<li><strong>Stellen 1, 2, 3:</strong> je ein <strong>Volladdierer</strong> mit Carry-Eingang C_in (kommt von der Stelle rechts)</li>'
         + '</ul>'
-        + '<h3>Volladdierer-Formeln:</h3>'
-        + '<p><code>S = A \u2295 B \u2295 C_in</code> (Summe)</p>'
-        + '<p><code>C_out = (A\u2227B) \u2228 (A\u2227C_in) \u2228 (B\u2227C_in)</code> (\u00DCbertrag)</p>'
-        + '<h3>In der Klausur (Aufgabe mit Farbmarkierung):</h3>'
-        + '<p>Die Eingabebits werden nach Farbe beschriftet (z.B. gr\u00FCn=A, rot=B, gelb=Carry). Du musst nachvollziehen, wie der Carry von Stelle zu Stelle propagiert.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Staffellauf-Analogie:</strong> Stell dir vier L\u00E4ufer vor, die in einer Reihe stehen. Jeder hat seine zwei Zahlen (A und B dieser Stelle) zu addieren. Wenn bei der Rechnung ein \u00DCbertrag entsteht, reicht der L\u00E4ufer den <strong>Staffelstab (Carry)</strong> an den L\u00E4ufer links von ihm weiter. Der Staffelstab wandert also von rechts nach links durch die Stellen \u2013 genau wie beim schriftlichen Addieren in der Grundschule. Am Ende kann der linke L\u00E4ufer einen Stab ausgeben: das ist der <strong>Gesamt-\u00DCbertrag</strong> (der f\u00FCr 4-Bit bedeutet: die Summe passt nicht mehr in 4 Bit).'
+        + '</div>'
+        + '<h3>Volladdierer-Formeln (f\u00FCr die Klausur):</h3>'
+        + '<p><code>S = A \u2295 B \u2295 C_in</code> (Summe \u2013 XOR aller drei Eing\u00E4nge)</p>'
+        + '<p><code>C_out = (A\u2227B) \u2228 (A\u2227C_in) \u2228 (B\u2227C_in)</code> (\u00DCbertrag \u2013 wenn mindestens zwei der drei Eing\u00E4nge 1 sind)</p>'
+        + '<div class="why-context">'
+        + '<strong>Warum lernen wir das?</strong> Hier siehst du zum ersten Mal, wie aus kleinen Bausteinen (Volladdierern) ein komplettes Rechenwerk entsteht. Reale CPUs nutzen genau dieses Prinzip \u2013 nur mit 32 oder 64 Bits statt 4. Wenn ein Computer 12345 + 67890 rechnet, tut er das mit so einem Addierwerk, nur eben viel breiter. Du bist jetzt bei einem Konzept angekommen, das in jedem Computer der Welt steckt.'
+        + '</div>'
+        + '<p>Unten siehst du ein <em>interaktives 4-Bit-Addierwerk</em>. Klicke die Bits von A und B an \u2013 das Ergebnis, die Zwischen-Carrys und der Gesamt-Carry werden automatisch berechnet und angezeigt.</p>',
+      visuals: [
+        { type: 'adder-sim', bits: 4, label: '4-Bit-Addierwerk \u2013 klicke die Bits von A und B, sieh zu wie der Carry wandert' }
+      ]
     },
     example: {
-      title: 'Beispiel: 0101\u2082 + 0110\u2082 = 1011\u2082',
+      title: 'Beispiel: 0101\u2082 + 0011\u2082 = 1000\u2082 (5 + 3 = 8) \u2013 Carry wandert durch drei Stellen',
       steps: [
         {
-          label: 'Stelle 0 (Halbaddierer): A\u2080=1, B\u2080=0',
-          html: '<p>S\u2080 = 1\u22950 = 1, C\u2080 = 1\u22270 = 0</p>'
+          label: 'Stelle 0 (Halbaddierer): A\u2080=1, B\u2080=1 \u2192 S\u2080=0, C=1',
+          html: '<p>Ganz rechts: 1 + 1 = 10\u2082. Das Summe-Bit ist 0, und der Carry (1) wird an die n\u00E4chste Stelle weitergereicht.</p><p><code>S\u2080 = 1 \u2295 1 = 0</code>, <code>C\u2080 = 1 \u2227 1 = 1</code> \u2192 <strong>Staffelstab \u00FCbergeben.</strong></p>'
         },
         {
-          label: 'Stelle 1 (Volladdierer): A\u2081=0, B\u2081=1, C_in=0',
-          html: '<p>S\u2081 = 0\u22951\u22950 = 1, C\u2081 = (0\u22271)\u2228(0\u22270)\u2228(1\u22270) = 0</p>'
+          label: 'Stelle 1 (Volladdierer): A\u2081=0, B\u2081=1, C_in=1 \u2192 S\u2081=0, C=1',
+          html: '<p>An Stelle 1: A=0, B=1, und der Carry von Stelle 0 ist ebenfalls 1. Rechnung: 0 + 1 + 1 = 10\u2082. Summe-Bit 0, Carry bleibt 1.</p><p><code>S\u2081 = 0 \u2295 1 \u2295 1 = 0</code>, <code>C\u2081 = 1</code> (weil 2 der 3 Eing\u00E4nge gleich 1 sind) \u2192 <strong>Staffelstab wandert weiter.</strong></p>'
         },
         {
-          label: 'Stelle 2 (Volladdierer): A\u2082=1, B\u2082=1, C_in=0',
-          html: '<p>S\u2082 = 1\u22951\u22950 = 0, C\u2082 = (1\u22271)\u2228(1\u22270)\u2228(1\u22270) = 1</p>'
+          label: 'Stelle 2 (Volladdierer): A\u2082=1, B\u2082=0, C_in=1 \u2192 S\u2082=0, C=1',
+          html: '<p>An Stelle 2: A=1, B=0, C_in=1. Rechnung: 1 + 0 + 1 = 10\u2082. Summe-Bit 0, Carry wieder 1.</p><p>Der Staffelstab wandert bereits durch die dritte Stelle!</p>'
         },
         {
-          label: 'Stelle 3 (Volladdierer): A\u2083=0, B\u2083=0, C_in=1',
-          html: '<p>S\u2083 = 0\u22950\u22951 = 1, C\u2083 = 0 (kein \u00DCberlauf)</p><p>Ergebnis: S\u2083S\u2082S\u2081S\u2080 = <strong>1011\u2082 = 11\u2081\u2080</strong> = 5+6 \u2713</p>'
+          label: 'Stelle 3 (Volladdierer): A\u2083=0, B\u2083=0, C_in=1 \u2192 S\u2083=1, C_out=0',
+          html: '<p>An Stelle 3: A=0, B=0, C_in=1. Rechnung: 0 + 0 + 1 = 1. Summe-Bit 1, kein Carry mehr.</p><p>Gesamtergebnis: <strong>S\u2083S\u2082S\u2081S\u2080 = 1000\u2082 = 8\u2081\u2080</strong> \u2713</p><p><em>Beachte: Der Staffelstab ist von Stelle 0 \u00FCber 1, 2, 3 gewandert und am Ende \u201Eaufgegangen\u201C im Ergebnis-Bit. Solche Ketten von Carrys sind der Grund, warum breite Addierer (64-Bit-CPU) intern trickreich optimiert werden \u2013 aber das Grundprinzip ist genau das, was du hier siehst.</em></p>'
         }
       ]
     },
