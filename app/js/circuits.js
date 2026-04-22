@@ -62,6 +62,59 @@ const CIRCUITS = {
       gates:   { nor1: { x: 0.4, y: 0.2 }, nor2: { x: 0.4, y: 0.7 } },
       outputs: { Q: { x: 1, y: 0.25 }, 'Q\u0304': { x: 1, y: 0.75 } }
     }
+  },
+
+  'half-subtractor': {
+    name: 'Halbsubtrahierer',
+    inputs: ['A', 'B'],
+    outputs: ['D', 'Bout'],
+    gates: [
+      { id: 'xor1', type: 'xor', inputs: ['A', 'B'], label: 'Differenz' },
+      { id: 'not1', type: 'not', inputs: ['A'] },
+      { id: 'and1', type: 'and', inputs: ['not1', 'B'], label: 'Borgen' }
+    ],
+    connections: [
+      { from: 'xor1', to: 'D' },
+      { from: 'and1', to: 'Bout' }
+    ],
+    layout: {
+      inputs:  { A: { x: 0, y: 0.25 }, B: { x: 0, y: 0.75 } },
+      gates:   {
+        xor1: { x: 0.45, y: 0.2 },
+        not1: { x: 0.25, y: 0.55 },
+        and1: { x: 0.55, y: 0.7 }
+      },
+      outputs: { D: { x: 1, y: 0.25 }, Bout: { x: 1, y: 0.75 } }
+    }
+  },
+
+  'full-subtractor': {
+    name: 'Vollsubtrahierer',
+    inputs: ['A', 'B', 'Bin'],
+    outputs: ['D', 'Bout'],
+    gates: [
+      { id: 'xor1', type: 'xor', inputs: ['A', 'B'] },
+      { id: 'xor2', type: 'xor', inputs: ['xor1', 'Bin'], label: 'Differenz' },
+      { id: 'not1', type: 'not', inputs: ['A'] },
+      { id: 'and1', type: 'and', inputs: ['not1', 'B'] },
+      { id: 'not2', type: 'not', inputs: ['xor1'] },
+      { id: 'and2', type: 'and', inputs: ['not2', 'Bin'] },
+      { id: 'or1',  type: 'or',  inputs: ['and1', 'and2'], label: 'Borgen' }
+    ],
+    connections: [
+      { from: 'xor2', to: 'D' },
+      { from: 'or1',  to: 'Bout' }
+    ],
+    layout: {
+      inputs:  { A: { x: 0, y: 0.1 }, B: { x: 0, y: 0.35 }, Bin: { x: 0, y: 0.9 } },
+      gates:   {
+        xor1: { x: 0.25, y: 0.15 }, xor2: { x: 0.7, y: 0.25 },
+        not1: { x: 0.2, y: 0.5 },   and1: { x: 0.45, y: 0.55 },
+        not2: { x: 0.4, y: 0.75 },  and2: { x: 0.6, y: 0.8 },
+        or1:  { x: 0.8, y: 0.75 }
+      },
+      outputs: { D: { x: 1, y: 0.25 }, Bout: { x: 1, y: 0.75 } }
+    }
   }
 };
 
