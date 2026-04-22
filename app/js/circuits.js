@@ -88,6 +88,54 @@ const CIRCUITS = {
     }
   },
 
+  'full-subtractor-hs1': {
+    name: 'HS1 (A − B → D1, Bout1)',
+    inputs: ['A', 'B'],
+    outputs: ['D1', 'Bout1'],
+    gates: [
+      { id: 'xor1', type: 'xor', inputs: ['A', 'B'], label: 'D1' },
+      { id: 'not1', type: 'not', inputs: ['A'] },
+      { id: 'and1', type: 'and', inputs: ['not1', 'B'], label: 'Bout1' }
+    ],
+    connections: [
+      { from: 'xor1', to: 'D1' },
+      { from: 'and1', to: 'Bout1' }
+    ],
+    layout: {
+      inputs:  { A: { x: 0, y: 0.2 }, B: { x: 0, y: 0.8 } },
+      gates:   {
+        xor1: { x: 0.6, y: 0.15 },
+        not1: { x: 0.25, y: 0.5 },
+        and1: { x: 0.6, y: 0.8 }
+      },
+      outputs: { D1: { x: 1, y: 0.2 }, Bout1: { x: 1, y: 0.8 } }
+    }
+  },
+
+  'full-subtractor-hs2': {
+    name: 'HS2 (D1 − B_in → D, Bout2)',
+    inputs: ['D1', 'Bin'],
+    outputs: ['D', 'Bout2'],
+    gates: [
+      { id: 'xor1', type: 'xor', inputs: ['D1', 'Bin'], label: 'D' },
+      { id: 'not1', type: 'not', inputs: ['D1'] },
+      { id: 'and1', type: 'and', inputs: ['not1', 'Bin'], label: 'Bout2' }
+    ],
+    connections: [
+      { from: 'xor1', to: 'D' },
+      { from: 'and1', to: 'Bout2' }
+    ],
+    layout: {
+      inputs:  { D1: { x: 0, y: 0.2 }, Bin: { x: 0, y: 0.8 } },
+      gates:   {
+        xor1: { x: 0.6, y: 0.15 },
+        not1: { x: 0.25, y: 0.5 },
+        and1: { x: 0.6, y: 0.8 }
+      },
+      outputs: { D: { x: 1, y: 0.2 }, Bout2: { x: 1, y: 0.8 } }
+    }
+  },
+
   'full-subtractor': {
     name: 'Vollsubtrahierer',
     inputs: ['A', 'B', 'Bin'],
@@ -106,14 +154,17 @@ const CIRCUITS = {
       { from: 'or1',  to: 'Bout' }
     ],
     layout: {
-      inputs:  { A: { x: 0, y: 0.1 }, B: { x: 0, y: 0.35 }, Bin: { x: 0, y: 0.9 } },
+      inputs:  { A: { x: 0, y: 0.1 }, B: { x: 0, y: 0.38 }, Bin: { x: 0, y: 0.88 } },
       gates:   {
-        xor1: { x: 0.25, y: 0.15 }, xor2: { x: 0.7, y: 0.25 },
-        not1: { x: 0.2, y: 0.5 },   and1: { x: 0.45, y: 0.55 },
-        not2: { x: 0.4, y: 0.75 },  and2: { x: 0.6, y: 0.8 },
-        or1:  { x: 0.8, y: 0.75 }
+        xor1: { x: 0.22, y: 0.15 },
+        not1: { x: 0.22, y: 0.42 },
+        and1: { x: 0.48, y: 0.48 },
+        not2: { x: 0.48, y: 0.72 },
+        and2: { x: 0.68, y: 0.78 },
+        xor2: { x: 0.72, y: 0.12 },
+        or1:  { x: 0.88, y: 0.6 }
       },
-      outputs: { D: { x: 1, y: 0.25 }, Bout: { x: 1, y: 0.75 } }
+      outputs: { D: { x: 1, y: 0.12 }, Bout: { x: 1, y: 0.6 } }
     }
   }
 };

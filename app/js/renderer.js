@@ -299,6 +299,8 @@ Renderer.renderVisuals = function(visuals, container) {
         break;
       case 'circuit':
         lastCircuitInstance = Visuals.renderCircuit(vis, container, {
+          width: vis.width,
+          height: vis.height,
           onUpdate: (outputs) => {
             // Automatische Kopplung mit Timing-Diagramm
             if (lastTimingInstance && lastCircuitInstance) {

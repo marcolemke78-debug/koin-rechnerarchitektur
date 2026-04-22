@@ -187,29 +187,98 @@ const LessonsC2 = [
     explanation: {
       html:
         '<h2>Vollsubtrahierer</h2>'
-        + '<p>Der Vollsubtrahierer erweitert den Halbsubtrahierer um einen <strong>Borgen-Eingang B_in</strong> (von der niedrigerwertigen Stelle). Er hat also 3 Eing\u00E4nge: A, B, B_in.</p>'
-        + '<h3>Aufbau aus zwei Halbsubtrahierern:</h3>'
+        + '<p>Der Vollsubtrahierer erweitert den Halbsubtrahierer um einen <strong>Borgen-Eingang B_in</strong> \u2013 das ist das Borgen, das von der Stelle rechts (niedrigerwertige Stelle) gekommen ist. Er hat also <strong>3 Eing\u00E4nge</strong>: A, B, B_in.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Analogie \u2013 Halbsubtrahierer mit Ged\u00E4chtnis:</strong> Der Halbsubtrahierer aus L8 war wie eine Mini-Maschine ohne Erinnerung. Der Vollsubtrahierer bekommt zus\u00E4tzlich einen Eingang, der ihm sagt: \u201EPass auf \u2013 von der Stelle rechts wurde geborgt, das musst du ber\u00FCcksichtigen.\u201C Er hat also sein Ged\u00E4chtnis von der Nachbarstelle bekommen.'
+        + '</div>'
+        + '<h3>Aufbau aus zwei Halbsubtrahierern + OR:</h3>'
         + '<ol>'
-        + '<li><strong>Halbsubtrahierer 1 (HS1):</strong> Subtrahiert A - B \u2192 D1, B_out1</li>'
-        + '<li><strong>Halbsubtrahierer 2 (HS2):</strong> Subtrahiert D1 - B_in \u2192 D, B_out2</li>'
-        + '<li><strong>OR-Gatter:</strong> Gesamt-Borgen = B_out1 \u2228 B_out2</li>'
+        + '<li><strong>HS1 (Halbsubtrahierer 1):</strong> rechnet A \u2212 B \u2192 liefert Zwischen-Differenz D1 und Zwischen-Borgen B_out1</li>'
+        + '<li><strong>HS2 (Halbsubtrahierer 2):</strong> rechnet D1 \u2212 B_in \u2192 liefert endg\u00FCltige Differenz D und zweites Zwischen-Borgen B_out2</li>'
+        + '<li><strong>OR-Gatter:</strong> B_out = B_out1 \u2228 B_out2 (borgen, sobald eine der beiden Subtraktionen geborgt hat)</li>'
         + '</ol>'
-        + '<h3>Ausg\u00E4nge:</h3>'
-        + '<ul>'
-        + '<li><strong>D:</strong> Endg\u00FCltige Differenz</li>'
-        + '<li><strong>B_out:</strong> Borgen an n\u00E4chste Stelle = B_out1 \u2228 B_out2</li>'
-        + '</ul>'
+        + '<h3>Vollst\u00E4ndige Wahrheitstabelle (8 Zeilen):</h3>'
+        + '<table style="border-collapse:collapse;margin:8px 0">'
+        + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">A</th><th style="border:1px solid #ccc;padding:6px 10px">B</th><th style="border:1px solid #ccc;padding:6px 10px">B_in</th><th style="border:1px solid #ccc;padding:6px 10px">D</th><th style="border:1px solid #ccc;padding:6px 10px">B_out</th></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td><td style="border:1px solid #ccc;padding:6px 10px">0</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td><td style="border:1px solid #ccc;padding:6px 10px">1</td></tr>'
+        + '</table>'
+        + '<div class="why-context">'
+        + '<strong>Warum brauchen wir den Vollsubtrahierer?</strong> Mit Halbsubtrahierern allein kannst du nur 1-Bit-Zahlen subtrahieren. Echte Zahlen haben aber mehrere Stellen \u2013 und jede Stelle muss wissen, ob von ihr geborgt wurde. Der Vollsubtrahierer ist der Baustein, den du in einer Reihe verkettest, um 4-Bit-, 8-Bit- oder 32-Bit-Zahlen zu subtrahieren. Das ist der Sprung von \u201ESpielzeug\u201C zu \u201Erichtiger Rechnung\u201C.'
+        + '</div>'
+        + '<div class="reading-guide">'
+        + '<strong>Statt einer einzigen 7-Gatter-Schaltung zeigen wir den Vollsubtrahierer in drei Teilen:</strong>'
+        + '<ol style="margin:6px 0 0 0;padding-left:22px">'
+        + '<li><strong>HS1 (unten, Teil 1):</strong> kennst du aus L8 \u2013 rechnet A \u2212 B und liefert Zwischen-Differenz D1 und Zwischen-Borgen B_out1. Klicke A und B.</li>'
+        + '<li><strong>HS2 (Teil 2):</strong> baugleich wie HS1, nur mit anderen Eingangs-Namen. Hier geht D1 (das Ergebnis von HS1) zusammen mit B_in rein. Ausg\u00E4nge: die endg\u00FCltige D und B_out2. Klicke D1 und B_in.</li>'
+        + '<li><strong>OR-Gatter (Teil 3):</strong> kombiniert B_out1 und B_out2 zum endg\u00FCltigen B_out. Klicke die Eing\u00E4nge \u2013 sobald einer auf 1 steht, wird B_out = 1.</li>'
+        + '</ol>'
+        + '<p style="margin:10px 0 0 0">Die Klausur-Aufgabe wird meistens so aussehen: \u201EZeichne den Vollsubtrahierer aus zwei Halbsubtrahierern und einem OR-Gatter.\u201C Du zeichnest also genau das, was du hier als drei Teile siehst \u2013 nur eben als <em>eine</em> verbundene Schaltung.</p>'
+        + '</div>'
+        + '<div class="circuit-legend">'
+        + '<span class="legend-item"><span class="legend-symbol">=1</span>XOR</span>'
+        + '<span class="legend-item"><span class="legend-symbol">&</span>AND</span>'
+        + '<span class="legend-item"><span class="legend-symbol">1\u00B0</span>NOT (Kringel = Invertierung)</span>'
+        + '<span class="legend-item"><span class="legend-symbol">\u22651</span>OR</span>'
+        + '</div>',
+      visuals: [
+        { type: 'circuit', circuit: 'full-subtractor-hs1', label: 'Teil 1 \u2013 HS1: A \u2212 B \u2192 D1, B_out1 (klicke A und B)' },
+        { type: 'circuit', circuit: 'full-subtractor-hs2', label: 'Teil 2 \u2013 HS2: D1 \u2212 B_in \u2192 D, B_out2 (klicke D1 und B_in)' },
+        { type: 'gate-sim', gate: 'or', label: 'Teil 3 \u2013 OR: B_out1 \u2228 B_out2 = B_out' }
+      ]
     },
     example: {
-      title: 'Beispiel: Vollsubtrahierer Schaltung & WTT (Auszug)',
+      title: 'Beispiel: Signal-Trace durch die Schaltung (4 charakteristische F\u00E4lle)',
       steps: [
         {
-          label: 'Aufbau der Schaltung (Klausur-Zeichnung)',
-          html: '<p>Eing\u00E4nge: A, B, B_in<br>HS1: A und B \u2192 D1, B_out1<br>HS2: D1 und B_in \u2192 D, B_out2<br>OR-Gatter: B_out1 \u2228 B_out2 \u2192 B_out<br>Ausg\u00E4nge: D, B_out</p>'
+          label: 'Fall 1 \u2013 A=1, B=1, B_in=0 \u2192 D=0, B_out=0',
+          html: '<p><strong>Arithmetik:</strong> 1 \u2212 1 \u2212 0 = 0, kein Borgen n\u00F6tig.</p>'
+          + '<p><strong>Signal-Trace (so rechnet die Schaltung):</strong></p>'
+          + '<ul style="margin:6px 0 0 0;padding-left:22px">'
+          + '<li><strong>HS1:</strong> A=1, B=1 \u2192 <code>XOR(1,1)=0</code>, also <strong>D1=0</strong>. Borgen dieses Teils: <code>\u00AC1 \u2227 1 = 0 \u2227 1 = 0</code>, also <strong>B_out1=0</strong>.</li>'
+          + '<li><strong>HS2:</strong> D1=0, B_in=0 \u2192 <code>XOR(0,0)=0</code>, also <strong>D=0</strong>. Borgen dieses Teils: <code>\u00AC0 \u2227 0 = 1 \u2227 0 = 0</code>, also <strong>B_out2=0</strong>.</li>'
+          + '<li><strong>OR:</strong> 0 \u2228 0 = <strong>B_out=0</strong>.</li>'
+          + '</ul>'
+          + '<p><em>Im Visual: Stell A=1, B=1, B_in=0. Du siehst, dass keine einzige Leitung gr\u00FCn aufleuchtet \u2013 alles bleibt im 0-Zustand.</em></p>'
         },
         {
-          label: 'Ausgew\u00E4hlte WTT-Zeilen',
-          html: '<table style="border-collapse:collapse;font-size:13px;margin:8px 0"><tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:4px">A</th><th style="border:1px solid #ccc;padding:4px">B</th><th style="border:1px solid #ccc;padding:4px">B_in</th><th style="border:1px solid #ccc;padding:4px">D</th><th style="border:1px solid #ccc;padding:4px">B_out</th></tr><tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td></tr><tr><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td></tr><tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">0</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td><td style="border:1px solid #ccc;padding:4px">1</td></tr></table>'
+          label: 'Fall 2 \u2013 A=1, B=1, B_in=1 \u2192 D=1, B_out=1 (B_in macht den Unterschied!)',
+          html: '<p><strong>Arithmetik:</strong> 1 \u2212 1 \u2212 1 = \u22121 \u2192 borgen, Ergebnis 1.</p>'
+          + '<p><strong>Signal-Trace:</strong></p>'
+          + '<ul style="margin:6px 0 0 0;padding-left:22px">'
+          + '<li><strong>HS1:</strong> <code>XOR(1,1)=0</code> \u2192 <strong>D1=0</strong>. <code>\u00AC1 \u2227 1 = 0</code> \u2192 <strong>B_out1=0</strong>.</li>'
+          + '<li><strong>HS2:</strong> D1=0, B_in=1 \u2192 <code>XOR(0,1)=1</code> \u2192 <strong>D=1</strong>. <code>\u00AC0 \u2227 1 = 1 \u2227 1 = 1</code> \u2192 <strong>B_out2=1</strong>.</li>'
+          + '<li><strong>OR:</strong> 0 \u2228 1 = <strong>B_out=1</strong>.</li>'
+          + '</ul>'
+          + '<p><em>Vergleiche Fall 1 und Fall 2: Gleiche A/B, nur B_in unterschiedlich \u2013 Ergebnis ist komplett anders. Genau daf\u00FCr ist B_in da.</em></p>'
+        },
+        {
+          label: 'Fall 3 \u2013 A=0, B=1, B_in=1 \u2192 D=0, B_out=1 (beide Borgen-Pfade aktiv)',
+          html: '<p><strong>Arithmetik:</strong> 0 \u2212 1 \u2212 1 = \u22122. Wir m\u00FCssen eine 2 borgen, Rest ist 0.</p>'
+          + '<p><strong>Signal-Trace:</strong></p>'
+          + '<ul style="margin:6px 0 0 0;padding-left:22px">'
+          + '<li><strong>HS1:</strong> <code>XOR(0,1)=1</code> \u2192 <strong>D1=1</strong>. <code>\u00AC0 \u2227 1 = 1 \u2227 1 = 1</code> \u2192 <strong>B_out1=1</strong> (hier schon borgen!).</li>'
+          + '<li><strong>HS2:</strong> D1=1, B_in=1 \u2192 <code>XOR(1,1)=0</code> \u2192 <strong>D=0</strong>. <code>\u00AC1 \u2227 1 = 0</code> \u2192 <strong>B_out2=0</strong>.</li>'
+          + '<li><strong>OR:</strong> 1 \u2228 0 = <strong>B_out=1</strong>.</li>'
+          + '</ul>'
+          + '<p><em>Interessant: Nur der erste Halbsubtrahierer hat geborgt (B_out1=1), der zweite nicht (B_out2=0). Das OR-Gatter meldet aber trotzdem B_out=1 \u2013 genau deshalb brauchen wir es.</em></p>'
+        },
+        {
+          label: 'Fall 4 \u2013 A=1, B=0, B_in=1 \u2192 D=0, B_out=0 (Borgen wird intern \u201Eaufgel\u00F6st\u201C)',
+          html: '<p><strong>Arithmetik:</strong> 1 \u2212 0 \u2212 1 = 0. Kein Borgen nach au\u00DFen n\u00F6tig, weil A gro\u00DF genug ist.</p>'
+          + '<p><strong>Signal-Trace:</strong></p>'
+          + '<ul style="margin:6px 0 0 0;padding-left:22px">'
+          + '<li><strong>HS1:</strong> <code>XOR(1,0)=1</code> \u2192 <strong>D1=1</strong>. <code>\u00AC1 \u2227 0 = 0</code> \u2192 <strong>B_out1=0</strong>.</li>'
+          + '<li><strong>HS2:</strong> D1=1, B_in=1 \u2192 <code>XOR(1,1)=0</code> \u2192 <strong>D=0</strong>. <code>\u00AC1 \u2227 1 = 0</code> \u2192 <strong>B_out2=0</strong>.</li>'
+          + '<li><strong>OR:</strong> 0 \u2228 0 = <strong>B_out=0</strong>.</li>'
+          + '</ul>'
+          + '<p><em>Lehrreich: Obwohl B_in=1 (von rechts wurde geborgt) \u2013 weil A=1 das kompensiert, muss an die n\u00E4chste Stelle nichts weitergereicht werden.</em></p>'
         }
       ]
     },
