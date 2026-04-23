@@ -30,6 +30,7 @@ const LESSONS = [
   { id: 39, module: 'a4', title: 'Arrays & Listen (einfach/doppelt/Ring)', examRelevant: true },
   { id: 40, module: 'a4', title: 'Sieb des Eratosthenes', examRelevant: true },
   { id: 41, module: 'a4', title: 'Prüfziffern – ISBN-13', examRelevant: true },
+  { id: 43, module: 'a4', title: 'Hamming-Code (Fehler finden)', examRelevant: true },
   // C1 – Schaltalgebra
   { id: 1,  module: 'c1', title: 'Schaltkreise lesen & umwandeln' },
   { id: 2,  module: 'c1', title: 'Logische Operatoren: AND, OR, NOT, XOR' },

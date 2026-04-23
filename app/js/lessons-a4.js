@@ -597,6 +597,177 @@ const LessonsA4 = [
         explanation: '(4 + x·3) mod 10 = 0 → x·3 ≡ 6 → x = 2.'
       }
     ]
+  },
+
+  // ===== LEKTION 43: Hamming-Code =====
+  {
+    id: 43,
+    title: 'Hamming-Code (Fehler finden & korrigieren)',
+    explanation: {
+      html:
+        '<h2>Hamming-Code</h2>'
+        + '<p>Prüfziffern (ISBN, EAN) <em>erkennen</em> Fehler – aber sie verraten nicht, <strong>welche</strong> Ziffer falsch ist. Der <strong>Hamming-Code</strong> kann einen 1-Bit-Fehler nicht nur erkennen, sondern auch <strong>lokalisieren und korrigieren</strong>.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Analogie – 3 Wächter an 3 Türen:</strong> Stell dir 3 Wächter vor, jeder überwacht einen anderen Raumbereich, und die Bereiche überlappen sich. Wenn <em>nur Wächter 1</em> Alarm gibt, liegt der Eindringling in seinem Alleinbereich. Wenn <em>Wächter 1 und 2</em> Alarm geben, liegt er in der Überlappung von 1 und 2. Wenn <em>alle drei</em> Alarm geben, liegt er in der Mitte, wo sich alle Bereiche treffen. Genauso arbeitet der Hamming-Code – die Paritätsbits sind die Wächter.'
+        + '</div>'
+        + '<h3>Aufbau des (7,4)-Codes</h3>'
+        + '<p>7 Bits gesamt: <strong>4 Datenbits</strong> (d1, d2, d3, d4) + <strong>3 Paritätsbits</strong> (p1, p2, p3). Die Reihenfolge ist fest:</p>'
+        + '<table style="border-collapse:collapse;margin:10px 0;font-family:monospace;">'
+        + '<tr style="background:#eff6ff"><th style="padding:6px;border:1px solid #ccc;">Position</th><td style="padding:6px;border:1px solid #ccc;">1</td><td style="padding:6px;border:1px solid #ccc;">2</td><td style="padding:6px;border:1px solid #ccc;">3</td><td style="padding:6px;border:1px solid #ccc;">4</td><td style="padding:6px;border:1px solid #ccc;">5</td><td style="padding:6px;border:1px solid #ccc;">6</td><td style="padding:6px;border:1px solid #ccc;">7</td></tr>'
+        + '<tr><th style="padding:6px;border:1px solid #ccc;">Bit</th><td style="padding:6px;border:1px solid #ccc;background:#FEE2E2;"><strong>p1</strong></td><td style="padding:6px;border:1px solid #ccc;background:#FEE2E2;"><strong>p2</strong></td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">d1</td><td style="padding:6px;border:1px solid #ccc;background:#FEE2E2;"><strong>p3</strong></td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">d2</td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">d3</td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">d4</td></tr>'
+        + '</table>'
+        + '<h3>Die 3 Paritätskreise</h3>'
+        + '<p>Jeder Paritätsbit kontrolliert einen eigenen Kreis aus 4 Bits. Die Kreise überlappen sich – genau darin steckt der Trick:</p>'
+        + '<div style="display:flex;justify-content:center;margin:16px 0;">'
+        + '<svg viewBox="0 0 220 200" width="260" height="240" style="font-family:system-ui;">'
+        + '<circle cx="110" cy="75" r="60" fill="rgba(220,38,38,0.15)" stroke="#DC2626" stroke-width="2"/>'
+        + '<circle cx="80" cy="125" r="60" fill="rgba(37,99,235,0.15)" stroke="#2563EB" stroke-width="2"/>'
+        + '<circle cx="140" cy="125" r="60" fill="rgba(5,150,105,0.15)" stroke="#059669" stroke-width="2"/>'
+        + '<text x="110" y="20" text-anchor="middle" font-weight="bold" fill="#DC2626">Kreis p1</text>'
+        + '<text x="18" y="165" text-anchor="middle" font-weight="bold" fill="#2563EB">Kreis p2</text>'
+        + '<text x="200" y="165" text-anchor="middle" font-weight="bold" fill="#059669">Kreis p3</text>'
+        + '<text x="110" y="48" text-anchor="middle" font-size="14" font-weight="bold">p1</text>'
+        + '<text x="48" y="145" text-anchor="middle" font-size="14" font-weight="bold">p2</text>'
+        + '<text x="172" y="145" text-anchor="middle" font-size="14" font-weight="bold">p3</text>'
+        + '<text x="85" y="95" text-anchor="middle" font-size="14" font-weight="bold">d1</text>'
+        + '<text x="135" y="95" text-anchor="middle" font-size="14" font-weight="bold">d2</text>'
+        + '<text x="110" y="158" text-anchor="middle" font-size="14" font-weight="bold">d3</text>'
+        + '<text x="110" y="120" text-anchor="middle" font-size="14" font-weight="bold" fill="#7c2d12">d4</text>'
+        + '</svg>'
+        + '</div>'
+        + '<div class="reading-guide">'
+        + '<strong>Lese-Hilfe:</strong> Jeder Kreis enthält 4 Bits (das Paritätsbit selbst + 3 Datenbits).<br>'
+        + '• Kreis <span style="color:#DC2626;font-weight:bold;">p1</span> enthält: p1, d1, d2, d4<br>'
+        + '• Kreis <span style="color:#2563EB;font-weight:bold;">p2</span> enthält: p2, d1, d3, d4<br>'
+        + '• Kreis <span style="color:#059669;font-weight:bold;">p3</span> enthält: p3, d2, d3, d4<br>'
+        + '<em>d4 liegt in allen drei Kreisen</em> – das ist wichtig für die Fehlerlokalisierung!'
+        + '</div>'
+        + '<h3>Regel: Gerade Parität</h3>'
+        + '<p>Das Paritätsbit wird so gewählt, dass in <strong>jedem Kreis eine gerade Anzahl von 1en</strong> steht. Wird ein Bit falsch übertragen, wird diese Bedingung in mindestens einem Kreis verletzt.</p>'
+        + '<div class="warning-box">'
+        + '<strong>Achtung:</strong> 0 Einsen gelten als <em>gerade</em>! Zähle immer alle 4 Bits im Kreis – auch das Paritätsbit selbst.'
+        + '</div>'
+        + '<h3>Fehler lokalisieren (3 Fälle)</h3>'
+        + '<ul>'
+        + '<li><strong>Genau 1 Kreis ungerade:</strong> Das Paritätsbit dieses Kreises selbst ist gekippt (liegt nur in diesem einen Kreis).</li>'
+        + '<li><strong>Genau 2 Kreise ungerade:</strong> Das Datenbit in der Schnittmenge dieser 2 Kreise ist gekippt (und <em>nicht</em> im dritten Kreis, sonst wäre auch der ungerade).</li>'
+        + '<li><strong>Alle 3 Kreise ungerade:</strong> d4 ist gekippt – nur d4 liegt in allen drei Kreisen.</li>'
+        + '</ul>'
+        + '<div class="tip-box">'
+        + '<strong>Klausur-Trick:</strong> Erst <em>zählen</em>, welche Kreise ungerade sind, <em>dann</em> im Venn-Diagramm die passende Region identifizieren. Das falsche Bit flippen – wenn danach alle 3 Kreise wieder gerade sind, stimmt die Lösung.'
+        + '</div>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> ECC-RAM in Servern, Daten auf CDs, Satelliten-Funk – überall, wo Bitkipper durch Strahlung oder Rauschen passieren, steckt ein Hamming- oder verwandter Code. Ohne ihn würde ein kosmisches Strahlenpartikel in deinem RAM einen stillen Datenverlust verursachen. In der Klausur ist die Hamming-Aufgabe eine zuverlässige 3-Punkte-Aufgabe: Kreise prüfen, ungerade finden, Bit identifizieren.'
+        + '</div>',
+      visuals: [
+        {
+          type: 'bit-layout',
+          bits: '0011011',
+          groups: [
+            { start: 0, length: 1, color: '#FEE2E2', label: 'p1=0' },
+            { start: 1, length: 1, color: '#FEE2E2', label: 'p2=0' },
+            { start: 2, length: 1, color: '#DBEAFE', label: 'd1=1' },
+            { start: 3, length: 1, color: '#FEE2E2', label: 'p3=1' },
+            { start: 4, length: 1, color: '#DBEAFE', label: 'd2=0' },
+            { start: 5, length: 1, color: '#DBEAFE', label: 'd3=1' },
+            { start: 6, length: 1, color: '#DBEAFE', label: 'd4=1' }
+          ],
+          label: '(7,4)-Hamming-Bitmuster 0011011 – Paritätsbits rot, Datenbits blau'
+        }
+      ]
+    },
+    example: {
+      title: 'Beispiel: Welches Bit ist in 0011011 gekippt?',
+      steps: [
+        {
+          label: 'Schritt 1 – Bits den Kreisen zuordnen',
+          html:
+            '<p>Bitmuster: <code>p1=0, p2=0, d1=1, p3=1, d2=0, d3=1, d4=1</code>.</p>'
+            + '<p>Jetzt zählen wir pro Kreis, wie viele 1en drin sind:</p>'
+            + '<table style="border-collapse:collapse;margin:10px 0;">'
+            + '<tr style="background:#eff6ff"><th style="padding:6px;border:1px solid #ccc;">Kreis</th><th style="padding:6px;border:1px solid #ccc;">Enthält Bits</th><th style="padding:6px;border:1px solid #ccc;">Werte</th><th style="padding:6px;border:1px solid #ccc;">Anzahl 1en</th><th style="padding:6px;border:1px solid #ccc;">Status</th></tr>'
+            + '<tr><td style="padding:6px;border:1px solid #ccc;color:#DC2626;font-weight:bold;">p1</td><td style="padding:6px;border:1px solid #ccc;">p1, d1, d2, d4</td><td style="padding:6px;border:1px solid #ccc;font-family:monospace;">0, 1, 0, 1</td><td style="padding:6px;border:1px solid #ccc;">2</td><td style="padding:6px;border:1px solid #ccc;background:#D1FAE5;">gerade ✓</td></tr>'
+            + '<tr><td style="padding:6px;border:1px solid #ccc;color:#2563EB;font-weight:bold;">p2</td><td style="padding:6px;border:1px solid #ccc;">p2, d1, d3, d4</td><td style="padding:6px;border:1px solid #ccc;font-family:monospace;">0, 1, 1, 1</td><td style="padding:6px;border:1px solid #ccc;">3</td><td style="padding:6px;border:1px solid #ccc;background:#FEE2E2;"><strong>ungerade ✗</strong></td></tr>'
+            + '<tr><td style="padding:6px;border:1px solid #ccc;color:#059669;font-weight:bold;">p3</td><td style="padding:6px;border:1px solid #ccc;">p3, d2, d3, d4</td><td style="padding:6px;border:1px solid #ccc;font-family:monospace;">1, 0, 1, 1</td><td style="padding:6px;border:1px solid #ccc;">3</td><td style="padding:6px;border:1px solid #ccc;background:#FEE2E2;"><strong>ungerade ✗</strong></td></tr>'
+            + '</table>'
+        },
+        {
+          label: 'Schritt 2 – Fehler lokalisieren',
+          html:
+            '<p><strong>Ungerade in p2 und p3</strong>, aber nicht in p1. Welches Bit liegt in genau diesen beiden Kreisen (und nicht in p1)?</p>'
+            + '<ul>'
+            + '<li>Schnittmenge p2 ∩ p3: <code>d3, d4</code></li>'
+            + '<li>Davon NICHT in p1: d4 ist in p1, bleibt also nur <strong>d3</strong></li>'
+            + '</ul>'
+            + '<p>→ Das gekippte Bit ist <strong>d3</strong> (Position 6).</p>'
+        },
+        {
+          label: 'Schritt 3 – Korrigieren und prüfen',
+          html:
+            '<p>d3 von 1 auf 0 umkippen: neues Bitmuster <code>0 0 1 1 0 <strong style="background:#D1FAE5;">0</strong> 1</code>.</p>'
+            + '<p>Kontrolle:</p>'
+            + '<ul>'
+            + '<li>p1 (0,1,0,1) = 2 ✓</li>'
+            + '<li>p2 (0,1,0,1) = 2 ✓</li>'
+            + '<li>p3 (1,0,0,1) = 2 ✓</li>'
+            + '</ul>'
+            + '<p>Alle drei Kreise wieder gerade → d3 war das gekippte Bit.</p>'
+            + '<div class="tip-box">'
+            + '<strong>Klausur-Format:</strong> Schreibe immer explizit hin, welche Kreise ungerade sind (z. B. p2, p3), und wie du von da zum fehlerhaften Bit kommst. Der Rechenweg zählt, nicht nur die Antwort.'
+            + '</div>'
+        }
+      ]
+    },
+    exercises: [
+      {
+        type: 'multiple-choice',
+        question: 'Was kann der Hamming-Code, was ein einfaches Prüfbit (Parität) <em>nicht</em> kann?',
+        options: [
+          'Fehler erkennen',
+          'Fehler erkennen UND lokalisieren',
+          'Mehrere Bits gleichzeitig codieren',
+          'Verschlüsselung'
+        ],
+        correct: 1,
+        explanation: 'Ein einfaches Paritätsbit erkennt einen 1-Bit-Fehler, kann aber nicht sagen, welches Bit falsch ist. Hamming kann das 1 gekippte Bit identifizieren und korrigieren.'
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Welches Bit liegt in <strong>allen drei</strong> Kreisen?',
+        options: ['d1', 'd2', 'd3', 'd4'],
+        correct: 3,
+        explanation: 'd4 ist das einzige Bit, das gleichzeitig in p1, p2 und p3 liegt. Deshalb macht ein gekipptes d4 alle drei Kreise ungerade.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Bitmuster <code>1 0 0 0 1 1 1</code> (p1=1, p2=0, d1=0, p3=0, d2=1, d3=1, d4=1). Welche Kreise haben eine <strong>ungerade</strong> Anzahl von 1en?',
+        options: [
+          'Nur p1',
+          'p1 und p3',
+          'p2 und p3',
+          'Alle drei'
+        ],
+        correct: 1,
+        explanation: 'p1 (1,0,1,1) = 3 ungerade. p2 (0,0,1,1) = 2 gerade. p3 (0,1,1,1) = 3 ungerade. → p1 und p3.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Gleiches Bitmuster <code>1 0 0 0 1 1 1</code>: p1 und p3 sind ungerade. Welches Bit wurde falsch übertragen?',
+        options: ['p1', 'd1', 'd2', 'd4'],
+        correct: 2,
+        explanation: 'Ungerade in p1 und p3, aber nicht in p2. Schnittmenge p1 ∩ p3 = {d2, d4}, davon NICHT in p2 = d2. Nach Flip von d2 (1→0) sind alle Kreise gerade.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Bitmuster <code>1 1 1 0 0 0 1</code>. Alle drei Kreise zeigen ungerade Anzahl. Welches Bit ist gekippt?',
+        options: ['p1', 'd1', 'd3', 'd4'],
+        correct: 3,
+        explanation: 'Wenn alle drei Kreise ungerade sind, liegt das gekippte Bit in allen drei Kreisen – das ist d4. Flip von d4 (1→0) macht alle Kreise gerade.'
+      }
+    ]
   }
 
 ];
