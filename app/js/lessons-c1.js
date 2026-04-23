@@ -428,6 +428,19 @@ const LessonsC1 = [
         options: ['1', '2', '3', 'H\u00e4ngt vom Ausdruck ab'],
         correct: 2,
         explanation: 'Pro Zeile mit Ergebnis 1 entsteht genau ein Minterm. 3 Einsen \u2192 3 Terme in der DNF.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Klausur-Aufgabe:</strong> Gegeben ist folgende Wahrheitstabelle:<br><table style="border-collapse:collapse;margin:8px 0;font-family:monospace"><tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:4px 10px">a</th><th style="border:1px solid #ccc;padding:4px 10px">b</th><th style="border:1px solid #ccc;padding:4px 10px">c</th><th style="border:1px solid #ccc;padding:4px 10px">D</th></tr><tr><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px;background:#d1fae5"><strong>1</strong></td></tr><tr><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px;background:#d1fae5"><strong>1</strong></td></tr><tr><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">0</td><td style="border:1px solid #ccc;padding:4px 10px">0</td></tr><tr><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px">1</td><td style="border:1px solid #ccc;padding:4px 10px;background:#d1fae5"><strong>1</strong></td></tr></table>Welche DNF geh\u00F6rt zu D?',
+        options: [
+          'D = (\u00aca \u2227 \u00acb \u2227 \u00acc) \u2228 (\u00aca \u2227 b \u2227 \u00acc) \u2228 (a \u2227 b \u2227 c)',
+          'D = (a \u2227 b \u2227 c) \u2228 (\u00aca \u2227 \u00acb \u2227 c) \u2228 (\u00aca \u2227 b \u2227 c)',
+          'D = (\u00aca \u2227 b) \u2228 (a \u2227 b) \u2228 (\u00aca \u2227 c)',
+          'D = (\u00aca \u2228 \u00acb \u2228 \u00acc) \u2227 (\u00aca \u2228 b \u2228 \u00acc) \u2227 (a \u2228 b \u2228 c)'
+        ],
+        correct: 0,
+        explanation: 'Pro Zeile mit D=1 ein Minterm (Variable direkt wenn 1, negiert wenn 0), alle Minterme mit \u2228 verbunden:<br>Zeile 0 (a=0,b=0,c=0) \u2192 \u00aca\u2227\u00acb\u2227\u00acc<br>Zeile 2 (a=0,b=1,c=0) \u2192 \u00aca\u2227b\u2227\u00acc<br>Zeile 7 (a=1,b=1,c=1) \u2192 a\u2227b\u2227c'
       }
     ]
   },
