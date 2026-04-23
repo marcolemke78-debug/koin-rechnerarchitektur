@@ -250,7 +250,20 @@ const LessonsA1 = [
         + '</div>'
         + '<div class="why-context">'
         + '<strong>Warum ist das wichtig?</strong> Oktal wird heute weniger genutzt als früher, aber du begegnest ihm immer noch: bei Dateirechten unter Linux (<code>chmod 755</code>) oder bei Speicheradressen in alten Systemen. Wichtiger für dich: Der <em>Gruppierungs-Trick</em> ist identisch bei Hexadezimal (nächste Lektion) – nur mit 4 statt 3 Bits pro Gruppe. Wer Oktal beherrscht, bekommt Hex fast geschenkt. In der Klausur: meist 3 Punkte.'
-        + '</div>'
+        + '</div>',
+      visuals: [
+        {
+          type: 'bit-layout',
+          bits: '010011100101',
+          groups: [
+            { start: 0, length: 3, color: '#DBEAFE', label: '010 = 2' },
+            { start: 3, length: 3, color: '#FEF3C7', label: '011 = 3' },
+            { start: 6, length: 3, color: '#D1FAE5', label: '100 = 4' },
+            { start: 9, length: 3, color: '#FEE2E2', label: '101 = 5' }
+          ],
+          label: '2345₈ = 010 011 100 101₂ – jede Oktalziffer wird zu genau 3 Bits'
+        }
+      ]
     },
     example: {
       title: 'Beispiel: Beide Richtungen',
@@ -362,7 +375,19 @@ const LessonsA1 = [
         + '<p>FF = 255 (Maximum), 00 = 0 (Minimum). Jede Farbe hat 3 Werte von 0–255 → 256³ ≈ 16,7 Millionen Farben sind möglich.</p>'
         + '<div class="why-context">'
         + '<strong>Warum ist das wichtig?</strong> Hex ist <em>überall</em>: Web-Farben (<code>#2563EB</code>), MAC-Adressen (<code>AA:BB:CC:DD:EE:FF</code>), Speicher-Adressen, Git-Commit-IDs, Fehler-Codes (<code>0x80070005</code>). Wenn du irgendwann mal eine Webseite gestaltest oder eine Fehlermeldung liest, brauchst du Hex. Und in der Klausur ist Hex zuverlässig für 4 Punkte drin – mit der Tabelle im Kopf rechnest du in Sekunden.'
-        + '</div>'
+        + '</div>',
+      visuals: [
+        {
+          type: 'bit-layout',
+          bits: '001001010110001111101011',
+          groups: [
+            { start: 0, length: 8, color: '#FEE2E2', label: 'R = 0x25 = 37' },
+            { start: 8, length: 8, color: '#D1FAE5', label: 'G = 0x63 = 99' },
+            { start: 16, length: 8, color: '#DBEAFE', label: 'B = 0xEB = 235' }
+          ],
+          label: 'Web-Farbe #2563EB zerlegt in 24 Bit – je 8 Bit für Rot/Grün/Blau'
+        }
+      ]
     },
     example: {
       title: 'Beispiel: Beide Richtungen',
@@ -476,7 +501,20 @@ const LessonsA1 = [
         + '</div>'
         + '<div class="why-context">'
         + '<strong>Warum ist das wichtig?</strong> BCD wird überall dort genutzt, wo Ziffern <em>einzeln sichtbar</em> sein müssen: Digital-Anzeigen (Waagen, Uhren, Taschenrechner) oder wo <em>exakte Dezimaldarstellung</em> zählt – zum Beispiel in der Finanzbranche. 0,10 € muss exakt 0,10 € bleiben, keine Rundungsfehler wie bei Gleitkomma! In der Klausur meist eine kurze 1-Punkt-Aufgabe: schnell erledigt, wenn du das Prinzip verstehst.'
-        + '</div>'
+        + '</div>',
+      visuals: [
+        {
+          type: 'bit-layout',
+          bits: '0010001101011001',
+          groups: [
+            { start: 0, length: 4, color: '#DBEAFE', label: '0010 = 2' },
+            { start: 4, length: 4, color: '#FEF3C7', label: '0011 = 3' },
+            { start: 8, length: 4, color: '#D1FAE5', label: '0101 = 5' },
+            { start: 12, length: 4, color: '#FEE2E2', label: '1001 = 9' }
+          ],
+          label: 'Uhrzeit 23:59 in BCD – jede Dezimalziffer belegt genau 4 Bits'
+        }
+      ]
     },
     example: {
       title: 'Beispiel: 291,42₁₀ als BCD',
