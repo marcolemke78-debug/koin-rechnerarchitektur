@@ -8,6 +8,16 @@ const Exercises = {
    * @param {Function} onComplete - Callback wenn Uebung bestanden
    */
   render(exercise, container, onComplete) {
+    // Exercise-Level Klausur-Badge: wird vor dem eigentlichen Uebungs-Markup
+    // eingefuegt, wenn die einzelne Uebung mit examRelevant:true markiert ist.
+    // EXAM_ICON_SVG stammt aus renderer.js (globaler Scope).
+    if (exercise.examRelevant && typeof EXAM_ICON_SVG !== 'undefined') {
+      const badge = document.createElement('div');
+      badge.className = 'exam-badge exercise-exam-badge';
+      badge.innerHTML = EXAM_ICON_SVG + '<span>Mögliche Klausuraufgabe</span>';
+      badge.title = 'Diese Übung entspricht einer im PDF als Klausuraufgabe markierten Aufgabe.';
+      container.appendChild(badge);
+    }
     switch (exercise.type) {
       case 'multiple-choice':
         return Exercises.renderMultipleChoice(exercise, container, onComplete);

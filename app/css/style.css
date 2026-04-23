@@ -140,6 +140,19 @@ body {
   color: currentColor;
 }
 
+/* Exercise-Level-Variante: kompakter, direkt vor der Frage */
+.exam-badge.exercise-exam-badge {
+  margin: 0 0 0.5rem;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.exam-badge.exercise-exam-badge .exam-icon {
+  width: 13px;
+  height: 13px;
+}
+
 /* Reset-Button: wird durch flex + margin-top:auto nach unten gedrückt */
 #reset-progress {
   margin-top: auto;

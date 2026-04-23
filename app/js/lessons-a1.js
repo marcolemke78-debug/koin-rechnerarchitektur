@@ -210,6 +210,7 @@ const LessonsA1 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Was ist 100101,011<sub>2</sub> in Dezimal?',
         options: ['37,375', '37,625', '45,375', '45,625'],
         correct: 0,
