@@ -659,6 +659,61 @@ const LessonsC1 = [
         variables: ['a', 'b'],
         resultColumns: ['a\u2295b', '(a\u2227\u00acb)\u2228(\u00aca\u2227b)'],
         correctResults: [[0,0],[1,1],[1,1],[0,0]]
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Klausur-Aufgabe: Gatternetz ablesen.</strong><br>' +
+          '<svg viewBox="0 0 340 170" style="width:340px;max-width:100%;margin:10px 0;font-family:system-ui">' +
+          '<text x="5" y="40" font-size="14" font-weight="bold">a</text>' +
+          '<text x="5" y="60" font-size="14" font-weight="bold">b</text>' +
+          '<text x="5" y="125" font-size="14" font-weight="bold">c</text>' +
+          '<line x1="15" y1="35" x2="90" y2="35" stroke="black" stroke-width="1.5"/>' +
+          '<line x1="15" y1="55" x2="90" y2="55" stroke="black" stroke-width="1.5"/>' +
+          '<line x1="15" y1="120" x2="90" y2="120" stroke="black" stroke-width="1.5"/>' +
+          '<rect x="90" y="20" width="40" height="50" fill="white" stroke="black" stroke-width="1.5"/>' +
+          '<text x="110" y="50" text-anchor="middle" font-size="14" font-weight="bold">\u22651</text>' +
+          '<line x1="130" y1="45" x2="175" y2="45" stroke="black" stroke-width="1.5"/>' +
+          '<line x1="175" y1="45" x2="175" y2="75" stroke="black" stroke-width="1.5"/>' +
+          '<line x1="175" y1="75" x2="205" y2="75" stroke="black" stroke-width="1.5"/>' +
+          '<rect x="90" y="105" width="40" height="30" fill="white" stroke="black" stroke-width="1.5"/>' +
+          '<text x="110" y="125" text-anchor="middle" font-size="14" font-weight="bold">1</text>' +
+          '<circle cx="134" cy="120" r="4" fill="white" stroke="black" stroke-width="1.5"/>' +
+          '<line x1="138" y1="120" x2="175" y2="120" stroke="black" stroke-width="1.5"/>' +
+          '<line x1="175" y1="120" x2="175" y2="105" stroke="black" stroke-width="1.5"/>' +
+          '<line x1="175" y1="105" x2="205" y2="105" stroke="black" stroke-width="1.5"/>' +
+          '<rect x="205" y="60" width="40" height="50" fill="white" stroke="black" stroke-width="1.5"/>' +
+          '<text x="225" y="90" text-anchor="middle" font-size="14" font-weight="bold">&amp;</text>' +
+          '<line x1="245" y1="85" x2="305" y2="85" stroke="black" stroke-width="1.5"/>' +
+          '<text x="315" y="90" font-size="14" font-weight="bold">z</text>' +
+          '</svg>' +
+          '<br>Welcher boolesche Ausdruck wird durch dieses Gatternetz berechnet?',
+        options: [
+          'z = (a \u2228 b) \u2227 \u00acc',
+          'z = (a \u2227 b) \u2228 \u00acc',
+          'z = \u00ac(a \u2228 b) \u2227 c',
+          'z = (a \u2228 b) \u2227 c'
+        ],
+        correct: 0,
+        explanation: 'Oberer Zweig: <code>a \u2228 b</code> (OR-Gatter \u22651). Unterer Zweig: <code>\u00acc</code> (NOT-Gatter). Beides geht ins AND-Gatter (&): <code>z = (a \u2228 b) \u2227 \u00acc</code>.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Ein Schaltnetz ist beschrieben durch die Verdrahtung:<ul>' +
+          '<li>a und b gehen ins AND-Gatter \u2192 Zwischenergebnis x</li>' +
+          '<li>b geht durch NOT \u2192 Zwischenergebnis y</li>' +
+          '<li>a und y gehen ins AND-Gatter \u2192 Zwischenergebnis w</li>' +
+          '<li>x und w gehen ins OR-Gatter \u2192 Ausgang z</li>' +
+          '</ul>Welcher Ausdruck beschreibt z?',
+        options: [
+          'z = (a \u2227 b) \u2228 (a \u2227 \u00acb)',
+          'z = (a \u2227 b) \u2228 (\u00aca \u2227 b)',
+          'z = (a \u2228 b) \u2227 (a \u2228 \u00acb)',
+          'z = a \u2227 (b \u2228 \u00acb)'
+        ],
+        correct: 0,
+        explanation: 'x = a \u2227 b. y = \u00acb. w = a \u2227 y = a \u2227 \u00acb. z = x \u2228 w = (a \u2227 b) \u2228 (a \u2227 \u00acb). (Das l\u00E4sst sich \u00FCbrigens auch zu einfach z = a vereinfachen \u2013 aber so steht es nicht unter den Optionen.)'
       }
     ]
   }
