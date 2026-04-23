@@ -526,6 +526,30 @@ const LessonsC2 = [
         options: ['0', '1', 'Undefiniert', 'H\u00E4ngt von S und R ab'],
         correct: 0,
         explanation: 'Q\u0305 (Q-Quer) ist immer die Negation von Q. Q=1 \u2192 Q\u0305=0. Q=0 \u2192 Q\u0305=1.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Start: Q=0. Eingangs-Sequenz f\u00FCr 3 Takte: <br>Takt 1: C=1, S=1, R=0 <br>Takt 2: C=0, S=0, R=1 <br>Takt 3: C=1, S=0, R=0 <br>Welche Q-Folge ergibt sich?',
+        options: ['Q: 1 \u2192 0 \u2192 0', 'Q: 1 \u2192 1 \u2192 1', 'Q: 0 \u2192 1 \u2192 1', 'Q: 1 \u2192 1 \u2192 0'],
+        correct: 1,
+        explanation: 'Takt 1: C=1, S=1 \u2192 Setzen \u2192 Q=1. Takt 2: C=0 \u2192 gesperrt, Q bleibt 1 (R=1 wird ignoriert!). Takt 3: C=1, S=0, R=0 \u2192 Halten \u2192 Q bleibt 1.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Start: Q=1. Sequenz: <br>Takt 1: C=1, S=0, R=1 <br>Takt 2: C=1, S=0, R=0 <br>Takt 3: C=1, S=1, R=0 <br>Welche Q-Folge ergibt sich?',
+        options: ['Q: 0 \u2192 0 \u2192 1', 'Q: 1 \u2192 1 \u2192 1', 'Q: 0 \u2192 1 \u2192 1', 'Q: 1 \u2192 0 \u2192 1'],
+        correct: 0,
+        explanation: 'Takt 1: C=1, R=1 \u2192 R\u00FCcksetzen \u2192 Q=0. Takt 2: C=1, S=0, R=0 \u2192 Halten \u2192 Q=0. Takt 3: C=1, S=1 \u2192 Setzen \u2192 Q=1.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Start: Q=0. Takt 1: C=0, S=1, R=0. Was ist Q nach Takt 1?',
+        options: ['Q=1, weil S=1 setzt', 'Q=0, weil C=0 alles sperrt', 'Q=undefiniert', 'Q wechselt auf 1, dann sofort zur\u00FCck'],
+        correct: 1,
+        explanation: 'C=0 ist die Taktsperre. Egal welche Werte S und R haben \u2013 ohne C=1 passiert nichts. Q bleibt bei seinem alten Wert (hier 0).'
       }
     ]
   }
