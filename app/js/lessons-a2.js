@@ -178,6 +178,7 @@ const LessonsA2 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: '-39 im 8-Bit EK – wie lautet das?',
         options: ['1101 1000', '1101 1001', '1101 0110', '0010 0111'],
         correct: 0,
@@ -185,6 +186,7 @@ const LessonsA2 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Welche Dezimalzahl ist 1101 0111<sub>EK</sub>?',
         options: ['-40', '-39', '-41', '-23'],
         correct: 0,
@@ -321,6 +323,7 @@ const LessonsA2 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: '-42 im 8-Bit ZK?',
         options: ['1101 0110', '1101 0101', '0010 1010', '1010 1101'],
         correct: 0,
@@ -328,6 +331,7 @@ const LessonsA2 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Was ist 1110 1101<sub>ZK</sub> in Dezimal?',
         options: ['-18', '-19', '-20', '-17'],
         correct: 1,
@@ -335,6 +339,7 @@ const LessonsA2 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: '29 + (-13) im 8-Bit ZK – Ergebnis?',
         options: ['+16', '+17', '+15', '-16'],
         correct: 0,
@@ -342,6 +347,7 @@ const LessonsA2 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wertebereich 8-Bit ZK?',
         options: [
           '0 bis +255',
@@ -457,6 +463,7 @@ const LessonsA2 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Welche Zahl ist 0 01111110 11000000000000000000000<sub>IEEE754</sub>?',
         options: ['0,75', '0,875', '1,75', '1,875'],
         correct: 1,

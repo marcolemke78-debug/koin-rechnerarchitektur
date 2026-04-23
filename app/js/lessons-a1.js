@@ -182,6 +182,7 @@ const LessonsA1 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Was ist 101011<sub>2</sub> in Dezimal?',
         options: ['41', '42', '43', '51'],
         correct: 2,
@@ -189,6 +190,7 @@ const LessonsA1 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Was ist 0,101<sub>2</sub> in Dezimal?',
         options: ['0,101', '0,125', '0,5', '0,625'],
         correct: 3,
@@ -196,6 +198,7 @@ const LessonsA1 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wie lautet 26<sub>10</sub> als Binärzahl?',
         options: ['10110', '11010', '11100', '10011'],
         correct: 1,
@@ -203,6 +206,7 @@ const LessonsA1 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wie lautet 0,375<sub>10</sub> als Binärzahl?',
         options: ['0,011', '0,101', '0,111', '0,0101'],
         correct: 0,
@@ -293,6 +297,7 @@ const LessonsA1 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wie lautet 001110100011101010111<sub>2</sub> in Oktal?',
         options: ['16435127', '1643527', '1643527<sub>8</sub>', '16435278'],
         correct: 2,
@@ -300,6 +305,7 @@ const LessonsA1 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wie lautet 4501738<sub>8</sub> in Binär?',
         options: [
           '100 101 000 001 111 011 000<sub>2</sub>',
@@ -312,6 +318,7 @@ const LessonsA1 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wie lautet 570231<sub>8</sub> in Binär?',
         options: [
           '101 111 000 010 011 001<sub>2</sub>',
@@ -436,6 +443,7 @@ const LessonsA1 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wie lautet 0100 1111 1010 0011<sub>2</sub> in Hex?',
         options: ['4FA3', '4EA3', '5FA3', '4FB3'],
         correct: 0,
@@ -443,6 +451,7 @@ const LessonsA1 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wie lautet BDE<sub>16</sub> in Binär?',
         options: [
           '1011 1101 1110<sub>2</sub>',
@@ -455,6 +464,7 @@ const LessonsA1 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wie viele Bits brauchst du für die Hex-Ziffer F?',
         options: ['3', '4', '8', '16'],
         correct: 1,
@@ -570,6 +580,7 @@ const LessonsA1 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wie lautet 562,79<sub>10</sub> in BCD?',
         options: [
           '0101 0110 0010, 0111 1001',
@@ -606,6 +617,7 @@ const LessonsA1 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Was ist 0001 0111<sub>BCD</sub> in Dezimal?',
         options: ['17', '23', '10111', '71'],
         correct: 0,

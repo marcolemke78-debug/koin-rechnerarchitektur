@@ -305,6 +305,7 @@ const LessonsA4 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Schneller Zugriff auf mittleres Element?',
         options: ['Array', 'Einfach verkettete Liste', 'Doppelt verkettete Liste', 'Ringliste'],
         correct: 0,
@@ -319,6 +320,7 @@ const LessonsA4 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Mitglieder-Datenbank mit ID – schnelle Suche. Beste Wahl?',
         options: ['Array', 'Einfach verkettet', 'Hashtabelle', 'Ringliste'],
         correct: 2,
@@ -338,6 +340,7 @@ const LessonsA4 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Browser-Verlauf – beste Struktur?',
         options: ['Array', 'Hashtabelle', 'Doppelt verkettete Liste', 'BST'],
         correct: 2,
@@ -480,6 +483,7 @@ const LessonsA4 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Ergebnisliste für n=20?',
         options: [
           '[2, 3, 5, 7, 9, 11, 13, 17, 19]',
@@ -591,6 +595,7 @@ const LessonsA4 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Fehlende Ziffer hat Gewicht 3, bekannte Summe mod 10 = 4. Welche Ziffer?',
         options: ['2', '6', '3', '8'],
         correct: 0,

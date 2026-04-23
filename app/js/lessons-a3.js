@@ -251,6 +251,7 @@ const LessonsA3 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Leerer BST. Du fügst 15, 8, 20, 3, 12 ein. Was ist die Wurzel?',
         options: ['3', '8', '12', '15'],
         correct: 3,
@@ -512,6 +513,7 @@ const LessonsA3 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Welche Hashfunktion ist die Divisions-Rest-Methode?',
         options: ['h(k) = k · m', 'h(k) = k / m', 'h(k) = k mod m', 'h(k) = m - k'],
         correct: 2,
@@ -644,6 +646,7 @@ const LessonsA3 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Hashtabelle m=9, h(k) = k mod 9. Wohin kommt 29?',
         options: ['0', '2', '9', '29'],
         correct: 1,
