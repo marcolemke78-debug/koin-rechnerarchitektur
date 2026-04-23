@@ -561,8 +561,7 @@ const LessonsC6 = [
         ],
         correct: 0,
         explanation: 'Stern: alle Ger\u00e4te strahlen von einem zentralen Punkt (Switch) aus. Wie die Arme eines Sterns von der Mitte.'
-      }
-    ,
+      },
       {
         type: 'multiple-choice',
         examRelevant: true,
