@@ -664,13 +664,13 @@ const LessonsA4 = [
           type: 'bit-layout',
           bits: '0011011',
           groups: [
-            { start: 0, length: 1, color: '#FEE2E2', label: 'p1=0' },
-            { start: 1, length: 1, color: '#FEE2E2', label: 'p2=0' },
-            { start: 2, length: 1, color: '#DBEAFE', label: 'd1=1' },
-            { start: 3, length: 1, color: '#FEE2E2', label: 'p3=1' },
-            { start: 4, length: 1, color: '#DBEAFE', label: 'd2=0' },
-            { start: 5, length: 1, color: '#DBEAFE', label: 'd3=1' },
-            { start: 6, length: 1, color: '#DBEAFE', label: 'd4=1' }
+            { start: 0, length: 1, color: '#FEE2E2', label: 'p1' },
+            { start: 1, length: 1, color: '#FEE2E2', label: 'p2' },
+            { start: 2, length: 1, color: '#DBEAFE', label: 'd1' },
+            { start: 3, length: 1, color: '#FEE2E2', label: 'p3' },
+            { start: 4, length: 1, color: '#DBEAFE', label: 'd2' },
+            { start: 5, length: 1, color: '#DBEAFE', label: 'd3' },
+            { start: 6, length: 1, color: '#DBEAFE', label: 'd4' }
           ],
           label: '(7,4)-Hamming-Bitmuster 0011011 – Paritätsbits rot, Datenbits blau'
         }

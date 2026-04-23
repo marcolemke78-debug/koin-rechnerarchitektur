@@ -725,7 +725,7 @@ const LessonsA3 = [
             { start: 1, length: 1, color: '#F3F4F6', label: '7' },
             { start: 2, length: 1, color: '#F3F4F6', label: '13' },
             { start: 3, length: 1, color: '#F3F4F6', label: '26' },
-            { start: 4, length: 1, color: '#FEF3C7', label: '37 ← m' },
+            { start: 4, length: 1, color: '#FEF3C7', label: '37' },
             { start: 5, length: 1, color: '#F3F4F6', label: '42' },
             { start: 6, length: 1, color: '#F3F4F6', label: '51' },
             { start: 7, length: 1, color: '#F3F4F6', label: '59' },
