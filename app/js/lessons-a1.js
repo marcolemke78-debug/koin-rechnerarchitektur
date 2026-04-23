@@ -374,6 +374,16 @@ const LessonsA1 = [
         + '<div style="background:#FFFFFF;color:black;padding:8px 14px;border-radius:4px;border:1px solid #ccc;">#FFFFFF Weiß</div>'
         + '</div>'
         + '<p>FF = 255 (Maximum), 00 = 0 (Minimum). Jede Farbe hat 3 Werte von 0–255 → 256³ ≈ 16,7 Millionen Farben sind möglich.</p>'
+        + '<h3>Bonus-Trick: gerade oder ungerade?</h3>'
+        + '<p>An einer Binärzahl erkennt man auf einen Blick, ob sie gerade oder ungerade ist – man muss sie <em>gar nicht umrechnen</em>:</p>'
+        + '<ul>'
+        + '<li>Endet auf <strong>0</strong> → <strong>gerade</strong> (z. B. 1010<sub>2</sub> = 10, 0110<sub>2</sub> = 6)</li>'
+        + '<li>Endet auf <strong>1</strong> → <strong>ungerade</strong> (z. B. 1011<sub>2</sub> = 11, 0111<sub>2</sub> = 7)</li>'
+        + '</ul>'
+        + '<p>Warum? Die letzte Binärstelle hat den Wert 2<sup>0</sup> = 1. Alle anderen Stellen haben Werte 2, 4, 8, 16 … – die sind <em>alle</em> gerade. Also entscheidet allein das letzte Bit, ob die Gesamtsumme gerade oder ungerade ist.</p>'
+        + '<div class="tip-box">'
+        + '<strong>Klausur-Tipp:</strong> Fragt die Klausur "Ist 101011<sub>2</sub> gerade?", musst du nicht in Dezimal umrechnen. Letztes Bit ist <strong>1</strong> → ungerade. Fertig.'
+        + '</div>'
         + '<div class="why-context">'
         + '<strong>Warum ist das wichtig?</strong> Hex ist <em>überall</em>: Web-Farben (<code>#2563EB</code>), MAC-Adressen (<code>AA:BB:CC:DD:EE:FF</code>), Speicher-Adressen, Git-Commit-IDs, Fehler-Codes (<code>0x80070005</code>). Wenn du irgendwann mal eine Webseite gestaltest oder eine Fehlermeldung liest, brauchst du Hex. Und in der Klausur ist Hex zuverlässig für 4 Punkte drin – mit der Tabelle im Kopf rechnest du in Sekunden.'
         + '</div>',
@@ -463,6 +473,27 @@ const LessonsA1 = [
         options: ['#FFFFFF', '#808080', '#000000', '#8F0000'],
         correct: 1,
         explanation: '#808080 = R:128, G:128, B:128 – alle gleich, mittig → Grau.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Ist <code>101011<sub>2</sub></code> gerade oder ungerade? (ohne umzurechnen!)',
+        options: ['gerade', 'ungerade'],
+        correct: 1,
+        explanation: 'Letztes Bit = 1 → ungerade. (Probe: 101011<sub>2</sub> = 32+8+2+1 = 43, tatsächlich ungerade.)'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Welche der folgenden Binärzahlen ist <strong>gerade</strong>?',
+        options: [
+          '1111 0001<sub>2</sub>',
+          '1010 1011<sub>2</sub>',
+          '0011 1100<sub>2</sub>',
+          '0000 0111<sub>2</sub>'
+        ],
+        correct: 2,
+        explanation: 'Gerade = letztes Bit 0. Nur <code>0011 1100</code> endet auf 0. (Wert: 60, gerade.)'
       }
     ]
   },
