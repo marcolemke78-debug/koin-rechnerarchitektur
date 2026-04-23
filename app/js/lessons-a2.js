@@ -121,6 +121,19 @@ const LessonsA2 = [
         + '<p>Unten: +37 und -37 im Vergleich.</p>'
         + '<div class="why-context">'
         + '<strong>Warum ist das wichtig?</strong> In der Praxis wird das Einerkomplement <em>nicht</em> verwendet – wegen dem Problem mit der doppelten Null. Warum lernen wir es trotzdem? Weil es die <strong>logische Vorstufe</strong> zum Zweierkomplement (nächste Lektion) ist. In der Klausur werden EK und ZK fast immer gemeinsam abgefragt. Wer EK verstanden hat, versteht automatisch, warum beim ZK "noch +1" dazu kommt – nämlich um die Doppel-Null loszuwerden.'
+        + '</div>'
+        + '<h3>Rechnen im EK: der Haken</h3>'
+        + '<p>EK-Zahlen kann man wie normale Binärzahlen addieren – meistens. Aber es gibt einen <strong>Fallstrick</strong>: Wenn bei der Addition ein Übertrag <em>aus dem höchsten Bit herausläuft</em>, ist das Ergebnis direkt <strong>falsch</strong>. Die Korrektur heißt <em>End-Around-Carry</em>: den Übertrag unten wieder dazuaddieren.</p>'
+        + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;">'
+        + '  0001 0111   (+23)\n'
+        + '+ 1111 1000   (-7 im EK)\n'
+        + '----------\n'
+        + ' 1 0000 1111   ← Übertrag läuft raus!\n'
+        + '            0000 1111 = 15  falsch (sollte 16 sein)\n'
+        + '         +          1  ← End-Around-Carry\n'
+        + '          = 0001 0000 = 16  korrekt</pre>'
+        + '<div class="warning-box">'
+        + '<strong>Klausur-Regel:</strong> Entsteht bei der Addition zweier EK-Zahlen ein <em>Übertrag aus dem 8. Bit</em>, klappt die <em>direkte</em> Addition nicht. Das ist die Schwäche des EK, die das Zweierkomplement (nächste Lektion) eliminiert.'
         + '</div>',
       visuals: [
         {
@@ -198,6 +211,38 @@ const LessonsA2 = [
         ],
         correct: 2,
         explanation: '-127 bis +127 (die doppelte Null verschenkt einen Wert).'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Klappt das EK direkt?</strong> Rechnung: <code>23 + (-7)</code> im 8-Bit EK.',
+        options: ['klappt', 'klappt nicht'],
+        correct: 1,
+        explanation: '+23 = 0001 0111, -7 im EK = 1111 1000. Summe = 1 0000 1111 – Übertrag aus dem 8. Bit! Direkt gelesen 0000 1111 = 15, richtig wäre 16. <strong>Klappt nicht</strong> (End-Around-Carry wäre nötig).'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Klappt das EK direkt?</strong> Rechnung: <code>31 + 12</code> im 8-Bit EK.',
+        options: ['klappt', 'klappt nicht'],
+        correct: 0,
+        explanation: '31 = 0001 1111, 12 = 0000 1100. Summe = 0010 1011 = 43. Kein Übertrag, Ergebnis positiv und korrekt. <strong>Klappt.</strong>'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Klappt das EK direkt?</strong> Rechnung: <code>-25 + 21</code> im 8-Bit EK.',
+        options: ['klappt', 'klappt nicht'],
+        correct: 0,
+        explanation: '-25 im EK = 1110 0110, +21 = 0001 0101. Summe = 1111 1011. Kein Übertrag. Führendes Bit 1 → negativ; invertiert: 0000 0100 = 4, also -4. Richtig. <strong>Klappt.</strong>'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Klappt das EK direkt?</strong> Rechnung: <code>-16 + (-9)</code> im 8-Bit EK.',
+        options: ['klappt', 'klappt nicht'],
+        correct: 1,
+        explanation: '-16 im EK = 1110 1111, -9 im EK = 1111 0110. Summe = 1 1110 0101 – Übertrag! Direkt gelesen 1110 0101 → invertiert 0001 1010 = 26, also -26. Richtig wäre -25. <strong>Klappt nicht</strong> (End-Around-Carry wäre nötig).'
       }
     ]
   },
@@ -440,6 +485,63 @@ const LessonsA2 = [
         ],
         correct: 2,
         explanation: 'Der Bias verschiebt den Bereich, sodass 8 Bit Exponenten von -126 bis +127 als positive Zahl speichern können.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Peter korrigieren – Schritt 1 (Vorzeichen).</strong> Peter soll -3,875 in IEEE 754 umwandeln. Welche Notation fürs Vorzeichen ist korrekt?',
+        options: [
+          '(-1)<sup>1</sup> = -1, V = 1',
+          '(-1)<sup>0</sup> = 1, V = 1',
+          's = 0 positiv, V = 0'
+        ],
+        correct: 0,
+        explanation: 'Negative Zahl → V = 1. Die Notation (-1)<sup>1</sup> = -1 liefert das negative Vorzeichen. Option 2 ist widersprüchlich, Option 3 wäre für eine positive Zahl.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Peter korrigieren – Schritt 2 (Binärzahl).</strong> Welches Bitmuster entspricht <code>3,875<sub>10</sub></code>?',
+        options: ['1,111', '11,11', '11,111'],
+        correct: 2,
+        explanation: '3,875 = 2 + 1 + 0,5 + 0,25 + 0,125 = 11,111<sub>2</sub>. (2¹+2⁰ ,2⁻¹+2⁻²+2⁻³).'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Peter korrigieren – Schritt 3 (normalisieren).</strong> Wie lautet 11,111<sub>2</sub> in normalisierter Form (ein Bit vor dem Komma, Rest als Potenz von 2)?',
+        options: [
+          '1,111 · 2<sup>0</sup>',
+          '1,1111 · 2<sup>1</sup>',
+          '1,111 · 2<sup>1</sup>'
+        ],
+        correct: 1,
+        explanation: 'Komma um 1 Stelle nach links → 1,1111 · 2<sup>1</sup>. Die Mantissen-Bits NACH dem Komma lauten 1111 – die 1 vor dem Komma wird in IEEE 754 nicht gespeichert (implizit).'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Peter korrigieren – Schritt 4 (Exponent).</strong> Der tatsächliche Exponent ist 1. Wie sieht der gespeicherte Exponent E (8-Bit, Bias 127) aus?',
+        options: [
+          '0 + 127 = 0111 1111',
+          '1 + 127 = 0111 1111',
+          '1 + 127 = 1000 0000'
+        ],
+        correct: 2,
+        explanation: '1 + 127 = 128, und 128 in 8-Bit binär = 1000 0000. Option 2 rechnet rechts, aber 1+127 ≠ 127!'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Peter korrigieren – Finale.</strong> Wie lautet -3,875 vollständig in IEEE 754 (V | E | M)?',
+        options: [
+          '0 | 10000000 | 11110000000000000000000',
+          '1 | 01111111 | 11110000000000000000000',
+          '1 | 10000000 | 11110000000000000000000',
+          '1 | 10000000 | 11100000000000000000000'
+        ],
+        correct: 2,
+        explanation: 'V = 1 (negativ), E = 1000 0000 (128 = 1+127), M = 1111 aufgefüllt auf 23 Bit mit Nullen. Ergibt 1 | 10000000 | 11110000000000000000000.'
       }
     ]
   },
