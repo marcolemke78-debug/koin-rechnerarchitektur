@@ -651,7 +651,7 @@ const LessonsA3 = [
       },
       {
         type: 'multiple-choice',
-        question: 'Platz 3 enthält [10 → 17 → 24]. Wohin mit 38?',
+        question: 'Hashtabelle m=7, h(k) = k mod 7. Platz 3 enthält bereits [10 → 17 → 24]. Wohin mit 38?',
         options: ['Ans Ende von Platz 3 anhängen', 'Vorne in Platz 3 einfügen', 'Platz 0', 'Platz 4'],
         correct: 0,
         explanation: '38 mod 7 = 3. Hinten anhängen: [10 → 17 → 24 → 38].'

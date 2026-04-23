@@ -401,7 +401,7 @@ const LessonsA2 = [
                 { start: 1, length: 8, color: '#DBEAFE', label: 'E=128' },
                 { start: 9, length: 23, color: '#D1FAE5', label: 'M=1111...' }
               ],
-              label: '-3,875 fertig – Hex: C07C0000'
+              label: '-3,875 fertig – Hex: C0780000'
             }
           ]
         }

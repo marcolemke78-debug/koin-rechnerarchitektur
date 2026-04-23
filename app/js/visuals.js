@@ -2492,6 +2492,7 @@ Visuals.renderFlussdiagramm = function(config, container) {
 
   const shapeStyle = {
     start:    'padding:8px 28px; border:2px solid #059669; border-radius:999px; background:#D1FAE5; font-weight:bold;',
+    end:      'padding:8px 28px; border:2px solid #059669; border-radius:999px; background:#D1FAE5; font-weight:bold;',
     op:       'padding:8px 20px; border:2px solid #374151; border-radius:4px; background:#F3F4F6;',
     io:       'padding:8px 20px; border:2px solid #2563EB; background:#DBEAFE; transform:skew(-10deg);',
     decision: 'padding:8px 20px; border:2px solid #D97706; background:#FEF3C7; transform:rotate(45deg); width:110px; height:110px; display:flex; align-items:center; justify-content:center;'
@@ -2884,6 +2885,6 @@ Visuals.renderHashtableInteractive = function(config, container) {
     }, tableBox);
   }
 
-  redraw('Zahl eingeben und „Einfügen" drücken.');
+  redraw('Zahl eingeben und "Einfügen" drücken.');
   container.appendChild(wrapper);
 };

@@ -188,7 +188,7 @@ const LessonsA4 = [
                 { kind: 'op',    text: 'min := M[i]' },
                 { kind: 'op',    text: 'i := i + 1' },
                 { kind: 'io',    text: 'Gib min aus' },
-                { kind: 'start', text: 'Stop' }
+                { kind: 'end',   text: 'Stop' }
               ]
             }
           ]
@@ -198,7 +198,7 @@ const LessonsA4 = [
     exercises: [
       {
         type: 'multiple-choice',
-        question: 'Welche Darstellung besteht aus geschachtelten Rechtecken und Trapezen?',
+        question: 'Welche Darstellung besteht aus geschachtelten Rechtecken (nach Nassi-Shneiderman)?',
         options: ['Pseudocode', 'Flussdiagramm', 'Struktogramm', 'UML'],
         correct: 2,
         explanation: 'Struktogramm = Nassi-Shneiderman, alles geschachtelt.'
