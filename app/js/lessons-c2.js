@@ -392,6 +392,24 @@ const LessonsC2 = [
         {
           label: 'Stelle 3 (Volladdierer): A\u2083=0, B\u2083=0, C_in=1 \u2192 S\u2083=1, C_out=0',
           html: '<p>An Stelle 3: A=0, B=0, C_in=1. Rechnung: 0 + 0 + 1 = 1. Summe-Bit 1, kein Carry mehr.</p><p>Gesamtergebnis: <strong>S\u2083S\u2082S\u2081S\u2080 = 1000\u2082 = 8\u2081\u2080</strong> \u2713</p><p><em>Beachte: Der Staffelstab ist von Stelle 0 \u00FCber 1, 2, 3 gewandert und am Ende \u201Eaufgegangen\u201C im Ergebnis-Bit. Solche Ketten von Carrys sind der Grund, warum breite Addierer (64-Bit-CPU) intern trickreich optimiert werden \u2013 aber das Grundprinzip ist genau das, was du hier siehst.</em></p>'
+        },
+        {
+          label: 'PDF-Original: 101\u2082 + 111\u2082 = 1100\u2082 (3-stelliges Addierwerk)',
+          html: '<p>Das KOIN-\u00DCbungsblatt arbeitet mit einem <em>3-stelligen</em> Addierwerk (statt 4-stellig). Das Rechenschema ist identisch \u2013 nur eine Stelle weniger, und am Ende zeigt das Carry-Out, dass das Ergebnis \u00FCber den 3-Bit-Wertebereich hinausl\u00E4uft:</p>'
+            + '<pre style="background:#f3f4f6;padding:10px;font-family:monospace;line-height:1.5;">'
+            + '  1 1 1         \u2190 Carry jeder Stelle\n'
+            + '    1 0 1         (5)\n'
+            + '  + 1 1 1         (7)\n'
+            + '  --------\n'
+            + '  1 1 0 0         (12) \u2713</pre>'
+            + '<ul>'
+            + '<li>Stelle 0: 1 + 1 = 10\u2082 \u2192 S\u2080 = 0, C = 1</li>'
+            + '<li>Stelle 1: 0 + 1 + 1 = 10\u2082 \u2192 S\u2081 = 0, C = 1</li>'
+            + '<li>Stelle 2: 1 + 1 + 1 = 11\u2082 \u2192 S\u2082 = 1, C_out = 1</li>'
+            + '</ul>'
+            + '<div class="warning-box">'
+            + '<strong>Overflow-Hinweis:</strong> Ein 3-Bit-Addierwerk kann nur Ergebnisse bis 7 (<code>111\u2082</code>) darstellen. 12 ist gr\u00F6\u00DFer \u2013 das Carry-Out = 1 zeigt den \u00DCberlauf an. In der Klausur: Carry-Out lesen und als Overflow-Indikator dokumentieren!'
+            + '</div>'
         }
       ]
     },
