@@ -1881,23 +1881,33 @@ Visuals.NETWORK_PRESETS = {
   },
 
   'topology-bus': {
+    // Klassischer Bus: EINE durchgehende Linie, 6 Hosts haengen per T-Stueck dran.
+    // bus_a bis bus_z sind unsichtbare Anchor-Knoten (type:'anchor') auf y=130.
     width: 500, height: 220,
     nodes: [
-      { id: 'bus1', type: 'switch', x: 60, y: 120, label: '' },
-      { id: 'bus2', type: 'switch', x: 440, y: 120, label: '' },
-      { id: 'n1', type: 'host', x: 120, y: 40, label: 'PC 1' },
-      { id: 'n2', type: 'host', x: 220, y: 40, label: 'PC 2' },
-      { id: 'n3', type: 'host', x: 320, y: 40, label: 'PC 3' },
-      { id: 'n4', type: 'host', x: 170, y: 200, label: 'PC 4' },
-      { id: 'n5', type: 'host', x: 270, y: 200, label: 'PC 5' },
-      { id: 'n6', type: 'host', x: 370, y: 200, label: 'PC 6' }
+      { id: 'bus_a', type: 'anchor', x: 40,  y: 130, label: '' },
+      { id: 'bus_1', type: 'anchor', x: 100, y: 130, label: '' },
+      { id: 'bus_4', type: 'anchor', x: 160, y: 130, label: '' },
+      { id: 'bus_2', type: 'anchor', x: 230, y: 130, label: '' },
+      { id: 'bus_5', type: 'anchor', x: 290, y: 130, label: '' },
+      { id: 'bus_3', type: 'anchor', x: 360, y: 130, label: '' },
+      { id: 'bus_6', type: 'anchor', x: 420, y: 130, label: '' },
+      { id: 'bus_z', type: 'anchor', x: 470, y: 130, label: '' },
+      { id: 'n1', type: 'host', x: 100, y: 40,  label: 'PC 1' },
+      { id: 'n2', type: 'host', x: 230, y: 40,  label: 'PC 2' },
+      { id: 'n3', type: 'host', x: 360, y: 40,  label: 'PC 3' },
+      { id: 'n4', type: 'host', x: 160, y: 200, label: 'PC 4' },
+      { id: 'n5', type: 'host', x: 290, y: 200, label: 'PC 5' },
+      { id: 'n6', type: 'host', x: 420, y: 200, label: 'PC 6' }
     ],
     edges: [
-      ['bus1', 'bus2'],
-      ['bus1', 'n1'], ['bus1', 'n4'],
-      ['bus2', 'n3'], ['bus2', 'n6'],
-      ['n2', 'bus1'], ['n5', 'bus1'],
-      ['n2', 'bus2'], ['n5', 'bus2']
+      // durchgehende Bus-Linie
+      ['bus_a', 'bus_1'], ['bus_1', 'bus_4'], ['bus_4', 'bus_2'],
+      ['bus_2', 'bus_5'], ['bus_5', 'bus_3'], ['bus_3', 'bus_6'],
+      ['bus_6', 'bus_z'],
+      // T-Stueck-Verbindungen zu den Hosts
+      ['n1', 'bus_1'], ['n2', 'bus_2'], ['n3', 'bus_3'],
+      ['n4', 'bus_4'], ['n5', 'bus_5'], ['n6', 'bus_6']
     ]
   },
 
