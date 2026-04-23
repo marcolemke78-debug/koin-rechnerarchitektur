@@ -91,6 +91,32 @@ const LessonsC6 = [
         ],
         correct: 0,
         explanation: 'DNS-Hierarchie: lokaler Resolver kennt nichts \u2192 Root-NS kennt alle TLDs \u2192 TLD-NS kennt alle Domains der TLD \u2192 Authoritative NS kennt die spezifische Domain.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Reflexionsfrage:</strong> Ein Angreifer hat einen DNS-Server \u00FCbernommen. Was ist die gef\u00E4hrlichste Folge?',
+        options: [
+          'Websites laden etwas langsamer',
+          'Er kann Nutzer auf gef\u00E4lschte Seiten umleiten (DNS-Spoofing)',
+          'Er kann die eigentliche IP-Adresse des Servers \u00E4ndern',
+          'Gar nichts, DNS ist nur ein Verzeichnis'
+        ],
+        correct: 1,
+        explanation: 'DNS \u00FCbersetzt Namen in IPs. Wer den DNS-Server kontrolliert, kann Anfragen f\u00FCr z.\u202FB. <code>bank.de</code> auf eine gef\u00E4lschte Server-IP lenken (DNS-Spoofing). Der echte Server wird nicht ver\u00E4ndert \u2013 aber die Nutzer landen woanders.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Ein Webdienst zieht auf einen neuen Server mit neuer IP um. Der Betreiber \u00E4ndert den DNS-Eintrag. Warum sehen nicht <em>alle</em> Nutzer sofort den neuen Server?',
+        options: [
+          'DNS-Antworten werden gecacht \u2013 erst nach Ablauf der TTL wird die neue IP geholt',
+          'Die alte IP wird automatisch gesperrt',
+          'Der Router muss neu gestartet werden',
+          'DNS-Updates funktionieren nur stundenweise'
+        ],
+        correct: 0,
+        explanation: 'DNS-Antworten werden lokal und bei Zwischen-Resolvern <em>gecacht</em>, mit einer Time-to-Live (TTL). Erst wenn die TTL abgelaufen ist, fragt ein Resolver erneut an und holt sich die neue IP. Bei Umz\u00FCgen setzen Betreiber deshalb oft die TTL vorab niedrig.'
       }
     ]
   },
