@@ -188,6 +188,20 @@ const LessonsC5 = [
         + '<tr><td style="border:1px solid #ccc;padding:6px 10px">/24</td><td style="border:1px solid #ccc;padding:6px 10px">255.255.255.0</td><td style="border:1px solid #ccc;padding:6px 10px"><code>11111111.11111111.11111111.00000000</code></td><td style="border:1px solid #ccc;padding:6px 10px">8</td><td style="border:1px solid #ccc;padding:6px 10px">254</td></tr>'
         + '<tr><td style="border:1px solid #ccc;padding:6px 10px">/27</td><td style="border:1px solid #ccc;padding:6px 10px">255.255.255.224</td><td style="border:1px solid #ccc;padding:6px 10px"><code>11111111.11111111.11111111.11100000</code></td><td style="border:1px solid #ccc;padding:6px 10px">5</td><td style="border:1px solid #ccc;padding:6px 10px">30</td></tr>'
         + '</table>'
+        + '<h3>Ist eine Maske \u00FCberhaupt g\u00FCltig?</h3>'
+        + '<p>Eine g\u00FCltige Subnetzmaske hat eine <strong>zusammenh\u00E4ngende 1-Folge</strong> ganz vorne, gefolgt von Nullen. Nichts dazwischen, keine Lücken. In der Klausur wird oft gefragt: "Ist <code>255.255.184.0</code> eine g\u00FCltige Maske?"</p>'
+        + '<div class="warning-box">'
+        + '<strong>Rechnen wir 184 nach:</strong> 184 = 128+32+16+8 = <code>1011 1000</code>. Die Einsen sind <em>nicht zusammenh\u00E4ngend</em> (eine 0 zwischen Einsen!) \u2192 <strong>ung\u00FCltig</strong>. Eine g\u00FCltige Alternative w\u00E4re 248 = <code>1111 1000</code>, und das entspricht /21.'
+        + '</div>'
+        + '<p><strong>Kochrezept zur Gültigkeitsprüfung:</strong></p>'
+        + '<ol>'
+        + '<li>Jedes der 4 Oktette von Dezimal nach 8-Bit-Bin\u00E4r umrechnen.</li>'
+        + '<li>Pr\u00FCfen: Steht genau eine zusammenh\u00E4ngende 1-Folge vorne, danach nur noch Nullen?</li>'
+        + '<li>Wenn ja \u2192 g\u00FCltig, CIDR = Anzahl 1en. Wenn irgendwo 1 nach 0 kommt \u2192 ung\u00FCltig.</li>'
+        + '</ol>'
+        + '<div class="tip-box">'
+        + '<strong>Klausur-Shortcut:</strong> G\u00FCltige letzte Oktette sind nur: 0, 128, 192, 224, 240, 248, 252, 254, 255. Alles andere im Masken-Oktett ist ung\u00FCltig. (Die Reihe sind genau die Werte, die mit einer Einser-Folge anfangen.)'
+        + '</div>'
         + '<div class="why-context">'
         + '<strong>Warum kennt die Klausur so viele Masken?</strong> Je kleiner ein Unternehmens-/Schulnetzwerk, desto sparsamer der IP-Verbrauch. Eine kleine Abteilung mit 10 Rechnern braucht kein /24 (das w\u00E4re Platz f\u00FCr 254 Ger\u00E4te \u2013 95\% unbenutzt). Mit /27 bekommen sie 30 Hosts \u2013 genau richtig. Subnetting ist deshalb zentrales IT-Wissen: Wer es beherrscht, spart Adressen und kann Netze sinnvoll strukturieren.'
         + '</div>'
@@ -251,6 +265,35 @@ const LessonsC5 = [
         options: ['/24', '/25', '/27', '/28'],
         correct: 2,
         explanation: '224 = 11100000\u2082 \u2192 3 f\u00fchrende Einsen im 4. Oktett. Zusammen mit den ersten 24 Bit: 24+3 = /27.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Ist <code>255.255.184.0</code> eine <strong>g\u00FCltige</strong> Subnetzmaske?',
+        options: [
+          'Ja \u2013 entspricht /21',
+          'Nein \u2013 184 hat keine zusammenh\u00E4ngende 1-Folge',
+          'Ja, aber nur f\u00FCr IPv6',
+          'Nein \u2013 sie muss in allen Oktetten 255 sein'
+        ],
+        correct: 1,
+        explanation: '184 = 1011 1000. Eine 0 zwischen Einsen verletzt die Regel "zusammenh\u00E4ngende 1-Folge von vorne". Ung\u00FCltig. (Eine g\u00FCltige N\u00E4herung w\u00E4re 248 = 1111 1000, das w\u00E4re /21.)'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Ist <code>255.255.248.0</code> eine g\u00FCltige Subnetzmaske?',
+        options: ['Ja \u2013 /21', 'Ja \u2013 /20', 'Nein', 'Nur f\u00FCr IPv6'],
+        correct: 0,
+        explanation: '248 = 1111 1000 \u2013 zusammenh\u00E4ngende 5 Einsen. Plus 16 Bit aus den ersten beiden Oktetten: 16 + 5 = /21. G\u00FCltig.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Welcher Wert in einem Maskenoktett ist <strong>nicht</strong> erlaubt?',
+        options: ['192', '240', '200', '252'],
+        correct: 2,
+        explanation: '200 = 1100 1000 \u2013 Einsen nicht zusammenh\u00E4ngend. 192 (11000000), 240 (11110000) und 252 (11111100) sind korrekt.'
       }
     ]
   },
