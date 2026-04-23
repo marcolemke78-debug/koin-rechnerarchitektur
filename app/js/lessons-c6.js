@@ -439,11 +439,11 @@ const LessonsC6 = [
     explanation: {
       html:
         '<h2>Netzwerktopologien</h2>'
-        + '<p>Die <strong>Topologie</strong> beschreibt die physische oder logische Anordnung der Ger\u00E4te und Kabel in einem Netzwerk. In der Klausur solltest du die 5 klassischen Topologien erkennen, zeichnen und ihre Vor-/Nachteile kennen.</p>'
+        + '<p>Die <strong>Topologie</strong> beschreibt die physische oder logische Anordnung der Ger\u00E4te und Kabel in einem Netzwerk. In der Klausur solltest du die 6 wichtigsten Topologien erkennen, zeichnen und ihre Vor-/Nachteile kennen.</p>'
         + '<div class="analogy-box">'
         + '<strong>Verkehrs-Analogie:</strong> Topologien sind wie unterschiedliche Stra\u00DFennetze. Ein <em>Stern</em> ist wie eine Kreuzung, wo alle Stra\u00DFen auf einem Kreisverkehr zusammenlaufen \u2013 robust, aber ohne Kreisverkehr l\u00E4uft nichts. Ein <em>Ring</em> ist wie eine Ringstra\u00DFe \u2013 Umwege m\u00F6glich, aber ein einzelner Bruch kann viel blockieren. Ein <em>Baum</em> ist wie eine Hauptstra\u00DFe mit Seitenstra\u00DFen und Sackgassen. Ein <em>Bus</em> ist wie eine Landstra\u00DFe, an der alle H\u00F6fe angeschlossen sind. Eine <em>Linie</em> ist wie eine Kette von D\u00F6rfern.'
         + '</div>'
-        + '<h3>Die 5 klassischen Topologien im \u00DCberblick:</h3>'
+        + '<h3>Die 6 wichtigsten Topologien im \u00DCberblick:</h3>'
         + '<table style="border-collapse:collapse;width:100%;margin:8px 0">'
         + '<tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:6px 10px">Topologie</th><th style="border:1px solid #ccc;padding:6px 10px">Aufbau</th><th style="border:1px solid #ccc;padding:6px 10px">Kabelausfall</th><th style="border:1px solid #ccc;padding:6px 10px">Typisch f\u00FCr</th></tr>'
         + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Stern</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Alle Ger\u00E4te an zentralem Switch/Hub</td><td style="border:1px solid #ccc;padding:6px 10px">Nur das eine Ger\u00E4t betroffen</td><td style="border:1px solid #ccc;padding:6px 10px">B\u00FCro, Heimnetz</td></tr>'
@@ -451,18 +451,20 @@ const LessonsC6 = [
         + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Bus</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Alle an gemeinsamem Kabel</td><td style="border:1px solid #ccc;padding:6px 10px">Ein Bruch trennt alles</td><td style="border:1px solid #ccc;padding:6px 10px">Alte Ethernet-Netze</td></tr>'
         + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Baum</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Hierarchisch (Switches in Ebenen)</td><td style="border:1px solid #ccc;padding:6px 10px">Ausfall eines Knotens \u2192 alle darunter betroffen</td><td style="border:1px solid #ccc;padding:6px 10px">Schulnetz, Firmennetz</td></tr>'
         + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Linie</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Ger\u00E4te in Reihe, jeweils benachbart verbunden</td><td style="border:1px solid #ccc;padding:6px 10px">Ein Bruch trennt die Kette</td><td style="border:1px solid #ccc;padding:6px 10px">Selten, f\u00FCr spezielle Zwecke</td></tr>'
+        + '<tr><td style="border:1px solid #ccc;padding:6px 10px"><strong>Vermascht (Mesh)</strong></td><td style="border:1px solid #ccc;padding:6px 10px">Viele (oder alle) Knoten direkt miteinander verbunden</td><td style="border:1px solid #ccc;padding:6px 10px">Ein Bruch f\u00E4llt nicht auf \u2013 Ausweichwege da</td><td style="border:1px solid #ccc;padding:6px 10px">Internet-Backbone, WLAN-Mesh</td></tr>'
         + '</table>'
         + '<div class="why-context">'
         + '<strong>Warum sind manche Topologien \u201Everaltet\u201C?</strong> Bus und Ring waren in den 80ern/90ern Standard, weil Switches teuer waren. Heute sind Switches billig und beherrschen <em>Stern</em>-Topologien m\u00FChelos. Deshalb bestehen moderne Netzwerke fast immer aus Stern- oder Baum-Strukturen. Du solltest die alten Topologien trotzdem kennen, weil sie klausurrelevant sind und manchmal in speziellen Industriesteuerungen noch vorkommen.'
         + '</div>'
-        + '<h3>Die 5 Topologien als Diagramme:</h3>'
+        + '<h3>Die 6 Topologien als Diagramme:</h3>'
         + '<p>Unten siehst du jede Topologie einzeln. <em>Unter jedem Diagramm steht die wichtigste Aussage nochmal konkret</em> \u2013 die ausf\u00FChrlichen Vor- und Nachteile findest du in der Tabelle oben. Vergleiche beim Scrollen: Wo ist der Ausfall-kritische Punkt jeder Topologie?</p>',
       visuals: [
         { type: 'network-diagram', preset: 'topology-star', label: 'STERN \u2013 alle Ger\u00E4te am zentralen Switch. Vorteil: Ausfall eines Kabels trifft nur EIN Ger\u00E4t. Nachteil: F\u00E4llt der Switch aus, ist alles weg.' },
         { type: 'network-diagram', preset: 'topology-ring', label: 'RING \u2013 jedes Ger\u00E4t hat genau zwei Nachbarn, Signal wandert im Kreis. Nachteil: Ein Kabelbruch kann den Ring unterbrechen.' },
         { type: 'network-diagram', preset: 'topology-bus', label: 'BUS \u2013 alle Ger\u00E4te h\u00E4ngen an einer gemeinsamen Hauptleitung (dem \u201EBus\u201C). Nachteil: Ein Bruch der Hauptleitung trennt das ganze Netz.' },
         { type: 'network-diagram', preset: 'topology-tree', label: 'BAUM \u2013 Hierarchisch: Haupt-Switch \u00FCber Ebenen-Switches zu den Endger\u00E4ten. Typisch f\u00FCr Schul- und Firmennetze.' },
-        { type: 'network-diagram', preset: 'topology-line', label: 'LINIE \u2013 Ger\u00E4te in Reihe hintereinander verkettet. Unterschied zum Bus: keine gemeinsame Backbone-Leitung, jede Verbindung einzeln. Selten in Netzwerken, eher im Industrie-Bussystem.' }
+        { type: 'network-diagram', preset: 'topology-line', label: 'LINIE \u2013 Ger\u00E4te in Reihe hintereinander verkettet. Unterschied zum Bus: keine gemeinsame Backbone-Leitung, jede Verbindung einzeln. Selten in Netzwerken, eher im Industrie-Bussystem.' },
+        { type: 'network-diagram', preset: 'topology-mesh', label: 'VERMASCHT (Mesh) \u2013 jeder Knoten hat mehrere Verbindungen zu anderen. Vorteil: extrem ausfallsicher, mehrere Wege zum Ziel. Nachteil: aufw\u00E4ndig und teuer. Typisch fu\u0308r: Internet-Backbone, WLAN-Mesh.' }
       ]
     },
     example: {
@@ -528,7 +530,28 @@ const LessonsC6 = [
         correct: 0,
         explanation: 'Stern: alle Ger\u00e4te strahlen von einem zentralen Punkt (Switch) aus. Wie die Arme eines Sterns von der Mitte.'
       }
-    ]
+    ,
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Welche Topologie beschreibt am besten das <strong>weltweite Internet</strong>?',
+        options: ['Stern', 'Ring', 'Bus', 'Vermascht (Mesh)'],
+        correct: 3,
+        explanation: 'Das Internet ist eine riesige vermaschte Struktur: Router haben Verbindungen zu vielen anderen Routern, Daten k\u00F6nnen auf vielen Wegen laufen. Ein Ausfall einer Verbindung \u00E4ndert meist nichts am Gesamt-Betrieb.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Vorteil der <strong>vermaschten Topologie</strong> gegen\u00FCber Stern und Bus?',
+        options: [
+          'Weniger Kabel n\u00F6tig',
+          'Mehrere Wege zum Ziel \u2013 Ausfallsicherheit',
+          'Keine Switches n\u00F6tig',
+          'H\u00F6here Datenrate'
+        ],
+        correct: 1,
+        explanation: 'Weil jeder Knoten mehrere Verbindungen hat, gibt es immer Ausweichwege. F\u00E4llt ein Kabel oder Router aus, finden die Pakete einen anderen Weg. Nachteil: viele Kabel/Interfaces n\u00F6tig.'
+      }]
   }
 
 ];

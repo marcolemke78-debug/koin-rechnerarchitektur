@@ -1933,6 +1933,24 @@ Visuals.NETWORK_PRESETS = {
     edges: [
       ['n1', 'n2'], ['n2', 'n3'], ['n3', 'n4'], ['n4', 'n5']
     ]
+  },
+
+  // Vermaschte (Mesh-)Topologie: 5 Knoten im Fuenfeck, jeder mit jedem verbunden
+  'topology-mesh': {
+    width: 420, height: 320,
+    nodes: [
+      { id: 'n1', type: 'host', x: 210, y: 40,  label: 'PC 1' },
+      { id: 'n2', type: 'host', x: 355, y: 130, label: 'PC 2' },
+      { id: 'n3', type: 'host', x: 300, y: 270, label: 'PC 3' },
+      { id: 'n4', type: 'host', x: 120, y: 270, label: 'PC 4' },
+      { id: 'n5', type: 'host', x: 65,  y: 130, label: 'PC 5' }
+    ],
+    edges: [
+      ['n1','n2'], ['n1','n3'], ['n1','n4'], ['n1','n5'],
+      ['n2','n3'], ['n2','n4'], ['n2','n5'],
+      ['n3','n4'], ['n3','n5'],
+      ['n4','n5']
+    ]
   }
 };
 
