@@ -101,6 +101,7 @@ const LessonsC1 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Schaltkreis: S1 in Serie mit (S2 parallel S3). Welcher Ausdruck ist korrekt?',
         options: [
           'S1 \u2228 (S2 \u2227 S3)',
@@ -113,6 +114,7 @@ const LessonsC1 = [
       },
       {
         type: 'truth-table',
+        examRelevant: true,
         question: 'F\u00fclle die Wahrheitstabelle f\u00fcr L = S1 \u2227 (S2 \u2228 S3) aus:',
         variables: ['S1', 'S2', 'S3'],
         resultColumns: ['L'],
@@ -322,6 +324,7 @@ const LessonsC1 = [
       },
       {
         type: 'truth-table',
+        examRelevant: true,
         question: 'Klausur-Aufgabe: Erstelle die Wahrheitstabelle f\u00fcr ((a \u2228 b) \u2227 \u00acb) \u2227 (b \u2228 (a \u2227 \u00acb)):',
         variables: ['a', 'b'],
         resultColumns: ['Ergebnis'],
@@ -498,6 +501,7 @@ const LessonsC1 = [
       },
       {
         type: 'truth-table',
+        examRelevant: true,
         question: 'Beweise die \u00c4quivalenz: F\u00fclle WTT f\u00fcr (a\u2228b)\u2227c und (a\u2227c)\u2228(b\u2227c) aus:',
         variables: ['a', 'b', 'c'],
         resultColumns: ['(a\u2228b)\u2227c', '(a\u2227c)\u2228(b\u2227c)'],
@@ -637,6 +641,7 @@ const LessonsC1 = [
       },
       {
         type: 'truth-table',
+        examRelevant: true,
         question: '\u00dcberpr\u00fcfe: a \u2295 b = (a \u2227 \u00acb) \u2228 (\u00aca \u2227 b). F\u00fclle WTT aus:',
         variables: ['a', 'b'],
         resultColumns: ['a\u2295b', '(a\u2227\u00acb)\u2228(\u00aca\u2227b)'],

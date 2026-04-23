@@ -180,6 +180,7 @@ const LessonsC2 = [
     exercises: [
       {
         type: 'truth-table',
+        examRelevant: true,
         question: 'Klausur-Aufgabe: F\u00FClle die WTT f\u00FCr den Halbsubtrahierer aus (D=Differenz, B_out=Borgen):',
         variables: ['A', 'B'],
         resultColumns: ['D', 'B_out'],
@@ -314,6 +315,7 @@ const LessonsC2 = [
       },
       {
         type: 'truth-table',
+        examRelevant: true,
         question: 'Klausur-Aufgabe: Vollsubtrahierer WTT. F\u00FClle D (Differenz) und B_out (Borgen-Ausgang) aus:',
         variables: ['A', 'B', 'B_in'],
         resultColumns: ['D', 'B_out'],
@@ -450,7 +452,7 @@ const LessonsC2 = [
         + '<p>Unter der Schaltung siehst du ein <strong>Timing-Diagramm</strong>, das sich automatisch mit deinen Klicks mit-aktualisiert. So siehst du, wie S, R und Q zeitlich zusammenh\u00E4ngen.</p>',
       visuals: [
         { type: 'circuit', circuit: 'sr-latch', label: 'Asynchroner SR-Riegel \u2013 klicke S oder R, sieh Q umschalten' },
-        { type: 'timing-diagram', signals: ['S', 'R', 'Q', 'Q\u0304'], label: 'Timing-Diagramm \u2013 f\u00FCllt sich automatisch bei jedem Klick in der Schaltung' }
+        { type: 'timing-diagram', signals: ['C', 'S', 'R', 'Q', 'Q\u0304'], label: 'Timing-Diagramm \u2013 f\u00FCllt sich automatisch bei jedem Klick in der Schaltung' }
       ]
     },
     example: {

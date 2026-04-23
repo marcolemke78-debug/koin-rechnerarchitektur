@@ -139,6 +139,7 @@ const LessonsC5 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Welche IP-Adresse ist UNG\u00dcLTIG?',
         options: ['192.168.0.1', '10.255.255.255', '172.16.0.256', '0.0.0.0'],
         correct: 2,
@@ -146,6 +147,7 @@ const LessonsC5 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Warum ist 192.168.300.1 ung\u00fcltig?',
         options: [
           'Das 3. Oktett (300) ist gr\u00f6\u00dfer als 255',
@@ -231,6 +233,7 @@ const LessonsC5 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Welche Dotted-Binary-Notation hat die Subnetzmaske /27?',
         options: [
           '11111111.11111111.11111111.00000000',
@@ -243,6 +246,7 @@ const LessonsC5 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Was ergibt 255.255.255.224 als CIDR-Notation?',
         options: ['/24', '/25', '/27', '/28'],
         correct: 2,
@@ -323,6 +327,7 @@ const LessonsC5 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'IP: 192.168.5.130, Maske: 255.255.255.128 (/25). Was ist die Netz-ID?',
         options: ['192.168.5.0', '192.168.5.128', '192.168.5.130', '192.168.5.255'],
         correct: 1,
@@ -340,7 +345,7 @@ const LessonsC5 = [
         '<h2>Subnetting Praxis</h2>'
         + '<p>Jetzt wird es konkret: F\u00FCr ein gegebenes Netz sollst du die <strong>Netz-ID</strong>, die <strong>Broadcast-Adresse</strong> und die Range der <strong>nutzbaren Hosts</strong> berechnen. Das ist der Praxis-Teil jeder Netzwerk-Klausur.</p>'
         + '<div class="analogy-box">'
-        + '<strong>H\u00E4userblock-Analogie:</strong> Ein Subnetz ist wie ein Wohnblock mit nummerierten Wohnungen. Die <em>erste Adresse</em> ist das Briefkasten-Gem\u00E4chte f\u00FCr den ganzen Block (Netz-ID). Die <em>letzte Adresse</em> ist der Hausmeister-Aushang f\u00FCr alle (Broadcast). Die Wohnungen dazwischen sind die nutzbaren Hosts \u2013 dort wohnen die Ger\u00E4te.'
+        + '<strong>H\u00E4userblock-Analogie:</strong> Ein Subnetz ist wie ein Wohnblock mit nummerierten Wohnungen. Die <em>erste Adresse</em> ist das Briefkasten-Schild f\u00FCr den ganzen Block (Netz-ID). Die <em>letzte Adresse</em> ist der Hausmeister-Aushang f\u00FCr alle (Broadcast). Die Wohnungen dazwischen sind die nutzbaren Hosts \u2013 dort wohnen die Ger\u00E4te.'
         + '</div>'
         + '<p>Ein Subnetz mit der Maske <strong>/27</strong> hat <strong>32 Adressen</strong> (2\u2075 = 32 Host-Bits-Kombinationen):</p>'
         + '<ul>'
@@ -379,6 +384,7 @@ const LessonsC5 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wie viele nutzbare Host-Adressen hat ein /27-Subnetz?',
         options: ['30', '32', '28', '62'],
         correct: 0,
@@ -386,6 +392,7 @@ const LessonsC5 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Was ist die Broadcast-Adresse von 192.168.10.96/27?',
         options: ['192.168.10.127', '192.168.10.128', '192.168.10.255', '192.168.10.126'],
         correct: 0,
@@ -400,6 +407,7 @@ const LessonsC5 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Zweites /27-Subnetz nach 192.168.10.96/27. Was ist die Netz-ID?',
         options: ['192.168.10.127', '192.168.10.128', '192.168.10.160', '192.168.11.0'],
         correct: 1,

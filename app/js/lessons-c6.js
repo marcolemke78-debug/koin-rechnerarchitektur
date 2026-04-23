@@ -81,6 +81,7 @@ const LessonsC6 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'In welcher Reihenfolge l\u00e4uft eine DNS-Anfrage ab?',
         options: [
           'Browser \u2192 lokaler Resolver \u2192 Root-NS \u2192 TLD-NS \u2192 Authoritative NS',
@@ -186,6 +187,7 @@ const LessonsC6 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Zwei Computer in verschiedenen Subnetzen: Was ist n\u00f6tig damit sie kommunizieren k\u00f6nnen?',
         options: [
           'Ein Router, der die Subnetze verbindet',
@@ -198,6 +200,7 @@ const LessonsC6 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Wahr oder falsch: "MAC-Adressen sind 48 Bit lang und weltweit eindeutig."',
         options: [
           'Wahr',
@@ -279,6 +282,7 @@ const LessonsC6 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Liegt 192.168.1.50 im Netz 192.168.1.0/24?',
         options: [
           'Ja \u2013 192.168.1.50 AND 255.255.255.0 = 192.168.1.0 \u2713',
@@ -291,6 +295,7 @@ const LessonsC6 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Host A: 192.168.5.10/24. Host B: 192.168.5.200/24. K\u00f6nnen sie direkt kommunizieren?',
         options: [
           'Ja \u2013 beide haben Netz-ID 192.168.5.0, kein Router n\u00f6tig',
@@ -368,6 +373,7 @@ const LessonsC6 = [
     exercises: [
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Was bedeutet der "Gateway"-Eintrag in einer Routing-Tabelle?',
         options: [
           'Die IP des n\u00e4chsten Routers, an den das Paket weitergeleitet wird',
@@ -380,6 +386,7 @@ const LessonsC6 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Ziel-IP: 10.0.0.50, Maske: 255.255.255.0. Was ist das Netzwerkziel (ND)?',
         options: ['10.0.0.0', '10.0.0.50', '10.0.0.255', '255.255.255.0'],
         correct: 0,
@@ -387,6 +394,7 @@ const LessonsC6 = [
       },
       {
         type: 'multiple-choice',
+        examRelevant: true,
         question: 'Was ist die erste nutzbare Host-IP im Netz 172.16.0.0/24?',
         options: ['172.16.0.1', '172.16.0.0', '172.16.0.254', '172.16.1.0'],
         correct: 0,
