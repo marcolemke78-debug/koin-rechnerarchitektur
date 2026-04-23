@@ -334,6 +334,11 @@ const LessonsC6 = [
         + '<li><strong>Subnetzmaske aus CIDR:</strong> /24 = 255.255.255.0, /27 = 255.255.255.224, /30 = 255.255.255.252</li>'
         + '<li><strong>Router-Interface-IP:</strong> meist die <em>erste nutzbare Adresse</em> des Netzes (Netz-ID + 1)</li>'
         + '</ul>'
+        + '<h3>Default-Route: der Joker</h3>'
+        + '<p>Eine spezielle Zeile in jeder Routing-Tabelle ist die <strong>Default-Route</strong> (Standardroute). Sie hat <code>ND = 0.0.0.0</code> und <code>Maske = 0.0.0.0</code> (/0). Sie wird genommen, wenn keine andere Zeile passt \u2013 quasi die Ausfahrt "Rest der Welt".</p>'
+        + '<div class="tip-box">'
+        + '<strong>Klausur-Merke:</strong> Bei einer Routing-Entscheidung pr\u00FCfst du <em>jede Zeile</em> (IP AND Maske = ND der Zeile?). Passen mehrere, gewinnt die mit der <em>l\u00E4ngsten Maske</em> (engste Passung = longest prefix match). Die Default-Route passt immer \u2013 aber sie ist die k\u00FCrzeste, also nur letzte Wahl.'
+        + '</div>'
         + '<div class="why-context">'
         + '<strong>Warum steht oft \u201Edirekt\u201C beim Gateway?</strong> Wenn der Router das Ziel-Netz <em>selbst direkt angeschlossen</em> hat (\u00FCber eines seiner Interfaces), muss er nicht an einen anderen Router weiterreichen. Er kann das Paket direkt ins lokale Netz legen. Deshalb steht dort \u201Edirekt\u201C oder \u201E-\u201C statt einer Gateway-IP.'
         + '</div>'
@@ -399,6 +404,30 @@ const LessonsC6 = [
         options: ['172.16.0.1', '172.16.0.0', '172.16.0.254', '172.16.1.0'],
         correct: 0,
         explanation: 'Netz-ID 172.16.0.0 ist reserviert. Erste nutzbare Host-IP = Netz-ID + 1 = 172.16.0.1.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: '<strong>Routing-Klausur:</strong> Ein Router hat folgende Tabelle:<br><table style="border-collapse:collapse;margin:8px 0;font-size:0.9em;"><tr style="background:#f0f0f0"><th style="border:1px solid #ccc;padding:4px 8px">ND</th><th style="border:1px solid #ccc;padding:4px 8px">Maske</th><th style="border:1px solid #ccc;padding:4px 8px">Gateway</th><th style="border:1px solid #ccc;padding:4px 8px">IF</th></tr><tr><td style="border:1px solid #ccc;padding:4px 8px">192.168.1.0</td><td style="border:1px solid #ccc;padding:4px 8px">/24</td><td style="border:1px solid #ccc;padding:4px 8px">direkt</td><td style="border:1px solid #ccc;padding:4px 8px">eth1</td></tr><tr><td style="border:1px solid #ccc;padding:4px 8px">192.168.2.0</td><td style="border:1px solid #ccc;padding:4px 8px">/24</td><td style="border:1px solid #ccc;padding:4px 8px">10.0.0.2</td><td style="border:1px solid #ccc;padding:4px 8px">eth0</td></tr><tr><td style="border:1px solid #ccc;padding:4px 8px">10.0.0.0</td><td style="border:1px solid #ccc;padding:4px 8px">/24</td><td style="border:1px solid #ccc;padding:4px 8px">direkt</td><td style="border:1px solid #ccc;padding:4px 8px">eth0</td></tr><tr><td style="border:1px solid #ccc;padding:4px 8px">0.0.0.0</td><td style="border:1px solid #ccc;padding:4px 8px">/0</td><td style="border:1px solid #ccc;padding:4px 8px">10.0.0.1</td><td style="border:1px solid #ccc;padding:4px 8px">eth0</td></tr></table>Ein Paket soll an <code>192.168.1.50</code>. \u00DCber welches Interface geht es?',
+        options: ['eth0', 'eth1', 'direkt \u2013 keine Weiterleitung n\u00F6tig', 'Default-Route \u00FCber 10.0.0.1'],
+        correct: 1,
+        explanation: '192.168.1.50 AND 255.255.255.0 = 192.168.1.0 \u2192 Zeile 1 passt. Interface eth1, direkt im angeschlossenen Netz.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Gleiche Routing-Tabelle wie oben. Ein Paket soll an <code>8.8.8.8</code>. Welcher Gateway wird gew\u00E4hlt?',
+        options: ['direkt', '10.0.0.2', '10.0.0.1 (Default-Route)', 'Paket wird verworfen'],
+        correct: 2,
+        explanation: '8.8.8.8 passt zu keiner der ersten drei Zeilen (keine der Netze 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/24 umschlie\u00DFt 8.8.8.8). Also greift die Default-Route: Gateway 10.0.0.1, Interface eth0.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Gleiche Tabelle. Ziel <code>192.168.2.77</code> \u2013 welche Route?',
+        options: ['Direkt \u00FCber eth1', 'Gateway 10.0.0.2 \u00FCber eth0', 'Default-Route 10.0.0.1', 'Paket verworfen'],
+        correct: 1,
+        explanation: '192.168.2.77 AND 255.255.255.0 = 192.168.2.0 \u2192 Zeile 2 passt. Gateway 10.0.0.2, Interface eth0.'
       }
     ]
   },
