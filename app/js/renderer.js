@@ -67,7 +67,7 @@ const Renderer = {
    * Zeigt den Gesamtfortschritt ueber alle Lektionen (A1-A4 + C1/C2/C5/C6).
    */
   renderProgressBar() {
-    const percent = Progress.getCompletionPercent(1, 41);
+    const percent = Progress.getCompletionPercent(1, 42);
     const bar = document.getElementById('progress-bar');
     bar.style.width = percent + '%';
   },

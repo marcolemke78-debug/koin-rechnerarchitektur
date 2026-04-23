@@ -669,6 +669,172 @@ const LessonsA3 = [
         explanation: 'Verkettung: beliebig viele Einträge pro Platz.'
       }
     ]
+  },
+
+  // ===== LEKTION 42: Binäre Suche =====
+  {
+    id: 42,
+    title: 'Binäre Suche',
+    explanation: {
+      html:
+        '<h2>Binäre Suche</h2>'
+        + '<p>Ein Computer kann eine Zahl in einer <em>sortierten</em> Liste extrem schnell finden – nicht durch Stumpf-Durchgehen, sondern durch <strong>Halbieren</strong>. Das ist die <strong>Binäre Suche</strong>.</p>'
+        + '<div class="analogy-box">'
+        + '<strong>Analogie – Wörterbuch aufschlagen:</strong> Suchst du das Wort <em>Kolibri</em>, blätterst du nicht von Seite 1 an. Du schlägst in der Mitte auf, siehst "M…", und weißt: <em>Kolibri</em> ist davor. Du halbierst das vordere Viertel, schaust wieder, halbierst weiter. Nach 5–6 Sprüngen bist du da. Genau so arbeitet die binäre Suche auf einem sortierten Array.'
+        + '</div>'
+        + '<h3>Voraussetzung</h3>'
+        + '<div class="warning-box">'
+        + '<strong>Achtung:</strong> Die binäre Suche funktioniert <em>nur auf sortierten Daten</em>. Auf unsortiertem Array bleibt dir nur die lineare Suche (Wert für Wert durchgehen, max. n Vergleiche).'
+        + '</div>'
+        + '<h3>So viel schneller ist das</h3>'
+        + '<p>Bei <code>n</code> Elementen braucht die lineare Suche im schlechtesten Fall <code>n</code> Vergleiche. Die binäre Suche halbiert jedes Mal – also nur <code>⌈log₂ n⌉</code> Vergleiche.</p>'
+        + '<table style="border-collapse:collapse;margin:12px 0;width:100%;max-width:500px;">'
+        + '<tr style="background:#eff6ff"><th style="padding:6px;border:1px solid #ccc;">n (Anzahl Einträge)</th><th style="padding:6px;border:1px solid #ccc;">Linear (max)</th><th style="padding:6px;border:1px solid #ccc;">Binär (max)</th></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;">10</td><td style="padding:6px;border:1px solid #ccc;">10</td><td style="padding:6px;border:1px solid #ccc;"><strong>4</strong></td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;">1 000</td><td style="padding:6px;border:1px solid #ccc;">1 000</td><td style="padding:6px;border:1px solid #ccc;"><strong>10</strong></td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;">1 000 000</td><td style="padding:6px;border:1px solid #ccc;">1 Mio.</td><td style="padding:6px;border:1px solid #ccc;"><strong>20</strong></td></tr>'
+        + '<tr><td style="padding:6px;border:1px solid #ccc;">1 000 000 000</td><td style="padding:6px;border:1px solid #ccc;">1 Mrd.</td><td style="padding:6px;border:1px solid #ccc;"><strong>30</strong></td></tr>'
+        + '</table>'
+        + '<div class="tip-box">'
+        + '<strong>Klausur-Fakt:</strong> Bei <strong>1 Milliarde</strong> sortierten Einträgen braucht die binäre Suche maximal <strong>30 Vergleiche</strong> (<code>⌈log₂(10⁹)⌉ = 30</code>). Diese Faustregel ist eine klassische Klausur-Frage.'
+        + '</div>'
+        + '<h3>Der Algorithmus (Pseudocode)</h3>'
+        + '<pre style="background:#f3f4f6;padding:12px;font-family:monospace;border-radius:4px;">'
+        + 'Eingabe: sortiertes Array A, gesuchter Schlüssel S\n'
+        + 'l := 0                   // linke Grenze\n'
+        + 'r := n - 1               // rechte Grenze\n'
+        + '\n'
+        + 'solange l ≠ r:\n'
+        + '  m := l + ⌊(r - l) / 2⌋   // Mittelindex\n'
+        + '  M := A[m]                // Wert in der Mitte\n'
+        + '  falls M &lt; S:   l := m   // weiter rechts suchen\n'
+        + '  sonst:          r := m   // weiter links suchen\n'
+        + '  falls M = S:    gib m aus und fertig</pre>'
+        + '<div class="reading-guide">'
+        + '<strong>Lese-Hilfe:</strong> <code>l</code> und <code>r</code> markieren den aktuellen Suchbereich. <code>m</code> ist dessen Mitte. Bei jedem Durchlauf schrumpft der Bereich auf die Hälfte – links oder rechts von <code>m</code>.'
+        + '</div>'
+        + '<div class="why-context">'
+        + '<strong>Warum ist das wichtig?</strong> Binäre Suche steckt überall dort, wo du "sofort" etwas findest – Datenbank-Indizes, Git-Objekt-Lookup, Wörterbücher in Programmiersprachen (wenn sie sortiert arbeiten). Ohne diesen Algorithmus wären moderne Suchmaschinen und Datenbanken tausendfach langsamer. In der Klausur ist das eine zuverlässige 4-Punkte-Aufgabe: <em>max. Vergleiche</em> berechnen + <em>Algorithmus von Hand</em> durchspielen.'
+        + '</div>',
+      visuals: [
+        {
+          type: 'bit-layout',
+          bits: '0000000000',
+          groups: [
+            { start: 0, length: 1, color: '#F3F4F6', label: '4' },
+            { start: 1, length: 1, color: '#F3F4F6', label: '7' },
+            { start: 2, length: 1, color: '#F3F4F6', label: '13' },
+            { start: 3, length: 1, color: '#F3F4F6', label: '26' },
+            { start: 4, length: 1, color: '#FEF3C7', label: '37 ← m' },
+            { start: 5, length: 1, color: '#F3F4F6', label: '42' },
+            { start: 6, length: 1, color: '#F3F4F6', label: '51' },
+            { start: 7, length: 1, color: '#F3F4F6', label: '59' },
+            { start: 8, length: 1, color: '#F3F4F6', label: '61' },
+            { start: 9, length: 1, color: '#F3F4F6', label: '62' }
+          ],
+          label: 'Startzustand: Array mit 10 Elementen, Mittelindex m=4'
+        }
+      ]
+    },
+    example: {
+      title: 'Beispiel: Suche nach 26 in [4, 7, 13, 26, 37, 42, 51, 59, 61, 62]',
+      steps: [
+        {
+          label: 'Durchlauf 1 – M=37 ist zu groß',
+          html:
+            '<p>Start: <code>l=0</code>, <code>r=9</code>. Mitte: <code>m = 0 + ⌊9/2⌋ = 4</code>, also <code>M = A[4] = 37</code>.</p>'
+            + '<p>37 &gt; 26 → der gesuchte Wert liegt links. Also <code>r := m = 4</code>.</p>'
+            + '<table style="border-collapse:collapse;margin:10px 0;font-family:monospace;">'
+            + '<tr><th style="padding:6px;border:1px solid #ccc;">Index</th><td style="padding:6px;border:1px solid #ccc;">0</td><td style="padding:6px;border:1px solid #ccc;">1</td><td style="padding:6px;border:1px solid #ccc;">2</td><td style="padding:6px;border:1px solid #ccc;">3</td><td style="padding:6px;border:1px solid #ccc;background:#FEF3C7;"><strong>4</strong></td><td style="padding:6px;border:1px solid #ccc;">5</td><td style="padding:6px;border:1px solid #ccc;">6</td><td style="padding:6px;border:1px solid #ccc;">7</td><td style="padding:6px;border:1px solid #ccc;">8</td><td style="padding:6px;border:1px solid #ccc;">9</td></tr>'
+            + '<tr><th style="padding:6px;border:1px solid #ccc;">Wert</th><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">4</td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">7</td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">13</td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">26</td><td style="padding:6px;border:1px solid #ccc;background:#FEF3C7;"><strong>37</strong></td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">42</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">51</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">59</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">61</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">62</td></tr>'
+            + '</table>'
+            + '<p style="font-family:monospace;">print(l=0, r=9, m=4, M=37)</p>'
+        },
+        {
+          label: 'Durchlauf 2 – M=13 ist zu klein',
+          html:
+            '<p>Neuer Bereich: <code>l=0</code>, <code>r=4</code>. Mitte: <code>m = 0 + ⌊(4-0)/2⌋ = 2</code>, also <code>M = A[2] = 13</code>.</p>'
+            + '<p>13 &lt; 26 → der gesuchte Wert liegt rechts. Also <code>l := m = 2</code>.</p>'
+            + '<table style="border-collapse:collapse;margin:10px 0;font-family:monospace;">'
+            + '<tr><th style="padding:6px;border:1px solid #ccc;">Index</th><td style="padding:6px;border:1px solid #ccc;">0</td><td style="padding:6px;border:1px solid #ccc;">1</td><td style="padding:6px;border:1px solid #ccc;background:#FEF3C7;"><strong>2</strong></td><td style="padding:6px;border:1px solid #ccc;">3</td><td style="padding:6px;border:1px solid #ccc;">4</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">5</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">6</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">7</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">8</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">9</td></tr>'
+            + '<tr><th style="padding:6px;border:1px solid #ccc;">Wert</th><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">4</td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">7</td><td style="padding:6px;border:1px solid #ccc;background:#FEF3C7;"><strong>13</strong></td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">26</td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">37</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">42</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">51</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">59</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">61</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">62</td></tr>'
+            + '</table>'
+            + '<p style="font-family:monospace;">print(l=0, r=4, m=2, M=13)</p>'
+        },
+        {
+          label: 'Durchlauf 3 – M=26 gefunden!',
+          html:
+            '<p>Neuer Bereich: <code>l=2</code>, <code>r=4</code>. Mitte: <code>m = 2 + ⌊(4-2)/2⌋ = 3</code>, also <code>M = A[3] = 26</code>.</p>'
+            + '<p>26 = 26 → <strong>gefunden bei Index 3</strong>!</p>'
+            + '<table style="border-collapse:collapse;margin:10px 0;font-family:monospace;">'
+            + '<tr><th style="padding:6px;border:1px solid #ccc;">Index</th><td style="padding:6px;border:1px solid #ccc;">0</td><td style="padding:6px;border:1px solid #ccc;">1</td><td style="padding:6px;border:1px solid #ccc;">2</td><td style="padding:6px;border:1px solid #ccc;background:#D1FAE5;"><strong>3</strong></td><td style="padding:6px;border:1px solid #ccc;">4</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">5</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">6</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">7</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">8</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">9</td></tr>'
+            + '<tr><th style="padding:6px;border:1px solid #ccc;">Wert</th><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">4</td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">7</td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">13</td><td style="padding:6px;border:1px solid #ccc;background:#D1FAE5;"><strong>26 ✓</strong></td><td style="padding:6px;border:1px solid #ccc;background:#DBEAFE;">37</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">42</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">51</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">59</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">61</td><td style="padding:6px;border:1px solid #ccc;color:#9ca3af;">62</td></tr>'
+            + '</table>'
+            + '<p style="font-family:monospace;">print(l=2, r=4, m=3, M=26) → <strong>return 3</strong></p>'
+            + '<div class="tip-box">'
+            + '<strong>Klausur-Format:</strong> In der Klausur sollst du diese Tabelle Durchlauf für Durchlauf ausfüllen (<code>l</code>, <code>r</code>, <code>m</code>, <code>M</code>). Dokumentiere jede <em>print</em>-Zeile, sonst gibt es keine Punkte – auch wenn das Endergebnis stimmt.'
+            + '</div>'
+        }
+      ]
+    },
+    exercises: [
+      {
+        type: 'multiple-choice',
+        question: 'Was ist die <strong>Voraussetzung</strong>, damit die binäre Suche funktioniert?',
+        options: [
+          'Das Array muss sortiert sein.',
+          'Das Array darf keine Duplikate enthalten.',
+          'Die Länge des Arrays muss eine Zweierpotenz sein.',
+          'Das Array muss im Speicher zusammenhängend liegen.'
+        ],
+        correct: 0,
+        explanation: 'Die binäre Suche entscheidet in jedem Schritt "links oder rechts weitermachen" anhand des Größenvergleichs – das geht nur bei sortierten Daten.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Wie viele Vergleiche braucht die binäre Suche <strong>maximal</strong> bei einer Zahlenreihe mit <strong>1.000.000.000</strong> (1 Milliarde) Einträgen?',
+        options: ['10', '20', '30', '1 000 000 000'],
+        correct: 2,
+        explanation: '⌈log₂(10⁹)⌉ = ⌈29,9⌉ = 30. Nach 30 Halbierungen ist der Bereich auf 1 Element geschrumpft.'
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Im Algorithmus: Im aktuellen Durchlauf gilt <code>M = 42</code> und du suchst <code>S = 51</code>. Was passiert?',
+        options: [
+          '<code>l := m</code> (weiter rechts suchen)',
+          '<code>r := m</code> (weiter links suchen)',
+          'Gib <code>m</code> aus und beende',
+          'Erhöhe <code>m</code> um 1'
+        ],
+        correct: 0,
+        explanation: 'M &lt; S → der gesuchte Wert liegt weiter rechts. Deshalb wird die linke Grenze <code>l</code> auf <code>m</code> gesetzt.'
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Vergleich bei <strong>1 000 Elementen</strong> – wie viele Vergleiche im schlechtesten Fall?',
+        options: [
+          'Linear: 10, Binär: 1 000',
+          'Linear: 1 000, Binär: 10',
+          'Linear: 500, Binär: 50',
+          'Beide gleich schnell'
+        ],
+        correct: 1,
+        explanation: 'Linear = n = 1 000. Binär = ⌈log₂(1000)⌉ = 10. Faktor 100 schneller.'
+      },
+      {
+        type: 'multiple-choice',
+        question: 'Warum steht im Algorithmus <code>m := l + ⌊(r-l)/2⌋</code> statt einfach <code>m := ⌊(l+r)/2⌋</code>?',
+        options: [
+          'Es ist schöner zu schreiben.',
+          'Beide Varianten liefern das gleiche Ergebnis – für die Klausur ist es egal.',
+          'Nur so funktioniert der Algorithmus überhaupt.',
+          'Die Gaußklammer ⌊…⌋ muss links stehen.'
+        ],
+        correct: 1,
+        explanation: 'Mathematisch liefern beide Varianten denselben Mittelindex. In echter Software vermeidet <code>l + ⌊(r-l)/2⌋</code> einen Integer-Überlauf bei sehr großen Grenzen – für die Klausur musst du die Form aber nicht auseinanderhalten, solange du richtig rechnest.'
+      }
+    ]
   }
 
 ];

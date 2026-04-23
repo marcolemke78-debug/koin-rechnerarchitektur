@@ -23,6 +23,7 @@ const LESSONS = [
   { id: 34, module: 'a3', title: 'BST – Löschen (3 Fälle)', examRelevant: true },
   { id: 35, module: 'a3', title: 'Hashing & Divisions-Rest-Methode', examRelevant: true },
   { id: 36, module: 'a3', title: 'Kollisionen durch Verkettung', examRelevant: true },
+  { id: 42, module: 'a3', title: 'Binäre Suche', examRelevant: true },
   // A4 – Algorithmik & Datenstrukturen II
   { id: 37, module: 'a4', title: 'Algorithmus-Charakteristika', examRelevant: true },
   { id: 38, module: 'a4', title: 'Pseudocode, Struktogramm, Flussdiagramm', examRelevant: true },
