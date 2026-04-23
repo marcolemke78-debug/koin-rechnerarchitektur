@@ -68,7 +68,7 @@ const Exercises = {
     // Frage anzeigen
     const questionEl = document.createElement('p');
     questionEl.className = 'exercise-question';
-    questionEl.textContent = exercise.question;
+    questionEl.innerHTML = exercise.question;
     wrapper.appendChild(questionEl);
 
     // Container fuer die Antwort-Buttons
@@ -85,7 +85,7 @@ const Exercises = {
       const button = document.createElement('button');
       button.className = 'mc-option';
       button.setAttribute('data-index', index);
-      button.textContent = optionText;
+      button.innerHTML = optionText;
 
       button.addEventListener('click', function() {
         if (index === exercise.correct) {
@@ -93,7 +93,7 @@ const Exercises = {
           button.classList.add('correct');
 
           // Feedback mit Erklaerung anzeigen
-          feedbackEl.textContent = exercise.explanation;
+          feedbackEl.innerHTML = exercise.explanation;
           feedbackEl.className = 'exercise-feedback correct';
           feedbackEl.style.display = 'block';
 
@@ -143,7 +143,7 @@ const Exercises = {
     // Frage anzeigen
     var questionEl = document.createElement('p');
     questionEl.className = 'exercise-question';
-    questionEl.textContent = exercise.question;
+    questionEl.innerHTML = exercise.question;
     wrapper.appendChild(questionEl);
 
     // Anzahl Variablen und Zeilen berechnen
@@ -317,7 +317,7 @@ const Exercises = {
     // Frage anzeigen
     var questionEl = document.createElement('p');
     questionEl.className = 'exercise-question';
-    questionEl.textContent = exercise.question;
+    questionEl.innerHTML = exercise.question;
     wrapper.appendChild(questionEl);
 
     // Eingabebereich: Textfeld + Symbol-Buttons
@@ -434,7 +434,7 @@ const Exercises = {
     // Frage anzeigen
     var questionEl = document.createElement('p');
     questionEl.className = 'exercise-question';
-    questionEl.textContent = exercise.question;
+    questionEl.innerHTML = exercise.question;
     wrapper.appendChild(questionEl);
 
     var calc = document.createElement('div');
@@ -650,7 +650,7 @@ const Exercises = {
     // Frage anzeigen
     var questionEl = document.createElement('p');
     questionEl.className = 'exercise-question';
-    questionEl.textContent = exercise.question;
+    questionEl.innerHTML = exercise.question;
     wrapper.appendChild(questionEl);
 
     var numRows = exercise.inputs.length;
@@ -808,7 +808,7 @@ const Exercises = {
     // Frage anzeigen
     var questionEl = document.createElement('p');
     questionEl.className = 'exercise-question';
-    questionEl.textContent = exercise.question;
+    questionEl.innerHTML = exercise.question;
     wrapper.appendChild(questionEl);
 
     // Zuordnungsbereich (Grid: links | rechts)
@@ -1041,7 +1041,7 @@ Exercises.renderCircuitExercise = function(exercise, container, onComplete) {
 
   const questionEl = document.createElement('p');
   questionEl.className = 'exercise-question';
-  questionEl.textContent = exercise.question;
+  questionEl.innerHTML = exercise.question;
   wrapper.appendChild(questionEl);
 
   // Schaltung rendern
@@ -1106,7 +1106,7 @@ Exercises.renderCircuitMatching = function(exercise, container, onComplete) {
 
   const questionEl = document.createElement('p');
   questionEl.className = 'exercise-question';
-  questionEl.textContent = exercise.question;
+  questionEl.innerHTML = exercise.question;
   wrapper.appendChild(questionEl);
 
   const matchArea = document.createElement('div');
@@ -1232,7 +1232,7 @@ Exercises.renderExpressionTreeExercise = function(exercise, container, onComplet
 
   const questionEl = document.createElement('p');
   questionEl.className = 'exercise-question';
-  questionEl.textContent = exercise.question;
+  questionEl.innerHTML = exercise.question;
   wrapper.appendChild(questionEl);
 
   // Baum anzeigen MIT versteckten Knoten (als "?" dargestellt)
@@ -1329,7 +1329,7 @@ Exercises.renderBinaryDecimal = function(exercise, container, onComplete) {
   wrapper.className = 'exercise-block binary-decimal-exercise';
 
   const title = document.createElement('h3');
-  title.textContent = exercise.question;
+  title.innerHTML = exercise.question;
   wrapper.appendChild(title);
 
   const rounds = exercise.rounds;
@@ -1442,7 +1442,7 @@ Exercises.renderSubnetExercise = function(exercise, container, onComplete) {
   wrapper.className = 'exercise-block subnet-exercise';
 
   const title = document.createElement('h3');
-  title.textContent = exercise.question;
+  title.innerHTML = exercise.question;
   wrapper.appendChild(title);
 
   const info = document.createElement('p');
@@ -1538,7 +1538,7 @@ Exercises.renderNetworkLabeling = function(exercise, container, onComplete) {
   wrapper.className = 'exercise-block network-labeling';
 
   const title = document.createElement('h3');
-  title.textContent = exercise.question;
+  title.innerHTML = exercise.question;
   wrapper.appendChild(title);
 
   // Preset laden
