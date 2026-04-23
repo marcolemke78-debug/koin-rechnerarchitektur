@@ -356,7 +356,31 @@ const LessonsC5 = [
         + '<div class="why-context">'
         + '<strong>Warum immer \u201Eminus 2\u201C?</strong> Die erste Adresse eines Subnetzes ist f\u00FCr die Netzwerk-Identifikation reserviert (Host-Bits alle 0). Die letzte Adresse ist f\u00FCr Broadcasts (Host-Bits alle 1). Das sind also <em>nicht</em> Hosts, sondern Spezialadressen. Deshalb musst du von 2\u207F Host-Adressen immer 2 abziehen, um die nutzbare Host-Anzahl zu bekommen.'
         + '</div>'
-        + '<p>Das <strong>interaktive Subnetting-Tool</strong> unten \u00FCbernimmt die Arithmetik: Du gibst Netz und CIDR ein, es liefert Netz-ID, Broadcast, ersten/letzten Host, und die bin\u00E4re Aufschl\u00FCsselung.</p>',
+        + '<p>Das <strong>interaktive Subnetting-Tool</strong> unten \u00FCbernimmt die Arithmetik: Du gibst Netz und CIDR ein, es liefert Netz-ID, Broadcast, ersten/letzten Host, und die bin\u00E4re Aufschl\u00FCsselung.</p>'
+        + '<h3>Ein Netz aktiv aufteilen (Klausur-Klassiker)</h3>'
+        + '<p>Oft musst du ein vorhandenes Netz in <em>mehrere kleinere</em> Subnetze teilen. Das ist einer der gr\u00F6\u00DFten Punkte-Bl\u00F6cke in der Klausur.</p>'
+        + '<div class="tip-box">'
+        + '<strong>log\u2082-Regel:</strong> F\u00FCr <code>k</code> gleich gro\u00DFe Subnetze brauchst du <code>\u2308log\u2082 k\u2309</code> zus\u00E4tzliche Bits aus dem Hostanteil.<br>'
+        + '\u2022 2 Subnetze \u2192 1 Bit mehr (z. B. /27 \u2192 /28)<br>'
+        + '\u2022 3\u20134 Subnetze \u2192 2 Bits mehr (z. B. /25 \u2192 /27)<br>'
+        + '\u2022 5\u20138 Subnetze \u2192 3 Bits mehr'
+        + '</div>'
+        + '<p><strong>Beispiel:</strong> Netz <code>192.168.10.96/27</code> in <strong>2 gleich gro\u00DFe Subnetze</strong> aufteilen.</p>'
+        + '<ul>'
+        + '<li>/27 + 1 Bit = <strong>/28</strong> (Maske 255.255.255.240, 16 Adressen pro Block)</li>'
+        + '<li>Block 1: <code>192.168.10.96</code> bis <code>.111</code> (16 Adressen)</li>'
+        + '<li>Block 2: <code>192.168.10.112</code> bis <code>.127</code> (16 Adressen)</li>'
+        + '</ul>'
+        + '<p><strong>Kochrezept:</strong></p>'
+        + '<ol>'
+        + '<li>Zusatzbits = <code>\u2308log\u2082 k\u2309</code></li>'
+        + '<li>Neue Maske = alte Maske + Zusatzbits</li>'
+        + '<li>Blockgr\u00F6\u00DFe = 2<sup>(32 \u2212 neue Maske)</sup></li>'
+        + '<li>Netz-IDs = Start, Start+Block, Start+2\u00B7Block, \u2026</li>'
+        + '</ol>'
+        + '<div class="warning-box">'
+        + '<strong>Typischer Fehler:</strong> Die Bits wandern vom <em>Host</em>- in den <em>Netz</em>anteil. /27 wird zu /28 (mehr Netzbits, weniger Hosts) \u2013 nicht zu /26.'
+        + '</div>',
       visuals: [
         { type: 'subnetting-viz', network: '192.168.10.96', cidr: 27, label: 'Subnetting-Viz: 192.168.10.96/27 \u2013 alle Werte auf einen Blick' }
       ]
@@ -412,6 +436,30 @@ const LessonsC5 = [
         options: ['192.168.10.127', '192.168.10.128', '192.168.10.160', '192.168.11.0'],
         correct: 1,
         explanation: 'Das erste /27 umfasst 192.168.10.96 bis .127 (32 Adressen). Das zweite beginnt bei .128.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Du willst ein Netz in 4 gleich gro\u00DFe Subnetze aufteilen. Wie viele <strong>zus\u00E4tzliche</strong> Netz-Bits brauchst du?',
+        options: ['1', '2', '4', '8'],
+        correct: 1,
+        explanation: '\u2308log\u2082 4\u2309 = 2 Bits. Damit verdopp(el)t sich die Anzahl der Subnetze zweimal (1\u21922\u21924).'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Netz <code>192.168.10.96/27</code> in <strong>2 gleiche Subnetze</strong> aufteilen. Was ist die Netz-ID des <em>zweiten</em> Subnetzes?',
+        options: ['192.168.10.104', '192.168.10.112', '192.168.10.128', '192.168.10.160'],
+        correct: 1,
+        explanation: '/27 + 1 Bit = /28, Blockgr\u00F6\u00DFe 16. Block 1: .96 bis .111. Block 2 beginnt bei .96+16 = .112.'
+      },
+      {
+        type: 'multiple-choice',
+        examRelevant: true,
+        question: 'Netz <code>10.16.8.128/25</code> in mindestens <strong>3 Subnetze</strong> aufteilen. Welche neue Maske?',
+        options: ['/26', '/27', '/28', '/29'],
+        correct: 1,
+        explanation: '3 Subnetze brauchen \u2308log\u2082 3\u2309 = 2 Zusatzbits. /25 + 2 = /27. Ergebnis: 4 Subnetze \u00E0 32 Adressen (drei genutzt, eins Reserve).'
       }
     ]
   }
