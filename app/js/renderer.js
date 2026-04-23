@@ -1,3 +1,13 @@
+// Kleines Inline-SVG des Klemmbrett-Symbols aus den KOIN-Uebungs-PDFs
+// ("Moegliche Klausuraufgabe"). Wird in Sidebar und Lektions-Header verwendet.
+const EXAM_ICON_SVG =
+  '<svg class="exam-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+  + '<rect x="5" y="3.5" width="10" height="15" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.4"/>'
+  + '<rect x="8" y="2" width="4" height="2.5" rx="0.4" fill="currentColor"/>'
+  + '<path d="M7.5 7h5M7.5 10h5M7.5 13h5" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>'
+  + '<path d="M17.5 6.5l2.2 2.2-5.2 5.2-2.5.3.3-2.5z" fill="currentColor"/>'
+  + '</svg>';
+
 const Renderer = {
 
   /**
@@ -28,16 +38,21 @@ const Renderer = {
       const li = document.createElement('li');
       li.dataset.lessonId = lesson.id;
       const status = Progress.getStatus(lesson.id);
-      if (status === 'completed') {
-        li.classList.add('completed');
-        li.textContent = `✓ ${lesson.title}`;
-      } else if (status === 'in_progress') {
-        li.classList.add('in-progress');
-        li.textContent = lesson.title;
+      const prefix = (status === 'completed') ? '✓ ' : '';
+      if (status === 'completed') li.classList.add('completed');
+      else if (status === 'in_progress') li.classList.add('in-progress');
+      else li.classList.add('not-started');
+
+      // Icon fuer klausurrelevante Lektionen (vor dem Titel)
+      if (lesson.examRelevant) {
+        li.classList.add('exam-relevant');
+        li.innerHTML = EXAM_ICON_SVG
+          + '<span class="lesson-label">' + prefix + lesson.title + '</span>';
+        li.title = 'Mögliche Klausuraufgabe';
       } else {
-        li.classList.add('not-started');
-        li.textContent = lesson.title;
+        li.textContent = prefix + lesson.title;
       }
+
       const moduleTargets = {
         a1: listA1, a2: listA2, a3: listA3, a4: listA4,
         c1: listC1, c2: listC2, c5: listC5, c6: listC6
@@ -88,8 +103,12 @@ const Renderer = {
 
     // --- DOM aufbauen ---
 
-    // Titel
-    container.innerHTML = `<h1>Lektion ${id}: ${lessonData.title}</h1>`;
+    // Titel + ggf. Klausur-Badge
+    const isExamRelevant = lessonMeta && lessonMeta.examRelevant;
+    const badgeHtml = isExamRelevant
+      ? `<div class="exam-badge" title="Diese Lektion deckt eine in den Übungs-PDFs als mögliche Klausuraufgabe markierte Aufgabe ab.">${EXAM_ICON_SVG}<span>Mögliche Klausuraufgabe</span></div>`
+      : '';
+    container.innerHTML = `<h1>Lektion ${id}: ${lessonData.title}</h1>${badgeHtml}`;
 
     // Phase-Tabs
     const tabsDiv = document.createElement('div');

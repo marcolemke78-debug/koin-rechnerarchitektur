@@ -100,6 +100,46 @@ body {
   color: var(--text-light);
 }
 
+/* === Klausur-Markierung ("Mögliche Klausuraufgabe") === */
+#sidebar li.exam-relevant {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#sidebar li .exam-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: #B45309; /* Amber-700 – passt zu Klausur-Gelb */
+}
+
+#sidebar li.active .exam-icon,
+#sidebar li.completed .exam-icon {
+  color: inherit;
+}
+
+.exam-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.25rem 0 1.25rem;
+  padding: 0.35rem 0.75rem;
+  background: #FEF3C7;      /* Amber-100 */
+  border: 1px solid #F59E0B; /* Amber-500 */
+  border-radius: 999px;
+  color: #92400E;           /* Amber-800 */
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.exam-badge .exam-icon {
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
 /* Reset-Button: wird durch flex + margin-top:auto nach unten gedrückt */
 #reset-progress {
   margin-top: auto;
